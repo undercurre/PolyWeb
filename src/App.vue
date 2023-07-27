@@ -2,23 +2,33 @@
 </script>
 
 <template>
-  <img class="block mt-0 mb-2em mx-auto" src="@/assets/logo.png" width="125" height="125" />
-  <nav class="w-full text-12px text-center mt-2em">
-    <RouterLink class="hover:(bg-transparent) router-link-exact-active" to="/">Home</RouterLink>
-    <RouterLink class="hover:(bg-transparent) router-link-exact-active" to="/about">About</RouterLink>
-  </nav>
-  <RouterView />
+  <div>
+    <img class="block mt-0 mb-2em mx-auto" src="@/assets/logo.png" width="125" height="125" />
+    <nav class="w-full text-12px text-center mt-2em">
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+    </nav>
+    <RouterView />
+  </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+nav {
+  a.router-link-exact-active {
+    &:hover {
+      background: transparent;
+    }
+  }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  a {
+    display: inline-block;
+    padding: 0 1rem;
+    border-left: 1px solid $color-border;
+
+    &:first-of-type {
+      border: 0;
+    }
+  }
 }
 
-nav a:first-of-type {
-  border: 0;
-}
 </style>
