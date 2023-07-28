@@ -1,14 +1,8 @@
-<script setup lang="ts">
-import useScssVue from './components/useScss.vue';
-import useUnocssVue from './components/useUnocss.vue';
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
     <img class="block mt-0 mb-2em mx-auto" src="@/assets/logo.png" width="125" height="125" />
-    <useUnocssVue></useUnocssVue>
-    <useScssVue></useScssVue>
     <nav class="w-full text-12px text-center mt-2em">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
@@ -39,5 +33,4 @@ nav {
     }
   }
 }
-
 </style>

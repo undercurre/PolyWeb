@@ -5,20 +5,32 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
 }
 
 /* Remove default margin and padding */
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
   margin: 0;
   padding: 0;
 }
 
 /* Remove list styles (bullets, numbering) */
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
@@ -28,7 +40,8 @@ a {
 }
 
 /* Remove default outline on focus (for accessibility) */
-a:focus, button:focus {
+a:focus,
+button:focus {
   outline: none;
 }
 

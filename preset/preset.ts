@@ -1,6 +1,7 @@
 import vue from "@vitejs/plugin-vue";
 import Unocss from "unocss/vite";
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import stylelint from 'stylelint';
 
 export default {
     plugins: [
@@ -12,7 +13,7 @@ export default {
     ],
     css: {
         postcss: {
-          plugins: [require('postcss-preset-env')()],
+          plugins: [require('postcss-preset-env')(), stylelint()],
         },
         preprocessorOptions: {
             scss: {

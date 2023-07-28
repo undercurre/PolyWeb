@@ -1,0 +1,6 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended-scss"],
+  "processors": ["stylelint-processor-html"],
+  "customSyntax": "stylelint-scss",
+  "rules": {}
+}
