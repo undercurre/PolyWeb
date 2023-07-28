@@ -5,7 +5,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 export default {
     plugins: [
         vue(),
-        Unocss(),
+        Unocss({
+          mode: 'vue-scoped'
+        }),
         vueJsx()
     ],
     css: {
