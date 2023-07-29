@@ -1,6 +1,14 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-recommended-scss"],
-  "processors": ["stylelint-processor-html"],
-  "customSyntax": "stylelint-scss",
-  "rules": {}
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-rational-order"
+  ],
+  "customSyntax": "postcss-html",
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "color-named": "never"
+  }
 }

@@ -4,12 +4,12 @@
 
 <style scoped>
 h3 {
-  color: brown;
+  color: rgb(165 42 42);
   font-size: 12px;
   text-align: center;
 
   &:hover {
-    color: cadetblue;
+    color: rgb(95 158 160);
   }
 }
 </style>
