@@ -8,4 +8,8 @@
 <script lang="ts" setup>
 import useScssVue from '../components/useScss.vue'
 import useUnocssVue from '../components/useUnocss.vue'
+
+const myFunction = (x: number, y: number) => {
+  return x + y
+}
 </script>
