@@ -35,7 +35,10 @@ ul {
 }
 
 /* Remove anchor text decoration */
+
+/* Reset anchor color to avoid inheriting default browser styles */
 a {
+  color: inherit;
   text-decoration: none;
 }
 
@@ -43,11 +46,6 @@ a {
 a:focus,
 button:focus {
   outline: none;
-}
-
-/* Reset anchor color to avoid inheriting default browser styles */
-a {
-  color: inherit;
 }
 
 /* Set default font size and family */

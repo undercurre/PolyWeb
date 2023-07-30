@@ -29,7 +29,6 @@ specifiers:
   start-server-and-test: ^2.0.0
   stylelint: ^15.10.2
   stylelint-config-rational-order: ^0.1.2
-  stylelint-config-standard: ^34.0.0
   stylelint-config-standard-scss: ^10.0.0
   stylelint-order: ^6.0.3
   stylelint-scss: ^5.0.1
@@ -75,7 +74,6 @@ devDependencies:
   start-server-and-test: 2.0.0
   stylelint: 15.10.2
   stylelint-config-rational-order: 0.1.2
-  stylelint-config-standard: 34.0.0_stylelint@15.10.2
   stylelint-config-standard-scss: 10.0.0_r5xvpi6zm5daz4nlcejxrg2oem
   stylelint-order: 6.0.3_stylelint@15.10.2
   stylelint-scss: 5.0.1_stylelint@15.10.2
@@ -7202,15 +7200,6 @@ packages:
       stylelint: 15.10.2
     dev: true
 
-  /stylelint-config-recommended/13.0.0_stylelint@15.10.2:
-    resolution: {integrity: sha512-EH+yRj6h3GAe/fRiyaoO2F9l9Tgg50AOFhaszyfov9v6ayXJ1IkSHwTxd7lB48FmOeSGDPLjatjO11fJpmarkQ==}
-    engines: {node: ^14.13.1 || >=16.0.0}
-    peerDependencies:
-      stylelint: ^15.10.0
-    dependencies:
-      stylelint: 15.10.2
-    dev: true
-
   /stylelint-config-standard-scss/10.0.0_r5xvpi6zm5daz4nlcejxrg2oem:
     resolution: {integrity: sha512-bChBEo1p3xUVWh/wenJI+josoMk21f2yuLDGzGjmKYcALfl2u3DFltY+n4UHswYiXghqXaA8mRh+bFy/q1hQlg==}
     peerDependencies:
@@ -7233,16 +7222,6 @@ packages:
     dependencies:
       stylelint: 15.10.2
       stylelint-config-recommended: 12.0.0_stylelint@15.10.2
-    dev: true
-
-  /stylelint-config-standard/34.0.0_stylelint@15.10.2:
-    resolution: {integrity: sha512-u0VSZnVyW9VSryBG2LSO+OQTjN7zF9XJaAJRX/4EwkmU0R2jYwmBSN10acqZisDitS0CLiEiGjX7+Hrq8TAhfQ==}
-    engines: {node: ^14.13.1 || >=16.0.0}
-    peerDependencies:
-      stylelint: ^15.10.0
-    dependencies:
-      stylelint: 15.10.2
-      stylelint-config-recommended: 13.0.0_stylelint@15.10.2
     dev: true
 
   /stylelint-order/2.2.1_stylelint@9.10.1:
