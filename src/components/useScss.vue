@@ -2,7 +2,7 @@
   <h3>This template using scss</h3>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 h3 {
   color: rgb(165 42 42);
   font-size: 12px;
