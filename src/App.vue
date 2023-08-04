@@ -1,10 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const add = (x) => x + 2;
+</script>
 
 <template>
   <div>
     <img class="block mt-0 mb-2em mx-auto" src="@/assets/logo.png" width="125" height="125" />
-    <nav class="w-full 
-    text-12px text-center mt-2em">
+    <nav class="w-full text-12px text-center mt-2em">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </nav>
@@ -26,12 +27,15 @@ nav {
     border-left: 1px solid $color-border;
 
     &:hover {
-      background-color: rgba($color: rgb(0 0 255), $alpha: 65%);
+      background-color: rgba($color: blue, $alpha: 65%);
     }
 
     &:first-of-type {
       border: 0;
     }
+  }
+
+  p {
   }
 }
 </style>

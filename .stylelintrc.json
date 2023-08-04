@@ -1,12 +1,7 @@
 {
-  "extends": [
-    "stylelint-config-standard-scss",
-    "stylelint-config-rational-order"
-  ],
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-rational-order"],
   "customSyntax": "postcss-html",
-  "plugins": [
-    "stylelint-scss"
-  ],
+  "plugins": ["stylelint-scss"],
   "overrides": [
     {
       "files": ["src/assets/style/**/*.scss"],
@@ -17,6 +12,7 @@
     }
   ],
   "rules": {
-    "color-named": "never"
+    "color-named": "never",
+    "block-no-empty": null
   }
 }
