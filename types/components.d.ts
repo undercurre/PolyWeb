@@ -8,6 +8,15 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElButton: typeof import('element-plus/es')['ElButton']
+    ICarbonAccessibility: typeof import('~icons/carbon/accessibility')['default']
+    'IconMaterialSymbols:10kSharp': typeof import('~icons/material-symbols/10k-sharp')['default']
+    'IconMaterialSymbols:123': typeof import('~icons/material-symbols/123')['default']
+    IconMdiAccount: typeof import('~icons/mdi/account')['default']
+    'IconSolar:4kBold': typeof import('~icons/solar/4k-bold')['default']
+    'IMaterialSymbols:10kSharp': typeof import('~icons/material-symbols/10k-sharp')['default']
+    'IMaterialSymbols:123': typeof import('~icons/material-symbols/123')['default']
+    IMdiAccountBox: typeof import('~icons/mdi/account-box')['default']
+    IMdiAlarmOff: typeof import('~icons/mdi/alarm-off')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']

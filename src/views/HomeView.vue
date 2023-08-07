@@ -21,5 +21,7 @@ const openVn = () => {
 		<el-button @click="openVn" class="mt-10px ml-10px" size="large" type="primary"
 			>Element Plus</el-button
 		>
+		<h4 class="text-20px text-left text-amber">Using Iconify</h4>
+		<UseIconify></UseIconify>
 	</div>
 </template>

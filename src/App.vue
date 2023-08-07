@@ -1,8 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import logo from '@/assets/logo.png';
+</script>
 
 <template>
 	<div class="flex flex-col items-center">
-		<img class="w-125px h-125px block mt-0 mb-2em mx-auto" src="@/assets/logo.png" />
+		<img class="w-125px h-125px block mt-0 mb-2em mx-auto" :src="logo" />
 		<nav class="w-full text-12px text-center mt-2em">
 			<RouterLink to="/">Home</RouterLink>
 			<RouterLink to="/about">About</RouterLink>
