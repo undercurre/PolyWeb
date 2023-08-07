@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 
 const MyTsxComponent = defineComponent({
   render() {
-    return <h3 class="text-#FF4400 text-center">Using TSX</h3>;
+    return <h3 class="text-#FF4400 text-left text-10px">Using TSX</h3>;
   }
 });
 </script>

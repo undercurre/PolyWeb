@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <div class="flex flex-col items-center">
     <img class="block mt-0 mb-2em mx-auto" src="@/assets/logo.png" width="125" height="125" />
     <nav class="w-full text-12px text-center mt-2em">
       <RouterLink to="/">Home</RouterLink>
@@ -31,9 +31,6 @@ nav {
     &:first-of-type {
       border: 0;
     }
-  }
-
-  p {
   }
 }
 </style>
