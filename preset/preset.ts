@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue';
 import Unocss from 'unocss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import checker from 'vite-plugin-checker';
+import Checker from 'vite-plugin-checker';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { VantResolver } from 'unplugin-vue-components/resolvers';
@@ -27,7 +27,7 @@ export default [
 		types: [{ from: 'vue-router', names: ['RouterLink', 'RouterView'] }],
 		resolvers: [VantResolver(), ElementPlusResolver()]
 	}),
-	checker({
+	Checker({
 		vueTsc: true,
 		typescript: true,
 		eslint: {
