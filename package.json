@@ -36,7 +36,7 @@
 		"@vue/eslint-config-typescript": "^11.0.3",
 		"@vue/test-utils": "^2.4.1",
 		"@vue/tsconfig": "^0.4.0",
-		"commitizen": "^4.3.0",
+		"commitizen": "^4.2.4",
 		"commitlint-config-cz": "^0.13.3",
 		"cypress": "^12.17.2",
 		"cz-customizable": "^7.0.0",

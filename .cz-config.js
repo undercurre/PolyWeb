@@ -24,7 +24,7 @@ module.exports = {
 		{ name: 'views', description: '页面' },
 		{ name: 'router', description: '路由' },
 		{ name: 'store', description: '状态管理' },
-		{ name: 'utils', description: '工具' }
+		{ name: 'utils', description: '工具' },
 		// 添加更多作用范围...
 	],
 	messages: {
@@ -38,6 +38,7 @@ module.exports = {
 		confirmCommit: '确定提交说明?(yes/no)'
 	},
 	allowCustomScopes: true,
+	skipQuestions: ['body', 'footer'],
 	allowBreakingChanges: ['feat', 'fix']
 	// 其他配置...
 };

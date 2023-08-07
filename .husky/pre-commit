@@ -3,4 +3,4 @@
 
 npx lint-staged
 
-echo "lint校验"
+echo "lint校验完成"
