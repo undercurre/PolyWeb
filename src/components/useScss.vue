@@ -1,5 +1,5 @@
 <template>
-  <h3>This template using scss</h3>
+  <h3>using scss</h3>
 </template>
 
 <style lang="scss" scoped>
