@@ -3,6 +3,7 @@
 	<h4>has checker(using vite-plugin-checker)</h4>
 	<h4>has lint-staged and husky</h4>
 	<h4>has commitlint and commitizen</h4>
+	<h4>has changelog and standard-version</h4>
 </template>
 
 <style lang="scss" scoped>
