@@ -1,4 +1,11 @@
 chore(release): @{{currentTag}} [skip ci]
+### [0.0.6](https://github.com/undercurre/vite3/compare/v0.0.5...v0.0.6) (2023-08-07)
+
+
+### Chores
+
+* 使用新工具 ([84304bd](https://github.com/undercurre/vite3/commit/84304bd9eed35637a80358cf4b3ea5e7dfc7f7e3))
+
 ### [0.0.5](https://github.com/undercurre/vite3/compare/v0.0.4...v0.0.5) (2023-08-07)
 
 ### [0.0.4](https://github.com/undercurre/vite3/compare/v0.0.1...v0.0.4) (2023-08-07)
