@@ -9,7 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
-import { fileURLToPath, URL } from 'url';
+// import { fileURLToPath, URL } from 'url';
 
 export default [
 	vue(),
@@ -29,7 +29,7 @@ export default [
 	Icons({
 		compiler: 'vue3', // 适应vue3依赖
 		customCollections: {
-			custom: FileSystemIconLoader(fileURLToPath(new URL('./src/assets/svg', import.meta.url))) // 自定义目录
+			custom: FileSystemIconLoader('./src/assets/svg') // 自定义目录
 		},
 		autoInstall: true // 自动安装
 	}),

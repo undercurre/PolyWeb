@@ -13,6 +13,7 @@ declare module 'vue' {
     'IconMaterialSymbols:123': typeof import('~icons/material-symbols/123')['default']
     IconMdiAccount: typeof import('~icons/mdi/account')['default']
     'IconSolar:4kBold': typeof import('~icons/solar/4k-bold')['default']
+    ICustomVue: typeof import('~icons/custom/vue')['default']
     'IMaterialSymbols:10kSharp': typeof import('~icons/material-symbols/10k-sharp')['default']
     'IMaterialSymbols:123': typeof import('~icons/material-symbols/123')['default']
     IMdiAccountBox: typeof import('~icons/mdi/account-box')['default']
