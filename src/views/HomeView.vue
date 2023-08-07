@@ -1,7 +1,4 @@
-<script setup lang="ts">
-import useStore from '@/components/useStore.vue';
-import useAutoImport from '@/components/useAutoImport.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
 	<div>
@@ -9,5 +6,7 @@ import useAutoImport from '@/components/useAutoImport.vue';
 		<h4 class="text-10px text-left">using Vue-router</h4>
 		<useStore></useStore>
 		<useAutoImport></useAutoImport>
+		<van-button class="mt-10px" type="success">Vant 成功按钮</van-button>
+		<el-button class="mt-10px ml-10px" size="large" type="primary">Element Plus</el-button>
 	</div>
 </template>

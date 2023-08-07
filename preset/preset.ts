@@ -3,6 +3,9 @@ import Unocss from 'unocss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import checker from 'vite-plugin-checker';
 import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { VantResolver } from 'unplugin-vue-components/resolvers';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 export default [
 	vue(),
@@ -16,7 +19,13 @@ export default [
 		dirs: ['src/components', 'src/views'],
 		eslintrc: {
 			enabled: true
-		}
+		},
+		resolvers: [ElementPlusResolver()]
+	}),
+	Components({
+		dts: './types/components.d.ts',
+		types: [{ from: 'vue-router', names: ['RouterLink', 'RouterView'] }],
+		resolvers: [VantResolver(), ElementPlusResolver()]
 	}),
 	checker({
 		vueTsc: true,
