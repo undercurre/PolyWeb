@@ -8,6 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElTable: typeof import('element-plus/es')['ElTable']
     ICarbonAccessibility: typeof import('~icons/carbon/accessibility')['default']
     'IconMaterialSymbols:10kSharp': typeof import('~icons/material-symbols/10k-sharp')['default']
     'IconMaterialSymbols:123': typeof import('~icons/material-symbols/123')['default']
@@ -21,6 +24,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
+    UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseIconify: typeof import('./../src/components/useIconify.vue')['default']
     UseJsx: typeof import('./../src/components/useJsx.vue')['default']
     UseScss: typeof import('./../src/components/useScss.vue')['default']

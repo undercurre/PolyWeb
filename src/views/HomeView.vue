@@ -23,5 +23,6 @@ const openVn = () => {
 		>
 		<h4 class="text-20px text-left text-amber">Using Iconify</h4>
 		<UseIconify></UseIconify>
+		<UseI18n></UseI18n>
 	</div>
 </template>
