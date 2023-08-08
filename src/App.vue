@@ -27,7 +27,7 @@ nav {
 		border-left: 1px solid $color-border;
 
 		&:hover {
-			background-color: rgba($color: rgb(4 4 247), $alpha: 65%);
+			background-color: rgba($color: #123456, $alpha: 65%);
 		}
 
 		&:first-of-type {

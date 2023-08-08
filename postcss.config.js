@@ -7,7 +7,10 @@ module.exports = {
 			propList: ['*']
 		},
 		'postcss-preset-env': {
-			// 配置选项
+			stage: 3,
+			autoprefixer: {
+				browsers: ['> 0% ']
+			}
 		}
 	}
 };
