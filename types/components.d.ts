@@ -31,6 +31,7 @@ declare module 'vue' {
     UseStandard: typeof import('./../src/components/useStandard.vue')['default']
     UseStore: typeof import('./../src/components/useStore.vue')['default']
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
+    UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
     VanButton: typeof import('vant/es')['Button']
   }
 }
