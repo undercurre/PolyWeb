@@ -9,6 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
+import { viteMockServe } from 'vite-plugin-mock';
 
 export default [
 	vue(),
@@ -19,7 +20,7 @@ export default [
 	AutoImport({
 		imports: ['vue', 'vue-router', '@vueuse/core', 'vue-i18n', 'pinia'],
 		dts: './types/auto-imports.d.ts',
-		dirs: ['src/components', 'src/views'],
+		dirs: ['src/components', 'src/views', 'src/stores'],
 		eslintrc: {
 			enabled: true
 		},
@@ -51,5 +52,13 @@ export default [
 		stylelint: {
 			lintCommand: "stylelint 'src/**/*.{vue,scss,html}'"
 		}
+	}),
+	viteMockServe({
+		mockPath: 'mock',
+		prodEnabled: true,
+		injectCode: `
+			import { setupMockServer } from '../mock';
+			setupMockServer();
+		`
 	})
 ];

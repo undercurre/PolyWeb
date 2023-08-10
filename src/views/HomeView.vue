@@ -25,5 +25,6 @@ const openVn = () => {
 		<UseIconify></UseIconify>
 		<UseI18n></UseI18n>
 		<UseVueuse></UseVueuse>
+		<UseFetch></UseFetch>
 	</div>
 </template>

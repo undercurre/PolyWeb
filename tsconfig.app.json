@@ -1,11 +1,20 @@
 {
 	"extends": "@vue/tsconfig/tsconfig.dom.json",
-	"include": ["env.d.ts", "types", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-	"exclude": ["src/**/__tests__/*"],
+	"include": [
+		".env-config.ts",
+		"types/**/*.d.ts",
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"mock/**/*ts"
+	],
+	"exclude": ["src/**/__tests__/*", "node_modules", "dist"],
 	"compilerOptions": {
 		"composite": true,
 		"baseUrl": ".",
 		"paths": {
+			"~/*": ["./*"],
 			"@/*": ["./src/*"]
 		},
 		"types": ["unplugin-icons/types/vue"],

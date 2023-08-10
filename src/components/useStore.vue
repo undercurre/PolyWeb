@@ -8,8 +8,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useCounterStore } from '@/stores/counter'; // 导入你的 store 文件路径
+import { useCounterStore } from '@/stores'; // 导入你的 store 文件路径
 
 // 使用 useCounterStore() 获取 store 实例
 const counter = useCounterStore();
 </script>
+@/stores/modules/counter/counter

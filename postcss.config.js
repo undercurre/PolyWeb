@@ -7,10 +7,7 @@ module.exports = {
 			propList: ['*']
 		},
 		'postcss-preset-env': {
-			stage: 3,
-			autoprefixer: {
-				browsers: ['> 0% ']
-			}
+			stage: 3
 		}
 	}
 };

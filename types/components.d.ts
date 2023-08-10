@@ -24,6 +24,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
+    UseFetch: typeof import('./../src/components/useFetch.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseIconify: typeof import('./../src/components/useIconify.vue')['default']
     UseJsx: typeof import('./../src/components/useJsx.vue')['default']
