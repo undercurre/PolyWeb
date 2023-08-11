@@ -34,5 +34,6 @@ interface T {
 export const $t = i18n.global.t as T;
 
 export function setLocale(locale: I18nType.LangType) {
+	localStg.set('lang', locale);
 	i18n.global.locale.value = locale;
 }
