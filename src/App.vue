@@ -8,6 +8,8 @@ import logo from '@/assets/logo.png';
 		<nav class="w-full text-12px text-center mt-2em">
 			<RouterLink to="/">Home</RouterLink>
 			<RouterLink to="/about">About</RouterLink>
+			<RouterLink to="/hooks">Hooks</RouterLink>
+			<RouterLink to="/utils">Utils</RouterLink>
 		</nav>
 		<RouterView />
 	</div>

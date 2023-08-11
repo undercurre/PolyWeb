@@ -19,6 +19,10 @@ export default function useReload() {
 				setTrue();
 			}, duration);
 		}
+
+		if (duration == 0) {
+			setTrue();
+		}
 	}
 
 	return {

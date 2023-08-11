@@ -7,9 +7,13 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    copy: typeof import('./../src/components/useLoading copy.vue')['default']
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ICarbonAccessibility: typeof import('~icons/carbon/accessibility')['default']
     'IconMaterialSymbols:10kSharp': typeof import('~icons/material-symbols/10k-sharp')['default']
@@ -24,15 +28,29 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
+    UseBoolean: typeof import('./../src/components/useBoolean.vue')['default']
+    UseContextFather: typeof import('./../src/components/useContextFather.vue')['default']
+    UseContextGrand: typeof import('./../src/components/useContextGrand.vue')['default']
+    UseContextSon: typeof import('./../src/components/useContextSon.vue')['default']
+    UseEmpty: typeof import('./../src/components/useEmpty.vue')['default']
     UseFetch: typeof import('./../src/components/useFetch.vue')['default']
+    UseHooks: typeof import('./../src/components/useHooks.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseIconify: typeof import('./../src/components/useIconify.vue')['default']
     UseJsx: typeof import('./../src/components/useJsx.vue')['default']
+    UseLoading: typeof import('./../src/components/useLoading.vue')['default']
+    UsePattern: typeof import('./../src/components/usePattern.vue')['default']
+    UseReload: typeof import('./../src/components/useReload.vue')['default']
     UseScss: typeof import('./../src/components/useScss.vue')['default']
     UseStandard: typeof import('./../src/components/useStandard.vue')['default']
+    UseStorage: typeof import('./../src/components/useStorage.vue')['default']
     UseStore: typeof import('./../src/components/useStore.vue')['default']
+    UseTypeOf: typeof import('./../src/components/useTypeOf.vue')['default']
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
     VanButton: typeof import('vant/es')['Button']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

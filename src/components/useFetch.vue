@@ -1,5 +1,5 @@
 <template>
-	<ElButton type="primary" @click="handleLoginBtn">Login</ElButton>
+	<ElButton type="primary" size="large" @click="handleLoginBtn">Login</ElButton>
 </template>
 
 <script setup lang="ts">
