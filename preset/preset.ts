@@ -10,6 +10,9 @@ import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import { viteMockServe } from 'vite-plugin-mock';
+import ViteCompression from 'vite-plugin-compression';
+import progress from 'vite-plugin-progress';
+import VueDevtools from 'vite-plugin-vue-devtools';
 
 export default [
 	vue(),
@@ -60,5 +63,8 @@ export default [
 			import { setupMockServer } from '../mock';
 			setupMockServer();
 		`
-	})
+	}),
+	ViteCompression({ algorithm: 'gzip', deleteOriginFile: true }),
+	progress(),
+	VueDevtools()
 ];

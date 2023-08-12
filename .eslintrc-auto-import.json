@@ -96,6 +96,7 @@
     "resolveUnref": true,
     "setActivePinia": true,
     "setMapStoreSuffix": true,
+    "setupStore": true,
     "shallowReactive": true,
     "shallowReadonly": true,
     "shallowRef": true,
@@ -136,6 +137,7 @@
     "useAsyncQueue": true,
     "useAsyncState": true,
     "useAttrs": true,
+    "useAuthStore": true,
     "useBase64": true,
     "useBattery": true,
     "useBluetooth": true,
@@ -148,6 +150,7 @@
     "useColorMode": true,
     "useConfirmDialog": true,
     "useCounter": true,
+    "useCounterStore": true,
     "useCssModule": true,
     "useCssVar": true,
     "useCssVars": true,
@@ -296,9 +299,6 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "setupStore": true,
-    "useCounterStore": true,
-    "ElNotification": true,
-    "useAuthStore": true
+    "ElNotification": true
   }
 }

@@ -7,7 +7,9 @@
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
-		"mock/**/*ts"
+		"mock/**/*ts",
+		"vite.config.ts",
+		"preset/**/*ts"
 	],
 	"exclude": ["src/**/__tests__/*", "node_modules", "dist"],
 	"compilerOptions": {
