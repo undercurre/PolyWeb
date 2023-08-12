@@ -13,6 +13,7 @@ import { viteMockServe } from 'vite-plugin-mock';
 import ViteCompression from 'vite-plugin-compression';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
+import { webUpdateNotice } from '@plugin-web-update-notification/vite';
 
 export default [
 	vue(),
@@ -66,5 +67,9 @@ export default [
 	}),
 	ViteCompression({ algorithm: 'gzip', deleteOriginFile: true }),
 	progress(),
-	VueDevtools()
+	VueDevtools(),
+	webUpdateNotice({
+		logVersion: true,
+		versionType: 'pkg_version'
+	})
 ];
