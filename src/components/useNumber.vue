@@ -12,7 +12,7 @@ import { getRandomInteger, getHanByNumber, transformToTimeCountDown } from '../u
 // 组件逻辑
 const randomNum = ref(getRandomInteger(10));
 const countdown = ref(transformToTimeCountDown(150));
-const hanCharacter = ref(getHanByNumber(5));
+const hanCharacter = ref(getHanByNumber(randomNum.value));
 
 onMounted(() => {
 	// 在组件挂载后更新倒计时

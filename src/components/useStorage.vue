@@ -2,7 +2,7 @@
 	<div>
 		<h3>LocalStorage and SessionStorage Viewer</h3>
 
-		<div class="w-100vw">
+		<div class="w-full">
 			<div>
 				<h4>encrypto localStorage</h4>
 				<ul>
