@@ -1,5 +1,5 @@
 <template>
-	<svg aria-hidden="true">
+	<svg class="w-20px h-20px" aria-hidden="true">
 		<use :xlink:href="symbolId" :fill="color" />
 	</svg>
 </template>
