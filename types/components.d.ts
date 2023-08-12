@@ -17,6 +17,7 @@ declare module 'vue' {
     IMdiAlarmOff: typeof import('~icons/mdi/alarm-off')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./../src/components/SvgIcon.vue')['default']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
     UseBoolean: typeof import('./../src/components/useBoolean.vue')['default']
     UseContextFather: typeof import('./../src/components/useContextFather.vue')['default']

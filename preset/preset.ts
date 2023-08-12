@@ -14,6 +14,8 @@ import ViteCompression from 'vite-plugin-compression';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
 import { webUpdateNotice } from '@plugin-web-update-notification/vite';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import path from 'path';
 
 export default [
 	vue(),
@@ -21,6 +23,12 @@ export default [
 		mode: 'vue-scoped'
 	}),
 	vueJsx(),
+	createSvgIconsPlugin({
+		iconDirs: [path.resolve(process.cwd(), 'src/assets/svg')],
+		symbolId: `icon-[dir]-[name]`,
+		inject: 'body-last',
+		customDomId: '__SVG_ICON_LOCAL__'
+	}),
 	AutoImport({
 		imports: ['vue', 'vue-router', '@vueuse/core', 'vue-i18n', 'pinia'],
 		dts: './types/auto-imports.d.ts',
