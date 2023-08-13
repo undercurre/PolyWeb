@@ -40,6 +40,7 @@ declare module 'vue' {
     UseTreeHelper: typeof import('./../src/components/useTreeHelper.vue')['default']
     UseTypeOf: typeof import('./../src/components/useTypeOf.vue')['default']
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
+    UseVitest: typeof import('./../src/components/useVitest.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
     VanButton: typeof import('vant/es')['Button']
   }

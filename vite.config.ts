@@ -5,6 +5,7 @@ import preset from './preset/preset';
 import path from 'node:path';
 
 import { visualizer } from 'rollup-plugin-visualizer';
+import { configDefaults } from 'vitest/config';
 
 export default defineConfig((configEnv) => {
 	const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
@@ -36,6 +37,14 @@ export default defineConfig((configEnv) => {
 				'~': path.resolve(process.cwd()),
 				'@': fileURLToPath(new URL('./src', import.meta.url)),
 				'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
+			}
+		},
+		test: {
+			environment: 'jsdom',
+			exclude: [...configDefaults.exclude, 'e2e/*'],
+			root: fileURLToPath(new URL('./', import.meta.url)),
+			transformMode: {
+				web: [/\.[jt]sx$/]
 			}
 		}
 	};

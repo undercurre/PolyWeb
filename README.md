@@ -89,3 +89,8 @@ IDE(建议使用VSCODE)规范：`.editorconfig`
 - vite-plugin-svg-icons 生成svg图标雪碧图
 - vite-plugin-compression 压缩
 - rollup-plugin-visualizer 打包可视化分析器
+
+## 测试
+
+- [vitest => 单元测试](https://cn.vitest.dev/config/)
+- [crpress => 端对端测试](https://docs.cypress.io/guides/overview/why-cypress)
