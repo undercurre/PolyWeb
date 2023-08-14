@@ -2,6 +2,7 @@
 	"name": "vft2w",
 	"version": "0.0.11",
 	"private": true,
+	"main": "src/electron/main.js",
 	"scripts": {
 		"dev": "vite",
 		"build": "run-p type-check build-only",
@@ -21,7 +22,13 @@
 		"prepare": "husky install",
 		"commit": "git add . && git-cz",
 		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-		"release": "standard-version"
+		"release": "standard-version",
+		"electron:dev": "cross-env IS_DEV=true electron .",
+		"electron:prop": "cross-env IS_DEV=false electron .",
+		"start": "electron-forge start",
+		"package": "electron-forge package",
+		"make": "electron-forge make",
+		"build:install": "electron-builder"
 	},
 	"dependencies": {
 		"@vueuse/core": "^10.3.0",
