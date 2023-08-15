@@ -6,7 +6,7 @@ npm install
 **必须使用 npm 不然打包会报错**
 
 ## 清除依赖
-
+del /q /s /f node_modules
 rmdir /s node_modules
 
 ## Web 端运行
