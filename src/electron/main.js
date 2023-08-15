@@ -1,11 +1,3 @@
-/*
- * @Author: undercurre undercurre@163.com
- * @Date: 2023-06-08 00:45:27
- * @LastEditors: undercurre undercurre@163.com
- * @LastEditTime: 2023-06-08 01:31:34
- * @FilePath: \homfix\src\electron\main.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 // main.js
 
 // electron 模块可以用来控制应用的生命周期和创建原生浏览窗口
@@ -26,7 +18,7 @@ const createWindow = () => {
   });
 
   // 加载 index.html
-  mainWindow.loadURL(isDev ? "http://localhost:8848" : `file://${path.join(__dirname, "../../dist/index.html")}`);
+  mainWindow.loadURL(isDev ? "http://localhost:5173" : `file://${path.join(__dirname, "../../dist/index.html")}`);
   // Open the DevTools.
   if (isDev) {
     mainWindow.webContents.openDevTools();
