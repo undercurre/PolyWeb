@@ -7,10 +7,12 @@ import path from 'node:path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { configDefaults } from 'vitest/config';
 
+import uni from "@dcloudio/vite-plugin-uni";
+
 export default defineConfig((configEnv) => {
 	const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
 
-	const plugins = [...preset];
+	const plugins = [...preset, uni()];
 
 	if (viteEnv.VITE_VISUALIZER === 'Y') {
 		plugins.push(
