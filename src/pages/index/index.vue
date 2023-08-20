@@ -4,6 +4,4 @@
   </view>
 </template>
 
-<script lang="ts" setup>
-import useAutoImport from '../../components/useAutoImport.vue';
-</script>
+<script lang="ts" setup></script>
