@@ -2,6 +2,8 @@
   <view>
     <useAutoImport></useAutoImport>
     <useStore></useStore>
+    <useUnocss></useUnocss>
+    <useScss></useScss>
   </view>
 </template>
 
