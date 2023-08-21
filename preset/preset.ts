@@ -5,9 +5,9 @@ import Components from "unplugin-vue-components/vite";
 export default [
   uni(),
   AutoImport({
-    imports: ["vue"],
+    imports: ["vue", "pinia"],
     dts: "./types/auto-imports.d.ts",
-    dirs: ["src/pages/**/*", "src/components/**/*"],
+    dirs: ["src/pages/**/*", "src/components/**/*", "src/stores/**/*"],
     eslintrc: {
       enabled: true,
     },

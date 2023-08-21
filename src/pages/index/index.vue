@@ -1,6 +1,7 @@
 <template>
   <view>
     <useAutoImport></useAutoImport>
+    <useStore></useStore>
   </view>
 </template>
 
