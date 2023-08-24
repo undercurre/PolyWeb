@@ -74,6 +74,7 @@
     "envD": true,
     "setupStore": true,
     "useCounterStore": true,
-    "resetSetupStore": true
+    "resetSetupStore": true,
+    "useI18n": true
   }
 }

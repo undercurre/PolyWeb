@@ -6,7 +6,7 @@ import Unocss from "unocss/vite";
 export default [
   uni(),
   AutoImport({
-    imports: ["vue", "pinia"],
+    imports: ["vue", "pinia", "vue-i18n"],
     dts: "./types/auto-imports.d.ts",
     dirs: ["src/pages/**/*", "src/components/**/*", "src/stores/**/*"],
     eslintrc: {
