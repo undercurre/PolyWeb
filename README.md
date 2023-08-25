@@ -6,6 +6,8 @@
 
 主框架：[Vue3 => 一套用于构建用户界面的渐进式框架](https://www.javascriptc.com/vue3js/api/)
 
+支持jsx、tsx：[@vitejs/plugin-vue-jsx => Provides Vue 3 JSX & TSX support with HMR.](https://www.npmjs.com/package/@vitejs/plugin-vue-jsx)
+
 自动引入：[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import)
 
 状态管理：[Pinia => Pinia 是 Vue 的存储库](https://pinia.web3doc.top/introduction.html)
