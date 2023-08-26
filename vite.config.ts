@@ -35,8 +35,7 @@ export default defineConfig((configEnv) => {
 		resolve: {
 			alias: {
 				'~': path.resolve(process.cwd()),
-				'@': fileURLToPath(new URL('./src', import.meta.url)),
-				'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
+				'@': fileURLToPath(new URL('./src', import.meta.url))
 			}
 		},
 		test: {
