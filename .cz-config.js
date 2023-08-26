@@ -25,6 +25,7 @@ module.exports = {
 		{ name: 'router', description: '路由' },
 		{ name: 'store', description: '状态管理' },
 		{ name: 'utils', description: '工具' },
+		{ name: 'release', description: '版本' }
 		// 添加更多作用范围...
 	],
 	messages: {
