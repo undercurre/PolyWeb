@@ -26,6 +26,7 @@ const openVn = () => {
 		<UseI18n></UseI18n>
 		<UseVueuse></UseVueuse>
 		<UseFetch></UseFetch>
+		<UseEnv></UseEnv>
 		<SvgIcon name="vue"></SvgIcon>
 		<SvgIcon name="test-icon1"></SvgIcon>
 	</div>
