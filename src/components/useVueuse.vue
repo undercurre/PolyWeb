@@ -5,9 +5,7 @@
 	</div>
 </template>
 
-<script setup>
-import { useWindowSize } from '@vueuse/core';
-
+<script lang="ts" setup>
 // 使用useWindowSize获取窗口尺寸信息
 const windowSize = useWindowSize();
 </script>
