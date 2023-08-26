@@ -3,7 +3,9 @@
 	"version": "0.0.11",
 	"private": true,
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite",		
+		"prod": "vite --mode=production",
+		"test": "vite --mode=test",
 		"build": "run-p type-check build-only",
 		"preview": "vite preview",
 		"test:unit": "vitest",
