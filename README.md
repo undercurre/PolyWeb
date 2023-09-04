@@ -10,8 +10,6 @@
 
 状态管理：[Pinia => Pinia 是 Vue 的存储库](https://pinia.web3doc.top/introduction.html)
 
-路由管理：[Vue-router => Vue Router 是 Vue.js 的官方路由](https://router.vuejs.org/zh/introduction.html)
-
 构建工具：[Vite => 下一代前端开发与构建工具](https://vitejs.cn/)
 
 CSS：[Sass => 一种 CSS 的预编译语言](https://www.sasscss.com/documentation),[Unocss => 即时按需的原子化 css 引擎](https://unocss.dev/)
@@ -25,8 +23,6 @@ PostCSS：[一个用 JavaScript 工具和插件转换 CSS 代码的工具](https
 国际化：[Vue-i18n => Vue 国际化插件](https://vue-i18n.intlify.dev/)
 
 - 配置地址：src/locales
-
-图标库：[iconify => 一个图标库](https://iconify.design/)
 
 组件库：
 
