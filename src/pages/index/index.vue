@@ -5,6 +5,7 @@
     <useUnocss></useUnocss>
     <useScss></useScss>
     <useI18n></useI18n>
+    <useUview></useUview>
   </view>
 </template>
 

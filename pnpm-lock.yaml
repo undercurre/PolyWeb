@@ -35,6 +35,7 @@ specifiers:
   unplugin-auto-import: ^0.16.6
   unplugin-vue-components: ^0.25.1
   vite: 4.0.4
+  vk-uview-ui: ^1.4.8
   vue: ^3.2.45
   vue-i18n: ^9.1.9
   vue-tsc: ^1.0.24
@@ -56,6 +57,7 @@ dependencies:
   crypto-js: 4.1.1
   lodash-es: 4.17.21
   pinia: 2.0.33_typescript@4.9.5+vue@3.3.4
+  vk-uview-ui: 1.4.8
   vue: 3.3.4
   vue-i18n: 9.2.2_vue@3.3.4
 
@@ -5937,6 +5939,11 @@ packages:
       sass: 1.66.1
     optionalDependencies:
       fsevents: 2.3.2
+
+  /vk-uview-ui/1.4.8:
+    resolution: {integrity: sha512-ohImfRw9b5xPLjFL4vIBwpIP/3Rkhf15wjTIOJDFGtlRPWSGERnoIVwdH95Rxm/7avSOte5v4ZMZH1vfq0+GpA==}
+    engines: {HBuilderX: ^3.1.0}
+    dev: false
 
   /vue-demi/0.14.5_vue@3.3.4:
     resolution: {integrity: sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA==}

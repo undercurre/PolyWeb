@@ -12,5 +12,6 @@ declare module 'vue' {
     UseScss: typeof import('./../src/components/useScss.vue')['default']
     UseStore: typeof import('./../src/components/useStore.vue')['default']
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
+    UseUview: typeof import('./../src/components/useUview.vue')['default']
   }
 }
