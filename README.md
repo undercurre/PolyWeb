@@ -4,7 +4,7 @@
 
 ## Main
 
-主框架：[Vue3 => 一套用于构建用户界面的渐进式框架](https://www.javascriptc.com/vue3js/api/)
+主框架：[uniapp(vue3) => 一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到 iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/飞书/QQ/快手/钉钉/淘宝）、快应用等多个平台。](https://uniapp.dcloud.net.cn/)
 
 自动引入：[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import)
 
@@ -26,8 +26,7 @@ PostCSS：[一个用 JavaScript 工具和插件转换 CSS 代码的工具](https
 
 组件库：
 
-- PC 端 [Element Plus](https://element-plus.org/zh-CN/)
-- 移动端 [Vant](https://vant-contrib.gitee.io/vant/#/zh-CN)
+- 移动端 [uView](https://vkuviewdoc.fsq.pub/guide/demo.html)
 - [unplugin-vue-components => 让你不用手动引入组件，但是对于 vant 的函数式组件仍然需要手动](https://github.com/antfu/unplugin-vue-components)
 
 工具集：

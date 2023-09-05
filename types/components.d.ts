@@ -7,9 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ICustomVue: typeof import('~icons/custom/vue')['default']
-    IMdiAccountBox: typeof import('~icons/mdi/account-box')['default']
-    IMdiAlarmOff: typeof import('~icons/mdi/alarm-off')['default']
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseScss: typeof import('./../src/components/useScss.vue')['default']

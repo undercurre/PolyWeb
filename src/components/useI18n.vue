@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-20px">
-		<el-button @click="toggle" size="large">Switch Language</el-button>
+		<button @click="toggle" size="large">Switch Language</button>
 		<span class="ml-10px text-#f00440">{{ $t('common.hello') }}</span>
 	</div>
 </template>
