@@ -1,9 +1,20 @@
 <template>
-  <p>响应式的暗黑主题偏好：{{ prefersDark }}</p>
+  <p>当前网络类型：{{ type }}</p>
 </template>
 
 <script lang="ts" setup>
-import { usePreferredDark } from "@uni-helper/uni-use";
+import { useNetwork } from "@uni-helper/uni-use";
 
-const prefersDark = usePreferredDark();
+const {
+  type,
+  isWifi,
+  is2g,
+  is3g,
+  is4g,
+  is5g,
+  isEthernet,
+  isUnknown,
+  isOnline,
+  isOffline,
+} = useNetwork();
 </script>
