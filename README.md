@@ -56,7 +56,7 @@ IDE(建议使用 VSCODE)规范：`.editorconfig`
 
 ## 环境配置
 
-支持 dev、test、prod 三种环境
+支持 dev、prod 三种环境
 
 ## 工具包
 

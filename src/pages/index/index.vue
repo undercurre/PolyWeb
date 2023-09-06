@@ -10,6 +10,7 @@
 		<useUniuse></useUniuse>
 		<useJsx></useJsx>
 		<useStandard></useStandard>
+		<useEnv></useEnv>
 	</view>
 </template>
 

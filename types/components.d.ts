@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
+    UseEnv: typeof import('./../src/components/useEnv.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseJsx: typeof import('./../src/components/useJsx.vue')['default']
     UseLodash: typeof import('./../src/components/useLodash.vue')['default']
