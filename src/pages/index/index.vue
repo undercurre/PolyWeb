@@ -6,6 +6,7 @@
     <useScss></useScss>
     <useI18n></useI18n>
     <useUview></useUview>
+    <useLodash></useLodash>
   </view>
 </template>
 
