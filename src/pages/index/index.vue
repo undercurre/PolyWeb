@@ -7,6 +7,7 @@
     <useI18n></useI18n>
     <useUview></useUview>
     <useLodash></useLodash>
+    <useUniuse></useUniuse>
   </view>
 </template>
 
