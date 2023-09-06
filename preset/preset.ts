@@ -3,7 +3,6 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import Unocss from 'unocss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import Checker from 'vite-plugin-checker';
 
 export default [
 	uni(),
@@ -25,15 +24,4 @@ export default [
 	Unocss({
 		mode: 'vue-scoped'
 	})
-	// Checker({
-	// 	vueTsc: true,
-	// 	typescript: true,
-	// 	eslint: {
-	// 		lintCommand:
-	// 			'eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore'
-	// 	},
-	// 	stylelint: {
-	// 		lintCommand: "stylelint 'src/**/*.{vue,scss,html}'"
-	// 	}
-	// })
 ];

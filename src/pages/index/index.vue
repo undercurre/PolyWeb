@@ -9,6 +9,7 @@
 		<useLodash></useLodash>
 		<useUniuse></useUniuse>
 		<useJsx></useJsx>
+		<useStandard></useStandard>
 	</view>
 </template>
 
