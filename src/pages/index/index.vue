@@ -11,6 +11,7 @@
 		<useJsx></useJsx>
 		<useStandard></useStandard>
 		<useEnv></useEnv>
+		<useFetch></useFetch>
 	</view>
 </template>
 
