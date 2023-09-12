@@ -11,7 +11,6 @@ declare module 'vue' {
     UseEnv: typeof import('./../src/components/useEnv.vue')['default']
     UseFetch: typeof import('./../src/components/useFetch.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
-    UseJsx: typeof import('./../src/components/useJsx.vue')['default']
     UseLodash: typeof import('./../src/components/useLodash.vue')['default']
     UseScss: typeof import('./../src/components/useScss.vue')['default']
     UseStandard: typeof import('./../src/components/useStandard.vue')['default']

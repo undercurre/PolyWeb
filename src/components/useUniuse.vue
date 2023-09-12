@@ -1,5 +1,5 @@
 <template>
-	<p>当前网络类型：{{ type }}</p>
+	<p>当前是否有网：{{ isOnline }}</p>
 </template>
 
 <script lang="ts" setup>

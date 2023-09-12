@@ -1,6 +1,7 @@
 <template>
 	<u-button @click="handleLoginBtn">Login</u-button>
 	<p>{{ responseShow }}</p>
+	<p>平台：{{ platform }}</p>
 </template>
 
 <script setup lang="ts">
@@ -14,7 +15,25 @@ import uniAdapter from 'uni-axios-adapter-all';
 
 const responseShow = ref('');
 
-axios.defaults.adapter = uniAdapter;
+const platform = ref();
+
+platform.value = uni.getSystemInfoSync().platform;
+
+switch (uni.getSystemInfoSync().platform) {
+	case 'android':
+		axios.defaults.adapter = uniAdapter;
+		console.log('运行Android上');
+		break;
+	case 'ios':
+		axios.defaults.adapter = uniAdapter;
+		console.log('运行iOS上');
+		break;
+	case 'windows':
+		console.log('运行Windows上');
+	default:
+		console.log('运行在开发者工具上');
+		break;
+}
 
 function handleLoginBtn() {
 	// 定义请求配置

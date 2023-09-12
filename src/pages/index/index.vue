@@ -8,7 +8,6 @@
 		<useUview></useUview>
 		<useLodash></useLodash>
 		<useUniuse></useUniuse>
-		<useJsx></useJsx>
 		<useStandard></useStandard>
 		<useEnv></useEnv>
 		<useFetch></useFetch>
