@@ -7,7 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 
 export default [
 	uni(),
-	vueJsx(),
+	// vueJsx(),
 	AutoImport({
 		imports: ['vue', 'pinia', 'vue-i18n', '@vueuse/core', UniUseAutoImports],
 		dts: './types/auto-imports.d.ts',
