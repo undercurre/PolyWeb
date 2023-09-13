@@ -7,16 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    UseAutoImport: typeof import('./../src/components/useAutoImport.vue')['default']
-    UseEnv: typeof import('./../src/components/useEnv.vue')['default']
-    UseFetch: typeof import('./../src/components/useFetch.vue')['default']
-    UseI18n: typeof import('./../src/components/useI18n.vue')['default']
-    UseLodash: typeof import('./../src/components/useLodash.vue')['default']
-    UseScss: typeof import('./../src/components/useScss.vue')['default']
-    UseStandard: typeof import('./../src/components/useStandard.vue')['default']
-    UseStore: typeof import('./../src/components/useStore.vue')['default']
-    UseUniuse: typeof import('./../src/components/useUniuse.vue')['default']
-    UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
     UseUview: typeof import('./../src/components/useUview.vue')['default']
   }
 }

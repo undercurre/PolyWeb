@@ -1,10 +1,69 @@
 {
 	"pages": [
-		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/autoImport/index",
+			"style": {
+				"navigationBarTitleText": "自动引入"
+			}
+		},
+		{
+			"path": "pages/env/index",
+			"style": {
+				"navigationBarTitleText": "环境配置"
+			}
+		},
+		{
+			"path": "pages/fetch/index",
+			"style": {
+				"navigationBarTitleText": "请求封装"
+			}
+		},
+		{
+			"path": "pages/i18n/index",
+			"style": {
+				"navigationBarTitleText": "国际化"
+			}
+		},
+		{
+			"path": "pages/lodash/index",
+			"style": {
+				"navigationBarTitleText": "lodash"
+			}
+		},
+		{
+			"path": "pages/standard/index",
+			"style": {
+				"navigationBarTitleText": "规范化"
+			}
+		},
+		{
+			"path": "pages/store/index",
+			"style": {
+				"navigationBarTitleText": "pinia"
+			}
+		},
+		{
+			"path": "pages/uniuse/index",
+			"style": {
+				"navigationBarTitleText": "uniuse"
+			}
+		},
+		{
+			"path": "pages/unocss/index",
+			"style": {
+				"navigationBarTitleText": "unocss"
+			}
+		},
+		{
+			"path": "pages/uview/index",
+			"style": {
+				"navigationBarTitleText": "uview组件库"
 			}
 		}
 	],

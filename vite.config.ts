@@ -10,7 +10,7 @@ export default defineConfig({
 		postcss: {
 			plugins: [
 				pxToViewport({
-					viewportWidth: 1280,
+					viewportWidth: 375,
 					unitPrecision: 6,
 					unitToConvert: 'px',
 					propList: ['*']

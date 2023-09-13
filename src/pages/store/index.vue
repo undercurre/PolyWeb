@@ -2,8 +2,8 @@
 	<div>
 		<h3 class="text-left">Using Store</h3>
 		<h3 class="text-left">目前支持2.0.33的pinia</h3>
-		<p class="text-10px">Count: {{ counter.count }}</p>
-		<p class="text-10px">Double Count: {{ counter.doubleCount }}</p>
+		<p class="text-50px">Count: {{ counter.count }}</p>
+		<p class="text-50px">Double Count: {{ counter.doubleCount }}</p>
 		<button @click="counter.increment">Increment</button>
 	</div>
 </template>

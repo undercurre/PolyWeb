@@ -7,19 +7,6 @@
 	<h4>has .editorconfig</h4>
 </template>
 
-<style lang="scss" scoped>
-h3 {
-	color: rgb(205 26 184);
-	font-size: 12px;
-	text-align: left;
-}
-
-h4 {
-	font-size: 10px;
-	text-align: left;
-}
-</style>
-
 <script setup lang="ts">
 const test = (x: any) => {
 	return '123';
