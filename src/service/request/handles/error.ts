@@ -67,7 +67,7 @@ export function handleResponseError(response: AxiosResponse) {
 		code: DEFAULT_REQUEST_ERROR_CODE,
 		msg: DEFAULT_REQUEST_ERROR_MSG
 	};
-
+	
 	if (!window.navigator.onLine) {
 		// 网路错误
 		Object.assign(error, { code: NETWORK_ERROR_CODE, msg: NETWORK_ERROR_MSG });

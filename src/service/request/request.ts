@@ -131,7 +131,22 @@ export function createHookRequest(
 			data.value = res.data;
 			error.value = res.error;
 			endLoading();
-			setNetwork(window.navigator.onLine);
+			uni.getNetworkType({
+				success: function (res) {
+					// res.networkType 为当前网络类型
+					if (res.networkType === 'none') {
+						// 无网络，处理离线情况
+						setNetwork(false);
+					} else {
+						// 有网络，可以正常访问互联网资源
+						setNetwork(true);
+					}
+				},
+				fail: function (res) {
+					// 获取网络状态失败，可以处理错误情况
+					setNetwork(false);
+				}
+			});
 		}
 
 		const { url } = param;

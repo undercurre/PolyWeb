@@ -5,8 +5,7 @@ import {
 	handleAxiosError,
 	handleBackendError,
 	handleResponseError,
-	handleServiceResult,
-	transformRequestData
+	handleServiceResult
 } from './handles';
 import { localStg } from '@/utils';
 import { handleRefreshToken } from './helpers';
@@ -44,9 +43,6 @@ export default class CustomAxiosInstance {
 			async (config) => {
 				const handleConfig = { ...config };
 				if (handleConfig.headers) {
-					// 数据转换
-					const contentType = handleConfig.headers['Content-Type'] as ApiCommon.ContentType;
-					handleConfig.data = await transformRequestData(handleConfig.data, contentType);
 					// 设置token
 					handleConfig.headers.Accesstoken = localStg.get('token') || '';
 				}
