@@ -41,6 +41,10 @@ const pages = reactive([
 		url: '/pages/store/index'
 	},
 	{
+		title: 'Scss Demo',
+		url: '/pages/scss/index'
+	},
+	{
 		title: 'Uniuse Demo',
 		url: '/pages/uniuse/index'
 	},

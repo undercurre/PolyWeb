@@ -61,6 +61,12 @@
 			}
 		},
 		{
+			"path": "pages/scss/index",
+			"style": {
+				"navigationBarTitleText": "scss"
+			}
+		},
+		{
 			"path": "pages/uview/index",
 			"style": {
 				"navigationBarTitleText": "uview组件库"

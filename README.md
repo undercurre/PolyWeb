@@ -12,7 +12,7 @@
 
 构建工具：[Vite => 下一代前端开发与构建工具](https://vitejs.cn/)
 
-CSS：[Unocss => 即时按需的原子化 css 引擎](https://unocss.dev/)
+CSS：[Sass => 一种 CSS 的预编译语言](https://www.sasscss.com/documentation),[Unocss => 即时按需的原子化 css 引擎](https://unocss.dev/)
 
 PostCSS：[一个用 JavaScript 工具和插件转换 CSS 代码的工具](https://www.postcss.com.cn/)
 
