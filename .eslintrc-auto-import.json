@@ -321,6 +321,10 @@
     "useParentElement": true,
     "usePerformanceObserver": true,
     "watchDeep": true,
-    "watchImmediate": true
+    "watchImmediate": true,
+    "clearAuthStorage": true,
+    "getToken": true,
+    "getUserInfo": true,
+    "useAuthStore": true
   }
 }

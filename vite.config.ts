@@ -2,9 +2,17 @@ import { defineConfig } from 'vite';
 import preset from './preset/preset';
 import pxToViewport from 'postcss-px-to-viewport-8-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
+import path from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	resolve: {
+		alias: {
+			'~': path.resolve(process.cwd()),
+			'@': fileURLToPath(new URL('./src', import.meta.url))
+		}
+	},
 	plugins: [...preset],
 	css: {
 		postcss: {
