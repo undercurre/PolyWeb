@@ -38,12 +38,7 @@ export const useAuthStore = defineStore('auth-store', {
 			const loginSuccess = await this.loginByToken(backendToken);
 
 			if (loginSuccess) {
-				ElNotification({
-					title: '登录成功!',
-					message: `欢迎回来，${this.userInfo.userName}!`,
-					type: 'success',
-					duration: 3000
-				});
+				console.log('登陆成功');
 
 				return;
 			}
@@ -60,6 +55,7 @@ export const useAuthStore = defineStore('auth-store', {
 
 			// 先把token存储到缓存中(后面接口的请求头需要token)
 			const { token, refreshToken } = backendToken;
+			console.log('token', token);
 			localStg.set('token', token);
 			localStg.set('refreshToken', refreshToken);
 

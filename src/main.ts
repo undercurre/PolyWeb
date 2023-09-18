@@ -1,4 +1,5 @@
 import { createSSRApp } from 'vue';
+// @ts-ignore
 import uView from 'vk-uview-ui';
 import App from './App.vue';
 import { setupStore } from './stores';

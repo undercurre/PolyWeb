@@ -8,7 +8,7 @@ import {
 	REQUEST_TIMEOUT_CODE,
 	REQUEST_TIMEOUT_MSG
 } from '../config';
-import { exeStrategyActions } from '@/utils';
+import { checkOnline, exeStrategyActions } from '@/utils';
 import { showErrorMsg } from './msg';
 
 type ErrorStatus = keyof typeof ERROR_STATUS;
@@ -17,17 +17,19 @@ type ErrorStatus = keyof typeof ERROR_STATUS;
  * 处理axios请求失败的错误
  * @param axiosError - 错误
  */
-export function handleAxiosError(axiosError: AxiosError) {
+export async function handleAxiosError(axiosError: AxiosError) {
 	const error: Service.RequestError = {
 		type: 'axios',
 		code: DEFAULT_REQUEST_ERROR_CODE,
 		msg: DEFAULT_REQUEST_ERROR_MSG
 	};
 
+	const checkNetWorkRes = await checkOnline();
+
 	const actions: Common.StrategyAction[] = [
 		[
 			// 网路错误
-			!window.navigator.onLine || axiosError.message === 'Network Error',
+			!checkNetWorkRes || axiosError.message === 'Network Error',
 			() => {
 				Object.assign(error, { code: NETWORK_ERROR_CODE, msg: NETWORK_ERROR_MSG });
 			}
@@ -61,14 +63,16 @@ export function handleAxiosError(axiosError: AxiosError) {
  * 处理请求成功后的错误
  * @param response - 请求的响应
  */
-export function handleResponseError(response: AxiosResponse) {
+export async function handleResponseError(response: AxiosResponse) {
 	const error: Service.RequestError = {
 		type: 'axios',
 		code: DEFAULT_REQUEST_ERROR_CODE,
 		msg: DEFAULT_REQUEST_ERROR_MSG
 	};
-	
-	if (!window.navigator.onLine) {
+
+	const checkNetWorkRes = await checkOnline();
+
+	if (!checkNetWorkRes) {
 		// 网路错误
 		Object.assign(error, { code: NETWORK_ERROR_CODE, msg: NETWORK_ERROR_MSG });
 	} else {

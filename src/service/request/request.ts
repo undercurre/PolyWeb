@@ -3,6 +3,7 @@ import type { Ref } from 'vue';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { useBoolean, useLoading } from '@/hooks';
 import CustomAxiosInstance from './instance';
+import { checkOnline } from '@/utils';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'delete';
 
@@ -20,7 +21,7 @@ interface RequestParam {
  */
 export function createRequest(
 	axiosConfig: AxiosRequestConfig,
-	backendConfig?: Service.BackendResultConfig
+	backendConfig?: Service.BackendResultConfig,
 ) {
 	const customInstance = new CustomAxiosInstance(axiosConfig, backendConfig);
 
@@ -118,9 +119,10 @@ export function createHookRequest(
 	 * - data: 请求的body的data
 	 * - axiosConfig: axios配置
 	 */
-	function useRequest<T>(param: RequestParam): RequestResultHook<T> {
+	async function useRequest<T>(param: RequestParam): Promise<RequestResultHook<T>> {
 		const { loading, startLoading, endLoading } = useLoading();
-		const { bool: network, setBool: setNetwork } = useBoolean(window.navigator.onLine);
+		const checkNetWorkRes = await checkOnline();
+		const { bool: network, setBool: setNetwork } = useBoolean(checkNetWorkRes);
 
 		startLoading();
 		const data = ref<T | null>(null) as Ref<T | null>;
@@ -170,8 +172,8 @@ export function createHookRequest(
 	 * @param url - 请求地址
 	 * @param config - axios配置
 	 */
-	function get<T>(url: string, config?: AxiosRequestConfig) {
-		return useRequest<T>({ url, method: 'get', axiosConfig: config });
+	async function get<T>(url: string, config?: AxiosRequestConfig) {
+		return await useRequest<T>({ url, method: 'get', axiosConfig: config });
 	}
 
 	/**
@@ -180,8 +182,8 @@ export function createHookRequest(
 	 * @param data - 请求的body的data
 	 * @param config - axios配置
 	 */
-	function post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
-		return useRequest<T>({ url, method: 'post', data, axiosConfig: config });
+	async function post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+		return await useRequest<T>({ url, method: 'post', data, axiosConfig: config });
 	}
 	/**
 	 * put请求
@@ -189,8 +191,8 @@ export function createHookRequest(
 	 * @param data - 请求的body的data
 	 * @param config - axios配置
 	 */
-	function put<T>(url: string, data?: any, config?: AxiosRequestConfig) {
-		return useRequest<T>({ url, method: 'put', data, axiosConfig: config });
+	async function put<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+		return await useRequest<T>({ url, method: 'put', data, axiosConfig: config });
 	}
 
 	/**
@@ -198,8 +200,8 @@ export function createHookRequest(
 	 * @param url - 请求地址
 	 * @param config - axios配置
 	 */
-	function handleDelete<T>(url: string, config: AxiosRequestConfig) {
-		return useRequest<T>({ url, method: 'delete', axiosConfig: config });
+	async function handleDelete<T>(url: string, config: AxiosRequestConfig) {
+		return await useRequest<T>({ url, method: 'delete', axiosConfig: config });
 	}
 
 	return {

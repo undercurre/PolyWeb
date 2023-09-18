@@ -4,6 +4,7 @@ import Components from 'unplugin-vue-components/vite';
 import Unocss from 'unocss/vite';
 import { UniUseAutoImports } from '@uni-helper/uni-use';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import { viteMockServe } from 'vite-plugin-mock';
 
 export default [
 	uni(),
@@ -24,5 +25,13 @@ export default [
 	}),
 	Unocss({
 		mode: 'vue-scoped'
+	}),
+	viteMockServe({
+		mockPath: 'mock',
+		prodEnabled: true,
+		injectCode: `
+			import { setupMockServer } from '../mock';
+			setupMockServer();
+		`
 	})
 ];

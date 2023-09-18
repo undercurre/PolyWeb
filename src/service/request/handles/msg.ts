@@ -21,11 +21,7 @@ export function showErrorMsg(error: Service.RequestError) {
 	if (!error.msg || NO_ERROR_MSG_CODE.includes(error.code) || hasErrorMsg(error)) return;
 
 	addErrorMsg(error);
-	window.console.warn(error.code, error.msg);
-	ElMessage.error({
-		message: error.msg,
-		duration: ERROR_MSG_DURATION
-	});
+	console.warn(error.code, error.msg);
 	setTimeout(() => {
 		removeErrorMsg(error);
 	}, ERROR_MSG_DURATION);
