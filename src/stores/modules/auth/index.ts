@@ -56,11 +56,13 @@ export const useAuthStore = defineStore('auth-store', {
 			// 先把token存储到缓存中(后面接口的请求头需要token)
 			const { token, refreshToken } = backendToken;
 			console.log('token', token);
+			console.log('refreshToken', refreshToken);
 			localStg.set('token', token);
 			localStg.set('refreshToken', refreshToken);
 
 			// 获取用户信息
 			const { data } = await fetchUserInfo();
+			console.log('用户信息', data);
 			if (data) {
 				// 成功后把用户信息存储到缓存中
 				localStg.set('userInfo', data);

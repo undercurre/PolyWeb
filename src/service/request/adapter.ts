@@ -63,7 +63,7 @@ const uniAdapter = (config: InternalAxiosRequestConfig): Promise<AxiosResponse<a
 			}
 		}
 
-		console.log('映射', uniConfig);
+		uniConfig.header['Content-Type'] = uniConfig.header['Content-Type'] || 'application/json';
 
 		uni.request({
 			...uniConfig,

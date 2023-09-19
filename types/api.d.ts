@@ -75,9 +75,9 @@ declare namespace Service {
 
 	/** mock的响应option */
 	interface MockOption {
-		url: Record<string, any>;
-		body: Record<string, any>;
-		query: Record<string, any>;
+		url: string;
+		body: string;
+		query: string;
 		headers: Record<string, any>;
 	}
 }

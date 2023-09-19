@@ -1,4 +1,3 @@
-import type { MockMethod } from 'vite-plugin-mock';
 import { userModel } from '../model';
 
 /** 参数错误的状态码 */
@@ -12,7 +11,7 @@ const apis: MockMethod[] = [
 		url: '/mock/login',
 		method: 'post',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.Token | null> => {
-			const { userName = undefined, password = undefined } = options.body;
+			const { userName = undefined, password = undefined } = JSON.parse(options.body);
 
 			if (!userName || !password) {
 				return {
@@ -48,11 +47,12 @@ const apis: MockMethod[] = [
 		url: '/mock/getUserInfo',
 		method: 'get',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.UserInfo | null> => {
+			console.log(options);
 			// 这里的mock插件得到的字段是authorization, 前端传递的是Authorization字段
-			const { authorization = '' } = options.headers;
+			const { Accesstoken = '' } = options.headers;
 			const REFRESH_TOKEN_CODE = 401;
 
-			if (!authorization) {
+			if (!Accesstoken) {
 				return {
 					code: REFRESH_TOKEN_CODE,
 					message: '用户已失效或不存在！',
@@ -64,7 +64,7 @@ const apis: MockMethod[] = [
 				userName: ''
 			};
 			const isInUser = userModel.some((item) => {
-				const flag = item.token === authorization;
+				const flag = item.token === Accesstoken;
 				if (flag) {
 					const { userId: itemUserId, userName } = item;
 					Object.assign(userInfo, { userId: itemUserId, userName });
@@ -91,7 +91,7 @@ const apis: MockMethod[] = [
 		url: '/mock/updateToken',
 		method: 'post',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.Token | null> => {
-			const { refreshToken = '' } = options.body;
+			const { refreshToken = '' } = JSON.parse(options.body);
 
 			const findItem = userModel.find((item) => item.refreshToken === refreshToken);
 

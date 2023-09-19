@@ -94,6 +94,7 @@
 		"@vue/eslint-config-prettier": "^8.0.0",
 		"@vue/eslint-config-typescript": "^11.0.3",
 		"@vue/tsconfig": "^0.1.3",
+		"better-mock": "^0.3.6",
 		"commitizen": "^4.2.4",
 		"commitlint-config-cz": "^0.13.3",
 		"conventional-changelog-cli": "^4.0.0",
@@ -117,8 +118,7 @@
 		"unocss-preset-weapp": "^0.53.6",
 		"unplugin-auto-import": "^0.16.6",
 		"unplugin-vue-components": "^0.25.1",
-		"vite": "4.1.4",
-		"vite-plugin-mock": "2.9.8"
+		"vite": "4.1.4"
 	},
 	"config": {
 		"commitizen": {
