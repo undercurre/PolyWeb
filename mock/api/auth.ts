@@ -11,7 +11,10 @@ const apis: MockMethod[] = [
 		url: '/mock/login',
 		method: 'post',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.Token | null> => {
-			const { userName = undefined, password = undefined } = JSON.parse(options.body);
+			if (Object.prototype.toString.call(options.body) !== '[object Object]') {
+				options.body = JSON.parse(options.body as string);
+			}
+			const { userName = undefined, password = undefined } = options.body as Record<string, any>;
 
 			if (!userName || !password) {
 				return {
@@ -47,9 +50,11 @@ const apis: MockMethod[] = [
 		url: '/mock/getUserInfo',
 		method: 'get',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.UserInfo | null> => {
-			console.log(options);
+			if (Object.prototype.toString.call(options.body) !== '[object Object]') {
+				options.body = JSON.parse(options.body as string);
+			}
 			// 这里的mock插件得到的字段是authorization, 前端传递的是Authorization字段
-			const { Accesstoken = '' } = options.headers;
+			const { Accesstoken = '' } = options.headers as Record<string, any>;
 			const REFRESH_TOKEN_CODE = 401;
 
 			if (!Accesstoken) {
@@ -91,7 +96,11 @@ const apis: MockMethod[] = [
 		url: '/mock/updateToken',
 		method: 'post',
 		response: (options: Service.MockOption): Service.MockServiceResult<ApiAuth.Token | null> => {
-			const { refreshToken = '' } = JSON.parse(options.body);
+			if (Object.prototype.toString.call(options.body) !== '[object Object]') {
+				options.body = JSON.parse(options.body as string);
+			}
+
+			const { refreshToken = '' } = options.body as Record<string, any>;
 
 			const findItem = userModel.find((item) => item.refreshToken === refreshToken);
 

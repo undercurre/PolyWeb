@@ -1,8 +1,7 @@
 import api from './api';
-import Mock from 'better-mock';
+import Mock from 'better-mock/dist/mock.mp';
 
 export function setupMockServer() {
-	console.log('mock加载');
 	api.forEach((item) => {
 		Mock.mock(item.url, item.method, item.response);
 	});

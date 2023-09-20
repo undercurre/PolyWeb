@@ -33,8 +33,6 @@ const uniAdapter = (config: InternalAxiosRequestConfig): Promise<AxiosResponse<a
 	return new Promise((resolve, reject) => {
 		const { baseURL, url, headers, data, params, method } = config;
 
-		console.log('注入', config);
-
 		const uniConfig: UniApp.RequestOptions = {
 			url: (baseURL || '') + url,
 			data: data, // 可选
