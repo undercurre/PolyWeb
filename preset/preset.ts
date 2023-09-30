@@ -4,9 +4,13 @@ import Components from 'unplugin-vue-components/vite';
 import Unocss from 'unocss/vite';
 import { UniUseAutoImports } from '@uni-helper/uni-use';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import VitePluginHybridMock from 'vite-plugin-hybrid-mock';
 
 export default [
 	uni(),
+	// VitePluginHybridMock({
+	// 	path: 'mock'
+	// }),
 	// vueJsx(),
 	AutoImport({
 		imports: ['vue', 'pinia', 'vue-i18n', '@vueuse/core', UniUseAutoImports],
@@ -24,5 +28,5 @@ export default [
 	}),
 	Unocss({
 		mode: 'vue-scoped'
-	}),
+	})
 ];

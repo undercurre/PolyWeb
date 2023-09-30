@@ -9,7 +9,7 @@ import {
 } from './handles';
 import { localStg } from '@/utils';
 import { handleRefreshToken } from './helpers';
-import uniAdapter from './adapter';
+import uniAdapter from 'uni-axios-adapter-all';
 
 /**
  * 封装axios请求类
