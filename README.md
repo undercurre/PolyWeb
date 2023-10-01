@@ -81,11 +81,8 @@ IDE(建议使用 VSCODE)规范：`.editorconfig`
 
 ## 打包
 
-- vite-plugin-svg-icons 生成 svg 图标雪碧图
-- vite-plugin-compression 压缩
-- rollup-plugin-visualizer 打包可视化分析器
+打包建议使用Hbuilder的常规打包方式（目前还没探究到这一块）
 
 ## 测试
 
 - [vitest => 单元测试](https://cn.vitest.dev/config/)
-- [crpress => 端对端测试](https://docs.cypress.io/guides/overview/why-cypress)
