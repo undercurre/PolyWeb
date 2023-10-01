@@ -38,7 +38,7 @@ export const useAuthStore = defineStore('auth-store', {
 			const loginSuccess = await this.loginByToken(backendToken);
 
 			if (loginSuccess) {
-				console.log('登陆成功');
+				console.log('登陆成功', loginSuccess);
 
 				return;
 			}

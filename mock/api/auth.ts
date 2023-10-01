@@ -1,11 +1,12 @@
 import { userModel } from '../model';
+import type { CustomMockMethod } from 'vite-plugin-hybrid-mock';
 
 /** 参数错误的状态码 */
 const ERROR_PARAM_CODE = 10000;
 
 const ERROR_PARAM_MSG = '参数校验失败！';
 
-const apis: MockMethod[] = [
+const apis: CustomMockMethod[] = [
 	// 用户+密码 登录
 	{
 		url: '/mock/login',
