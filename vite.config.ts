@@ -4,6 +4,7 @@ import pxToViewport from 'postcss-px-to-viewport-8-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
+import { configDefaults } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -35,5 +36,15 @@ export default defineConfig({
 	},
 	optimizeDeps: {
 		exclude: ['vue-demi']
+	},
+	test: {
+		environment: 'jsdom',
+		singleThread: true,
+		globals: true,
+		exclude: [...configDefaults.exclude, 'e2e/*'],
+		root: fileURLToPath(new URL('./', import.meta.url)),
+		transformMode: {
+			web: [/\.[jt]sx$/]
+		}
 	}
 });

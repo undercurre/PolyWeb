@@ -10,6 +10,7 @@
 		"lib": ["esnext", "dom"],
 		"types": ["@dcloudio/types", "node", "axios"]
 	},
+	"exclude": ["src/**/__tests__/*", "node_modules", "dist"],
 	"include": [
 		".env-config.ts",
 		"src/**/*.ts",

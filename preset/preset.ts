@@ -26,5 +26,5 @@ export default [
 	}),
 	Unocss({
 		mode: 'vue-scoped'
-	})
+	}),
 ];
