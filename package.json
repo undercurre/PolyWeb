@@ -1,6 +1,6 @@
 {
 	"name": "uni-preset-vue",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"scripts": {
 		"dev:app": "uni -p app",
 		"dev:app-android": "uni -p app-android",
@@ -73,7 +73,6 @@
 		"stylelint-config-rational-order": "^0.1.2",
 		"stylelint-order": "^6.0.3",
 		"uni-axios-adapter-all": "^0.0.10",
-		"vite-plugin-hybrid-mock": "^1.1.15",
 		"vk-uview-ui": "^1.4.8",
 		"vue": "^3.3.4",
 		"vue-demi": "^0.14.6",
@@ -123,6 +122,7 @@
 		"unplugin-auto-import": "^0.16.6",
 		"unplugin-vue-components": "^0.25.1",
 		"vite": "4.1.4",
+		"vite-plugin-hybrid-mock": "^1.1.15",
 		"vitest": "^0.34.6"
 	},
 	"config": {
