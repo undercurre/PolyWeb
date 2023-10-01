@@ -7,6 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    UseUview: typeof import('./../src/components/useUview.vue')['default']
+    UseContextSon: typeof import('./../src/components/useContextSon.vue')['default']
   }
 }

@@ -55,6 +55,14 @@ const pages = reactive([
 	{
 		title: 'UnoCSS Demo',
 		url: '/pages/unocss/index'
+	},
+	{
+		title: 'Utils Demo',
+		url: '/pages/utils/index'
+	},
+	{
+		title: 'Hooks Demo',
+		url: '/pages/hooks/index'
 	}
 ]);
 </script>

@@ -45,12 +45,18 @@ function createLocalStorage<T extends StorageInterface.Local = StorageInterface.
 	function clear() {
 		uni.clearStorageSync();
 	}
+	function info() {
+		return uni.getStorageInfoSync().keys.map((item) => {
+			return { key: item, value: get(item as keyof T) };
+		});
+	}
 
 	return {
 		set,
 		get,
 		remove,
-		clear
+		clear,
+		info
 	};
 }
 

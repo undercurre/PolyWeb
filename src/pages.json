@@ -71,6 +71,18 @@
 			"style": {
 				"navigationBarTitleText": "uview组件库"
 			}
+		},
+		{
+			"path": "pages/utils/index",
+			"style": {
+				"navigationBarTitleText": "utils工具库"
+			}
+		},
+		{
+			"path": "pages/hooks/index",
+			"style": {
+				"navigationBarTitleText": "hooks库"
+			}
 		}
 	],
 	"globalStyle": {
