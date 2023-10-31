@@ -120,4 +120,33 @@ const getWebsocketUrl = () => {
 const addMsgToTextarea = (text: string) => {
 	textarea.value += text;
 };
+
+function startSpeechRecognition() {
+	const recognition = new webkitSpeechRecognition();
+	// 创建 SpeechRecognition 实例
+
+	// 开始识别
+	recognition.start();
+
+	// 当识别到语音时触发此事件
+	recognition.onresult = (event) => {
+		console.log('采集到信息', event);
+		const transcript = event.results[0][0].transcript; // 获取识别到的文本
+		input.value = transcript; // 更新Vue中的数据
+	};
+
+	// 识别结束时触发此事件
+	recognition.onend = () => {
+		// 识别结束后可以做一些处理
+		sendMsg();
+		console.log('识别结束');
+		setTimeout(() => {
+			recognition.start();
+		}, 2000);
+	};
+}
+
+onMounted(() => {
+	startSpeechRecognition();
+});
 </script>
