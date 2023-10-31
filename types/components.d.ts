@@ -7,11 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElEmpty: typeof import('element-plus/es')['ElEmpty']
-    ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTree: typeof import('element-plus/es')['ElTree']
+    ElInput: typeof import('element-plus/es')['ElInput']
     ICustomVue: typeof import('~icons/custom/vue')['default']
     IMdiAccountBox: typeof import('~icons/mdi/account-box')['default']
     IMdiAlarmOff: typeof import('~icons/mdi/alarm-off')['default']
@@ -24,6 +21,7 @@ declare module 'vue' {
     UseContextGrand: typeof import('./../src/components/useContextGrand.vue')['default']
     UseContextSon: typeof import('./../src/components/useContextSon.vue')['default']
     UseEmpty: typeof import('./../src/components/useEmpty.vue')['default']
+    UseEnv: typeof import('./../src/components/useEnv.vue')['default']
     UseFetch: typeof import('./../src/components/useFetch.vue')['default']
     UseI18n: typeof import('./../src/components/useI18n.vue')['default']
     UseIconify: typeof import('./../src/components/useIconify.vue')['default']
@@ -43,8 +41,5 @@ declare module 'vue' {
     UseVitest: typeof import('./../src/components/useVitest.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
     VanButton: typeof import('vant/es')['Button']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
