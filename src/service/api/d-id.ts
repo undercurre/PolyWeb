@@ -9,8 +9,7 @@ export function fetchCreateTalk(input: string) {
 	return request.post<DID.CreateTalkRes>(
 		'/d-id/talks',
 		{
-			source_url:
-				'https://create-images-results.d-id.com/google-oauth2%7C108172079718571280845/upl_24lwx7q8nrCSVEySLVBo_/image.jpeg',
+			source_url: 'https://clips-presenters.d-id.com/rian/pbMoTzs7an/vmcS2q23Kk/image.png',
 			script: {
 				type: 'text',
 				input,
@@ -25,7 +24,7 @@ export function fetchCreateTalk(input: string) {
 		},
 		{
 			headers: {
-				Authorization: 'Basic MTU5MTM2MDk4MjF1bmRlcmN1cnJlQGdtYWlsLmNvbQ:lZRWK3xuvtM-LYt-Cd4Q1'
+				Authorization: 'Basic NzI0MDYxMzYwQHFxLmNvbQ:2Xk1AV5ojae7y273bNVEe'
 			}
 		}
 	);
@@ -39,7 +38,7 @@ export function fetchCreateTalk(input: string) {
 export function fetchGetTalkById(id: string) {
 	return request.get<DID.GetTalkRes>(`/d-id/talks/${id}`, {
 		headers: {
-			Authorization: 'Basic MTU5MTM2MDk4MjF1bmRlcmN1cnJlQGdtYWlsLmNvbQ:lZRWK3xuvtM-LYt-Cd4Q1'
+			Authorization: 'Basic NzI0MDYxMzYwQHFxLmNvbQ:2Xk1AV5ojae7y273bNVEe'
 		}
 	});
 }

@@ -1,8 +1,13 @@
 <template>
+	<video ref="videoPlayer" controls width="640" height="360" autoplay>
+		<source :src="video" type="video/mp4" />
+		Your browser does not support the video tag.
+	</video>
 	<el-input v-model="textarea" autosize type="textarea" placeholder="Please input" />
 	<el-input v-model="input" placeholder="Please input" />
 	<div class="flex mt-50px">
 		<el-button type="primary" @click="sendMsg">send</el-button>
+		<el-button type="primary" @click="start">start</el-button>
 		<el-button type="info" @click="startSpeechRecognition">listen</el-button>
 	</div>
 </template>
@@ -14,6 +19,8 @@ import CryptoJs from 'crypto-js';
 import { fetchCreateTalk, fetchGetTalkById } from '../service/api/d-id';
 const textarea = ref('');
 const input = ref('');
+const video = ref('');
+const videoPlayer = ref<HTMLElement | null>(null);
 
 const config = {
 	APPID: '1288b463',
@@ -147,12 +154,21 @@ function startSpeechRecognition() {
 	};
 }
 
-onMounted(async () => {
+async function start() {
 	const createRes = await fetchCreateTalk('大家好，我是你们的虚拟管家');
 	console.log(createRes);
-	// if (createRes) {
-	// 	const getRes = await fetchGetTalkById(createRes.id);
-	// 	console.log(getRes.data?.result_url);
-	// }
-});
+	setTimeout(async () => {
+		if (createRes.data) {
+			const getRes = await fetchGetTalkById(createRes.data?.id);
+			console.log(getRes.data?.result_url);
+			video.value = getRes.data!.result_url;
+			if (videoPlayer.value) {
+				videoPlayer.value.load();
+				videoPlayer.value.play();
+			}
+		}
+	}, 3000);
+}
+
+onMounted(async () => {});
 </script>
