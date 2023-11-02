@@ -7,7 +7,6 @@
 	<el-input v-model="input" placeholder="Please input" />
 	<div class="flex mt-50px">
 		<el-button type="primary" @click="sendMsg">send</el-button>
-		<el-button type="primary" @click="start">start</el-button>
 		<el-button type="info" @click="startSpeechRecognition">listen</el-button>
 	</div>
 </template>
@@ -91,6 +90,7 @@ async function sendMsg() {
 			}
 		}
 		addMsgToTextarea(data.payload.choices.text[0].content);
+		start(data.payload.choices.text[0].content);
 	});
 	socket.addEventListener('close', (event) => {
 		console.log('连接关闭！！', event);
@@ -154,8 +154,8 @@ function startSpeechRecognition() {
 	};
 }
 
-async function start() {
-	const createRes = await fetchCreateTalk('大家好，我是你们的虚拟管家');
+async function start(text: string) {
+	const createRes = await fetchCreateTalk(text);
 	console.log(createRes);
 	setTimeout(async () => {
 		if (createRes.data) {
