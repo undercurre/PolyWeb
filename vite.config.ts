@@ -45,6 +45,15 @@ export default defineConfig((configEnv) => {
 			transformMode: {
 				web: [/\.[jt]sx$/]
 			}
+		},
+		server: {
+			proxy: {
+				'/d-id': {
+					target: 'https://api.d-id.com', // 代理目标地址
+					changeOrigin: true, // 设置为true表示更改请求头中的host，以便匹配代理目标的host
+					rewrite: (path) => path.replace(/^\/d-id/, '') // 可选的重写规则
+				}
+			}
 		}
 	};
 });

@@ -1,13 +1,17 @@
 <template>
 	<el-input v-model="textarea" autosize type="textarea" placeholder="Please input" />
 	<el-input v-model="input" placeholder="Please input" />
-	<el-button type="primary" @click="sendMsg">send</el-button>
+	<div class="flex mt-50px">
+		<el-button type="primary" @click="sendMsg">send</el-button>
+		<el-button type="info" @click="startSpeechRecognition">listen</el-button>
+	</div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as base64 from 'base-64';
 import CryptoJs from 'crypto-js';
+import { fetchCreateTalk, fetchGetTalkById } from '../service/api/d-id';
 const textarea = ref('');
 const input = ref('');
 
@@ -140,13 +144,15 @@ function startSpeechRecognition() {
 		// 识别结束后可以做一些处理
 		sendMsg();
 		console.log('识别结束');
-		setTimeout(() => {
-			recognition.start();
-		}, 2000);
 	};
 }
 
-onMounted(() => {
-	startSpeechRecognition();
+onMounted(async () => {
+	const createRes = await fetchCreateTalk('大家好，我是你们的虚拟管家');
+	console.log(createRes);
+	// if (createRes) {
+	// 	const getRes = await fetchGetTalkById(createRes.id);
+	// 	console.log(getRes.data?.result_url);
+	// }
 });
 </script>
