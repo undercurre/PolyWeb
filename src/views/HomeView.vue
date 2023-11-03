@@ -37,6 +37,8 @@ async function sendMsg() {
 	addMsgToTextarea(input.value + '\n');
 	// 每次发送问题 都是一个新的websocketqingqiu
 	let socket = new WebSocket(myUrl as string | URL);
+	// 本次对话的完整回答的存储
+	let tres = '';
 
 	// 监听websocket的各阶段事件 并做相应处理
 	socket.addEventListener('open', (event) => {
@@ -74,6 +76,7 @@ async function sendMsg() {
 		let data = JSON.parse(event.data);
 		console.log('收到消息！！', data);
 		config.sparkResult += data.payload.choices.text[0].content;
+		tres += data.payload.choices.text[0].content;
 		if (data.header.code !== 0) {
 			console.log('出错了', data.header.code, ':', data.header.message);
 			// 出错了"手动关闭连接"
@@ -90,10 +93,12 @@ async function sendMsg() {
 			}
 		}
 		addMsgToTextarea(data.payload.choices.text[0].content);
-		start(data.payload.choices.text[0].content);
 	});
 	socket.addEventListener('close', (event) => {
 		console.log('连接关闭！！', event);
+		console.log('本次回答', tres);
+		start(tres);
+		tres = '';
 		// 对话完成后socket会关闭，将聊天记录换行处理
 		config.sparkResult = config.sparkResult + '\n';
 		addMsgToTextarea('\n');
