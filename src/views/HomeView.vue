@@ -25,7 +25,6 @@
 <script setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import {
-	Color,
 	DirectionalLight,
 	DirectionalLightHelper,
 	HemisphereLight,
@@ -54,9 +53,9 @@ const colorAry = [
 ]; // 车身颜色数组
 const loader = new GLTFLoader(); //引入模型的loader实例
 const defaultMap = {
-	x: 510,
-	y: 128,
-	z: 0
+	x: 4,
+	y: 5,
+	z: 5
 }; // 相机的默认坐标
 const map = reactive(defaultMap); //把相机坐标设置成可观察对象
 const { x, y, z } = toRefs(map); //输出坐标给模板使用
@@ -125,16 +124,26 @@ const stop = () => {
 
 //设置车身颜色
 const setCarColor = (index) => {
-	const currentColor = new Color(colorAry[index]);
+	const colorObjects = rgbStringToObject(colorAry[index]);
 	scene.traverse((child) => {
 		if (child.isMesh) {
 			console.log(child.name);
-			if (child.name.includes('door_')) {
-				child.material.color.set(currentColor);
+			if (child.name.includes('roadster015')) {
+				console.log(child);
+				child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
 			}
 		}
 	});
 };
+
+function rgbStringToObject(rgbString) {
+	const matches = rgbString.match(/\d+/g);
+	if (matches && matches.length === 3) {
+		const [r, g, b] = matches;
+		return { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
+	}
+	return null; // 处理无效的RGB字符串
+}
 
 const loadFile = (url) => {
 	return new Promise((resolve, reject) => {
