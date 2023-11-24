@@ -4,7 +4,7 @@
 			<div class="loading">
 				<div :style="{ width: loadingWidth + '%' }"></div>
 			</div>
-			<div style="padding-left: 10px">{{ parseInt(loadingWidth) }}%</div>
+			<div style="padding-left: 10px">{{ loadingWidth }}%</div>
 		</div>
 		<div class="mask">
 			<p>x : {{ x }} y:{{ y }} z :{{ z }}</p>
@@ -22,13 +22,13 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import {
+	Camera,
 	DirectionalLight,
-	DirectionalLightHelper,
 	HemisphereLight,
-	HemisphereLightHelper,
+	Object3D,
 	PerspectiveCamera,
 	Scene,
 	WebGLRenderer
@@ -60,7 +60,12 @@ const defaultMap = {
 const map = reactive(defaultMap); //把相机坐标设置成可观察对象
 const { x, y, z } = toRefs(map); //输出坐标给模板使用
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let scene, camera, renderer, controls, floor, dhelper, hHelper, directionalLight, hemisphereLight; // 定义所有three实例变量
+let scene: Scene,
+	camera: Camera,
+	renderer: WebGLRenderer,
+	controls: OrbitControls,
+	directionalLight,
+	hemisphereLight; // 定义所有three实例变量
 let isLoading = ref(true); //是否显示loading  这个load模型监听的进度
 let loadingWidth = ref(0); // loading的进度
 
@@ -68,10 +73,8 @@ let loadingWidth = ref(0); // loading的进度
 const setLight = () => {
 	directionalLight = new DirectionalLight(0xffffff, 0.5);
 	directionalLight.position.set(-4, 8, 4);
-	dhelper = new DirectionalLightHelper(directionalLight, 5, 0xff0000);
 	hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.4);
 	hemisphereLight.position.set(0, 8, 0);
-	hHelper = new HemisphereLightHelper(hemisphereLight, 5);
 	scene.add(directionalLight);
 	scene.add(hemisphereLight);
 };
@@ -81,7 +84,10 @@ const setScene = () => {
 	scene = new Scene();
 	renderer = new WebGLRenderer();
 	renderer.setSize(innerWidth, innerHeight);
-	document.querySelector('.boxs').appendChild(renderer.domElement);
+	const container = document.querySelector('.boxs');
+	if (container) {
+		container.appendChild(renderer.domElement);
+	}
 };
 
 // 创建相机
@@ -101,9 +107,9 @@ const setControls = () => {
 
 //返回坐标信息
 const render = () => {
-	map.x = Number.parseInt(camera.position.x);
-	map.y = Number.parseInt(camera.position.y);
-	map.z = Number.parseInt(camera.position.z);
+	map.x = camera.position.x;
+	map.y = camera.position.y;
+	map.z = camera.position.z;
 };
 
 // 循环场景 、相机、 位置更新
@@ -123,20 +129,22 @@ const stop = () => {
 };
 
 //设置车身颜色
-const setCarColor = (index) => {
+const setCarColor = (index: number) => {
 	const colorObjects = rgbStringToObject(colorAry[index]);
-	scene.traverse((child) => {
-		if (child.isMesh) {
-			console.log(child.name);
-			if (child.name.includes('roadster015')) {
-				console.log(child);
-				child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
+	if (colorObjects) {
+		scene.traverse((child: any) => {
+			// console.log(child.name);
+			if (child.isMesh) {
+				console.log('isMesh', child.name);
+				if (child.name.includes('door_pside_f_door_dside_r8_0')) {
+					child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
+				}
 			}
-		}
-	});
+		});
+	}
 };
 
-function rgbStringToObject(rgbString) {
+function rgbStringToObject(rgbString: string) {
 	const matches = rgbString.match(/\d+/g);
 	if (matches && matches.length === 3) {
 		const [r, g, b] = matches;
@@ -145,7 +153,7 @@ function rgbStringToObject(rgbString) {
 	return null; // 处理无效的RGB字符串
 }
 
-const loadFile = (url) => {
+const loadFile = (url: string) => {
 	return new Promise((resolve, reject) => {
 		loader.load(
 			url,
@@ -176,7 +184,7 @@ const init = async () => {
 	setLight();
 	setControls();
 	const gltf = await loadFile('src/assets/3d/scene.gltf');
-	scene.add(gltf.scene);
+	scene.add((gltf as any).scene);
 	loop();
 };
 //用vue钩子函数调用
