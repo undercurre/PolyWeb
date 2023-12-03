@@ -28,10 +28,14 @@ import {
 	Camera,
 	DirectionalLight,
 	HemisphereLight,
-	Object3D,
 	PerspectiveCamera,
 	Scene,
-	WebGLRenderer
+	WebGLRenderer,
+	AmbientLight,
+	PointLight,
+	Color,
+	GridHelper,
+	PointLightHelper
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -51,11 +55,14 @@ const colorAry = [
 	'rgb(156, 39, 176)',
 	'rgb(0, 0, 0)'
 ]; // 车身颜色数组
+// 设置点光源的初始旋转角度
+let angle = 0;
+const lightColor = new Color();
 const loader = new GLTFLoader(); //引入模型的loader实例
 const defaultMap = {
-	x: 4,
-	y: 5,
-	z: 5
+	x: 10,
+	y: 10,
+	z: 10
 }; // 相机的默认坐标
 const map = reactive(defaultMap); //把相机坐标设置成可观察对象
 const { x, y, z } = toRefs(map); //输出坐标给模板使用
@@ -65,6 +72,9 @@ let scene: Scene,
 	renderer: WebGLRenderer,
 	controls: OrbitControls,
 	directionalLight,
+	ambientLight,
+	pointLight: DirectionalLight,
+	// pointLightHelper,
 	hemisphereLight; // 定义所有three实例变量
 let isLoading = ref(true); //是否显示loading  这个load模型监听的进度
 let loadingWidth = ref(0); // loading的进度
@@ -75,8 +85,16 @@ const setLight = () => {
 	directionalLight.position.set(-4, 8, 4);
 	hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.4);
 	hemisphereLight.position.set(0, 8, 0);
+	ambientLight = new AmbientLight(0x404040, 100);
+	pointLight = new DirectionalLight(0xffffff, 10);
+	pointLight.position.set(0, 3, 0);
+	// 创建点光源辅助对象
+	// pointLightHelper = new PointLightHelper(pointLight);
+	// scene.add(pointLightHelper);
+	scene.add(pointLight);
 	scene.add(directionalLight);
 	scene.add(hemisphereLight);
+	scene.add(ambientLight);
 };
 
 // 创建场景
@@ -85,6 +103,9 @@ const setScene = () => {
 	renderer = new WebGLRenderer();
 	renderer.setSize(innerWidth, innerHeight);
 	const container = document.querySelector('.boxs');
+	renderer.setClearColor('#fff');
+	scene.background = new Color('#ccc');
+	scene.environment = new Color('#ccc');
 	if (container) {
 		container.appendChild(renderer.domElement);
 	}
@@ -105,6 +126,14 @@ const setControls = () => {
 	controls.addEventListener('change', render);
 };
 
+// 设置网格地板
+const setGround = () => {
+	const gridHelper = new GridHelper(10, 10);
+	gridHelper.material.opacity = 0.2;
+	gridHelper.material.transparent = true;
+	scene.add(gridHelper);
+};
+
 //返回坐标信息
 const render = () => {
 	map.x = camera.position.x;
@@ -116,6 +145,17 @@ const render = () => {
 const loop = () => {
 	requestAnimationFrame(loop);
 	renderer.render(scene, camera);
+	// 旋转点光源
+	angle += 0.1;
+	const radius = 5; // 旋转半径
+	pointLight.position.y = radius * Math.sin(angle);
+	pointLight.position.z = radius * Math.cos(angle);
+
+	// 更新点光源辅助对象的位置
+	// pointLightHelper.update();
+	// 计算光颜色随着旋转角度渐变
+	lightColor.setHSL((angle % Math.PI) / Math.PI, 1, 0.5);
+	pointLight.color.copy(lightColor);
 	controls.update();
 };
 
@@ -136,7 +176,7 @@ const setCarColor = (index: number) => {
 			// console.log(child.name);
 			if (child.isMesh) {
 				console.log('isMesh', child.name);
-				if (child.name.includes('door_pside_f_door_dside_r8_0')) {
+				if (child.name.includes('Mesh63_M_2022_Tesla_Model_S_Plaid_doorbutton__spec__0')) {
 					child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
 				}
 			}
@@ -183,7 +223,8 @@ const init = async () => {
 	setCamera();
 	setLight();
 	setControls();
-	const gltf = await loadFile('src/assets/3d/scene.gltf');
+	setGround();
+	const gltf = await loadFile('src/assets/3d/mulliner.glb');
 	scene.add((gltf as any).scene);
 	loop();
 };
