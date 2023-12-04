@@ -60,9 +60,9 @@ const colorAry = [
 // const lightColor = new Color();
 const loader = new GLTFLoader(); //引入模型的loader实例
 const defaultMap = {
-	x: 10,
-	y: 10,
-	z: 10
+	x: 5,
+	y: 4,
+	z: 5
 }; // 相机的默认坐标
 const map = reactive(defaultMap); //把相机坐标设置成可观察对象
 const { x, y, z } = toRefs(map); //输出坐标给模板使用
@@ -170,12 +170,15 @@ const stop = () => {
 //设置车身颜色
 const setCarColor = (index: number) => {
 	const colorObjects = rgbStringToObject(colorAry[index]);
+	console.log(colorObjects);
 	if (colorObjects) {
 		// scene.traverse遍历场景中的所有对象（包括子对象和孙对象等）
 		scene.traverse((child: any) => {
-			console.log(child);
+			// 只有Mesh类才有材质
 			if (child.isMesh) {
-				if (child.name.includes('door_rf_ok')) {
+				// 找到
+				if (child.name.includes('door_rf_ok_2')) {
+					console.log(child);
 					child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
 				}
 			}
