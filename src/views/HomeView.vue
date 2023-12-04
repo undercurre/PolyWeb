@@ -32,10 +32,10 @@ import {
 	Scene,
 	WebGLRenderer,
 	AmbientLight,
-	PointLight,
+	// PointLight,
 	Color,
-	GridHelper,
-	PointLightHelper
+	GridHelper
+	// PointLightHelper
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -56,8 +56,8 @@ const colorAry = [
 	'rgb(0, 0, 0)'
 ]; // 车身颜色数组
 // 设置点光源的初始旋转角度
-let angle = 0;
-const lightColor = new Color();
+// let angle = 0;
+// const lightColor = new Color();
 const loader = new GLTFLoader(); //引入模型的loader实例
 const defaultMap = {
 	x: 10,
@@ -105,7 +105,6 @@ const setScene = () => {
 	const container = document.querySelector('.boxs');
 	renderer.setClearColor('#fff');
 	scene.background = new Color('#ccc');
-	scene.environment = new Color('#ccc');
 	if (container) {
 		container.appendChild(renderer.domElement);
 	}
@@ -146,16 +145,16 @@ const loop = () => {
 	requestAnimationFrame(loop);
 	renderer.render(scene, camera);
 	// 旋转点光源
-	angle += 0.1;
-	const radius = 5; // 旋转半径
-	pointLight.position.y = radius * Math.sin(angle);
-	pointLight.position.z = radius * Math.cos(angle);
+	// angle += 0.1;
+	// const radius = 5; // 旋转半径
+	// pointLight.position.y = radius * Math.sin(angle);
+	// pointLight.position.z = radius * Math.cos(angle);
 
 	// 更新点光源辅助对象的位置
 	// pointLightHelper.update();
 	// 计算光颜色随着旋转角度渐变
-	lightColor.setHSL((angle % Math.PI) / Math.PI, 1, 0.5);
-	pointLight.color.copy(lightColor);
+	// lightColor.setHSL((angle % Math.PI) / Math.PI, 1, 0.5);
+	// pointLight.color.copy(lightColor);
 	controls.update();
 };
 
@@ -172,11 +171,11 @@ const stop = () => {
 const setCarColor = (index: number) => {
 	const colorObjects = rgbStringToObject(colorAry[index]);
 	if (colorObjects) {
+		// scene.traverse遍历场景中的所有对象（包括子对象和孙对象等）
 		scene.traverse((child: any) => {
-			// console.log(child.name);
+			console.log(child);
 			if (child.isMesh) {
-				console.log('isMesh', child.name);
-				if (child.name.includes('Mesh63_M_2022_Tesla_Model_S_Plaid_doorbutton__spec__0')) {
+				if (child.name.includes('door_rf_ok')) {
 					child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
 				}
 			}
