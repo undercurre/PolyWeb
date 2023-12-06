@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { setupI18n } from './locales';
+import './assets/styles/index.scss';
 import 'virtual:svg-icons-register';
 
 import App from './App.vue';

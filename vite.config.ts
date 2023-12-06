@@ -25,13 +25,6 @@ export default defineConfig((configEnv) => {
 	return {
 		base: process.env.VITE_BASE_URL || '/',
 		plugins,
-		css: {
-			preprocessorOptions: {
-				scss: {
-					additionalData: `@import "src/assets/styles/index.scss";`
-				}
-			}
-		},
 		resolve: {
 			alias: {
 				'~': path.resolve(process.cwd()),
