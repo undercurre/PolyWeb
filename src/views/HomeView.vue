@@ -6,24 +6,39 @@
 			</div>
 			<div style="padding-left: 10px">{{ loadingWidth }}%</div>
 		</div>
-		<div class="mask">
-			<p>x : {{ x }} y:{{ y }} z :{{ z }}</p>
-			<button @click="isAutoFun">转动车</button>
-			<button @click="stop">停止</button>
-			<div class="flex">
+		<div
+			class="flex-col px-20px py-30px rounded-full bg-#fff/40 absolute left-30px bottom-50% transform translate-y-50%"
+		>
+			<!-- <p>x : {{ x }} y:{{ y }} z :{{ z }}</p> -->
+			<!-- <button @click="isAutoFun">转动车</button>
+			<button @click="stop">停止</button> -->
+			<!-- <div class="flex">
 				<div
 					@click="setCarColor(index)"
 					v-for="(item, index) in colorAry"
 					:key="item"
 					:style="{ backgroundColor: item }"
 				></div>
+			</div> -->
+
+			<div
+				class="flex-col justify-center items-center"
+				v-for="(item, index) in recordColorArr"
+				:key="item.name"
+			>
+				<div
+					class="w-400px h-400px rounded-full"
+					@click="setCarColor(index)"
+					:style="{ backgroundColor: item.value }"
+				></div>
+				<p class="text-#000 text-center font-bold">{{ item.name }}</p>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import {
 	Camera,
 	DirectionalLight,
@@ -40,21 +55,30 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 //车身颜色数组
-const colorAry = [
-	'rgb(216, 27, 67)',
-	'rgb(142, 36, 170)',
-	'rgb(81, 45, 168)',
-	'rgb(48, 63, 159)',
-	'rgb(30, 136, 229)',
-	'rgb(0, 137, 123)',
-	'rgb(67, 160, 71)',
-	'rgb(251, 192, 45)',
-	'rgb(245, 124, 0)',
-	'rgb(230, 74, 25)',
-	'rgb(233, 30, 78)',
-	'rgb(156, 39, 176)',
-	'rgb(0, 0, 0)'
-]; // 车身颜色数组
+// const colorAry = [
+// 	'rgb(216, 27, 67)',
+// 	'rgb(142, 36, 170)',
+// 	'rgb(81, 45, 168)',
+// 	'rgb(48, 63, 159)',
+// 	'rgb(30, 136, 229)',
+// 	'rgb(0, 137, 123)',
+// 	'rgb(67, 160, 71)',
+// 	'rgb(251, 192, 45)',
+// 	'rgb(245, 124, 0)',
+// 	'rgb(230, 74, 25)',
+// 	'rgb(233, 30, 78)',
+// 	'rgb(156, 39, 176)',
+// 	'rgb(0, 0, 0)'
+// ]; // 车身颜色数组
+const recordColorArr: Array<{
+	name: string;
+	value: string;
+}> = [
+	{ name: '紫罗兰', value: '#EE82EE' },
+	{ name: '午夜', value: '#191970' },
+	{ name: '森林', value: '#228B22' },
+	{ name: '珊瑚', value: '#FF7F50' }
+];
 // 设置点光源的初始旋转角度
 // let angle = 0;
 // const lightColor = new Color();
@@ -65,7 +89,7 @@ const defaultMap = {
 	z: 5
 }; // 相机的默认坐标
 const map = reactive(defaultMap); //把相机坐标设置成可观察对象
-const { x, y, z } = toRefs(map); //输出坐标给模板使用
+// const { x, y, z } = toRefs(map); //输出坐标给模板使用
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let scene: Scene,
 	camera: Camera,
@@ -159,19 +183,17 @@ const loop = () => {
 };
 
 //是否自动转动
-const isAutoFun = () => {
-	controls.autoRotate = true;
-};
+// const isAutoFun = () => {
+// 	controls.autoRotate = true;
+// };
 //停止转动
-const stop = () => {
-	controls.autoRotate = false;
-};
+// const stop = () => {
+// 	controls.autoRotate = false;
+// };
 
 //设置车身颜色
 const setCarColor = (index: number) => {
-	const colorObjects = rgbStringToObject(colorAry[index]);
-	console.log(colorObjects);
-	if (colorObjects) {
+	if (recordColorArr) {
 		// scene.traverse遍历场景中的所有对象（包括子对象和孙对象等）
 		scene.traverse((child: any) => {
 			// 只有Mesh类才有材质
@@ -179,21 +201,21 @@ const setCarColor = (index: number) => {
 				// 找到
 				if (child.name.includes('door_rf_ok_2')) {
 					console.log(child);
-					child.material.color.set(colorObjects.r, colorObjects.g, colorObjects.b);
+					child.material.color = new Color(recordColorArr[index].value);
 				}
 			}
 		});
 	}
 };
 
-function rgbStringToObject(rgbString: string) {
-	const matches = rgbString.match(/\d+/g);
-	if (matches && matches.length === 3) {
-		const [r, g, b] = matches;
-		return { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
-	}
-	return null; // 处理无效的RGB字符串
-}
+// function rgbStringToObject(rgbString: string) {
+// 	const matches = rgbString.match(/\d+/g);
+// 	if (matches && matches.length === 3) {
+// 		const [r, g, b] = matches;
+// 		return { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
+// 	}
+// 	return null; // 处理无效的RGB字符串
+// }
 
 const loadFile = (url: string) => {
 	return new Promise((resolve, reject) => {
@@ -278,23 +300,10 @@ canvas {
 
 .mask {
 	position: absolute;
-	bottom: 0;
+	bottom: 50%;
 	left: 0;
 	width: 100%;
 	color: #fff;
-}
-
-.flex {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 20px;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.flex div {
-	width: 10px;
-	height: 10px;
-	margin: 5px;
-	cursor: pointer;
+	transform: translateY(50%);
 }
 </style>
