@@ -100,7 +100,7 @@ function getRangeRandom(e: number, t: number) {
 // 渲染函数
 const render = () => {
 	requestAnimationFrame(render);
-	geometry.setAttribute('position', new THREE.Float32BufferAttribute(curV, 3));
+	TWEEN.update();
 	renderer.render(scene, camera);
 };
 
@@ -123,6 +123,10 @@ function handleChange(key: string) {
 			.to(o, 1000)
 			.easing(TWEEN.Easing.Exponential.In)
 			.delay(1000 * Math.random())
+			.onUpdate(() => {
+				curV[i] = o;
+				geometry.setAttribute('position', new THREE.Float32BufferAttribute(curV, 3));
+			})
 			.start();
 	});
 	// curData = key;
