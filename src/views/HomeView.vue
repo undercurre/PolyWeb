@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three'
+import cpac5 from '@/assets/3d/cpmovie4.json'
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
 
@@ -8,9 +9,9 @@ let scene: THREE.Scene, renderer: THREE.WebGLRenderer, 	camera: THREE.Camera, ge
 
 // 相机初始(默认)坐标
 const defaultMap = {
-	x: 0,
+	x: -3,
 	y: 0,
-	z: 750
+	z: 5
 };
 	
 
@@ -42,7 +43,7 @@ const setPointGeometry = () => {
 	const textureLoader = new THREE.TextureLoader();
 	const mapDot = textureLoader.load("/src/assets/3d/gradient.png");
 	material = new THREE.PointsMaterial({
-		size: 1,
+		size: 0.02,
 		sizeAttenuation: true,
 		color: 0xffffff,
 		transparent: true,
@@ -50,15 +51,17 @@ const setPointGeometry = () => {
 		map: mapDot,
 	});
 	const vertices = []
-	const particleSum = 1000;
-	const longestDistance = 100;
+	const particleSum = 15000;
+	const longestDistance = 1000;
+	
     for (let i = 0; i < particleSum; i++) {
       const x = getRangeRandom(-1 * longestDistance, longestDistance)
       const y = getRangeRandom(-1 * longestDistance, longestDistance)
       const z = getRangeRandom(-1 * longestDistance, longestDistance)
       vertices.push(x, y, z)
     }
-	geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+	
+	geometry.setAttribute('position', new THREE.Float32BufferAttribute(cpac5.vertices, 3))
 	particles = new THREE.Points(geometry, material);
 	scene.add(particles);
 }
@@ -70,16 +73,6 @@ function getRangeRandom(e: number, t: number) {
 // 渲染函数
 const render = () => {
 	requestAnimationFrame(render);
-
-    // // 使粒子动起来
-    // particles.geometry.vertices.forEach((particle: { x: number; y: number; z: number; }) => {
-    //   particle.x += (Math.random() - 0.5) * 0.1;
-    //   particle.y += (Math.random() - 0.5) * 0.1;
-    //   particle.z += (Math.random() - 0.5) * 0.1;
-    // });
-	// particles.geometry.attributes.vertices.needsUpdate = true;
-	// particles.geometry.attributes.color.needsUpdate = true;
-  	// particles.geometry.attributes.position.needsUpdate = true;
  	renderer.render(scene, camera);
 }
 
@@ -89,7 +82,6 @@ const init = async () => {
 	setCamera();
 	setPointGeometry();
 	render();
-	console.log('渲染完成')
 };
 
 //用vue钩子函数调用
