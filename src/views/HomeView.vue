@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import * as THREE from 'three'
+// 容器
+const canvasContainer = ref<HTMLElement | null>(null);
+
 // 先集中创建容器变量
 let scene: THREE.Scene, renderer: THREE.WebGLRenderer, 	camera: THREE.Camera, geometry: THREE.BufferGeometry, material: THREE.PointsMaterial, particles: THREE.Points;
 
@@ -19,17 +22,16 @@ const setScene = () => {
 	renderer = new THREE.WebGLRenderer();
 	// 设置像素比例同步，让高性能显示更漂亮
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.setSize(innerWidth, innerHeight);
-	const container = document.querySelector('.box');
-	if (container) {
-		container.appendChild(renderer.domElement);
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	if (canvasContainer.value) {
+		canvasContainer.value.appendChild(renderer.domElement);
 	}
 }
 
 // 创建相机
 const setCamera = () => {
 	const { x, y, z } = defaultMap;
-	camera = new THREE.PerspectiveCamera(105, innerWidth / innerHeight, 300, 10000);
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 	camera.position.set(x, y, z);
 };
 
@@ -40,41 +42,44 @@ const setPointGeometry = () => {
 	const textureLoader = new THREE.TextureLoader();
 	const mapDot = textureLoader.load("/src/assets/3d/gradient.png");
 	material = new THREE.PointsMaterial({
-		size: 4,
+		size: 1,
 		sizeAttenuation: true,
 		color: 0xffffff,
 		transparent: true,
 		opacity: 1,
 		map: mapDot,
 	});
-	const AMOUNTX = 50	// 横轴数量
-	const AMOUNTY = 50	// 纵轴数量
-	const SEPARATION = 100 // 点距离
-	const numParticles = AMOUNTX * AMOUNTY // 点数
-	let i = 0
-	const vertices = new Float32Array(numParticles * 3)
-	for (let ix = 0; ix < AMOUNTX; ix++) {
-		for (let iy = 0; iy < AMOUNTY; iy++) {
-			vertices[i] = ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2) // x
-			vertices[i + 1] = -300 // y
-			vertices[i + 2] = iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2) // z
-			i += 3
-		}
-	}
-	// 注入点位置
-	geometry.setAttribute(
-		'position',
-		new THREE.Float32BufferAttribute(vertices, 3)
-  	)
+	const vertices = []
+	const particleSum = 1000;
+	const longestDistance = 100;
+    for (let i = 0; i < particleSum; i++) {
+      const x = getRangeRandom(-1 * longestDistance, longestDistance)
+      const y = getRangeRandom(-1 * longestDistance, longestDistance)
+      const z = getRangeRandom(-1 * longestDistance, longestDistance)
+      vertices.push(x, y, z)
+    }
+	geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
 	particles = new THREE.Points(geometry, material);
 	scene.add(particles);
 }
 
+function getRangeRandom(e: number, t: number) {
+  return Math.random() * (t - e) + e
+}
+
 // 渲染函数
 const render = () => {
-	particles.geometry.attributes.vertices.needsUpdate = true;
-	particles.geometry.attributes.color.needsUpdate = true;
-  	particles.geometry.attributes.position.needsUpdate = true;
+	requestAnimationFrame(render);
+
+    // // 使粒子动起来
+    // particles.geometry.vertices.forEach((particle: { x: number; y: number; z: number; }) => {
+    //   particle.x += (Math.random() - 0.5) * 0.1;
+    //   particle.y += (Math.random() - 0.5) * 0.1;
+    //   particle.z += (Math.random() - 0.5) * 0.1;
+    // });
+	// particles.geometry.attributes.vertices.needsUpdate = true;
+	// particles.geometry.attributes.color.needsUpdate = true;
+  	// particles.geometry.attributes.position.needsUpdate = true;
  	renderer.render(scene, camera);
 }
 
@@ -84,6 +89,7 @@ const init = async () => {
 	setCamera();
 	setPointGeometry();
 	render();
+	console.log('渲染完成')
 };
 
 //用vue钩子函数调用
@@ -91,7 +97,5 @@ onMounted(init);
 </script>
 
 <template>
-	<div class="box">
-
-	</div>
+	<div ref="canvasContainer"></div>
 </template>
