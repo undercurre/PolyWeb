@@ -9,7 +9,7 @@
 		"src/**/*.vue",
 		"mock/**/*.ts",
 		"vite.config.ts",
-		"preset/**/*.ts",
+		"preset/**/*.ts"
 	],
 	"exclude": ["src/**/__tests__/*", "node_modules", "dist", "src/**/*.json"],
 	"compilerOptions": {
