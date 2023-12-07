@@ -34,6 +34,7 @@ specifiers:
   eslint-plugin-cypress: ^2.13.3
   eslint-plugin-vue: ^9.15.1
   form-data: ^4.0.0
+  gsap: ^3.12.3
   husky: ^8.0.3
   jsdom: ^22.1.0
   lint-staged: ^13.2.3
@@ -60,7 +61,6 @@ specifiers:
   stylelint-scss: ^5.0.1
   three: ^0.159.0
   tsx: ^3.12.7
-  tween.js: ^16.6.0
   typescript: ~5.1.6
   unocss: ^0.53.6
   unplugin-auto-import: ^0.16.6
@@ -86,11 +86,11 @@ dependencies:
   crypto-js: 4.1.1
   element-plus: 2.3.9_vue@3.3.4
   form-data: 4.0.0
+  gsap: 3.12.3
   lodash-es: 4.17.21
   pinia: 2.1.6_typescript@5.1.6+vue@3.3.4
   qs: 6.11.2
   three: 0.159.0
-  tween.js: 16.6.0
   vant: 4.6.4_vue@3.3.4
   vue: 3.3.4
   vue-i18n: 9.2.2_vue@3.3.4
@@ -6057,6 +6057,10 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
+  /gsap/3.12.3:
+    resolution: {integrity: sha512-TySXTE+ABiAVa61W+h5wv2p5GkJT1Uj//4nWpK8EjmhcDqwH++35IvtbQlVVFj+rdcJdFCdCt0SKgb+SwdPq/A==}
+    dev: false
+
   /gzip-size/6.0.0:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
     engines: {node: '>=10'}
@@ -10559,11 +10563,6 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: true
-
-  /tween.js/16.6.0:
-    resolution: {integrity: sha512-IIhm0VsiBxNJO+WsXUvjcq+u3sKfOwSu67Yh9T5xSpXb2eHHi9+uZDDGBc7uMXjfud0bYiLkYCEb7JXIGXi5KA==}
-    deprecated: This package has moved to @tweenjs/tween.js. Please update your dependencies.
-    dev: false
 
   /tweetnacl/0.14.5:
     resolution: {integrity: sha512-KXXFFdAbFXY4geFIwoyNK+f5Z1b7swfXABfL7HXCmoIWMKU3dmS26672A4EeQtDzLKy7SXmfBu51JolvEKwtGA==}
