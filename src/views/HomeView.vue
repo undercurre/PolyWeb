@@ -1,8 +1,27 @@
 <script setup lang="ts">
 import * as THREE from 'three';
+import * as TWEEN from 'tween.js';
 import * as cpac5 from '@/assets/3d/cpac5.json';
-// import * as cpbook2 from '@/assets/3d/cpbook2.json';
+import * as cpbook2 from '@/assets/3d/cpbook2.json';
 import * as cpgame3 from '@/assets/3d/cpgame3.json';
+import * as cpkv3 from '@/assets/3d/cpkv3.json';
+import * as cpmovie4 from '@/assets/3d/cpmovie4.json';
+
+// 数据集
+const db: Record<string, number[]> = {
+	ac: cpac5.vertices,
+	book: cpbook2.vertices,
+	game: cpgame3.vertices,
+	kv: cpkv3.vertices,
+	movie: cpmovie4.vertices
+};
+
+// 当前使用的数据集
+let curData = 'ac';
+
+// 当前的点阵数据
+let curV: number[] = db['ac'];
+
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
 
@@ -69,7 +88,7 @@ const setPointGeometry = () => {
 		vertices.push(x, y, z);
 	}
 
-	geometry.setAttribute('position', new THREE.Float32BufferAttribute(cpgame3.vertices, 3));
+	geometry.setAttribute('position', new THREE.Float32BufferAttribute(curV, 3));
 	particles = new THREE.Points(geometry, material);
 	scene.add(particles);
 };
@@ -81,6 +100,7 @@ function getRangeRandom(e: number, t: number) {
 // 渲染函数
 const render = () => {
 	requestAnimationFrame(render);
+	geometry.setAttribute('position', new THREE.Float32BufferAttribute(curV, 3));
 	renderer.render(scene, camera);
 };
 
@@ -95,12 +115,28 @@ const init = async () => {
 //用vue钩子函数调用
 onMounted(init);
 
-function handleChange() {
-	geometry.setAttribute('position', new THREE.Float32BufferAttribute(cpac5.vertices, 3));
+function handleChange(key: string) {
+	curV.forEach(function (e, i) {
+		var length = db[key].length;
+		var o = db[key][i % length];
+		new TWEEN.Tween(e)
+			.to(o, 1000)
+			.easing(TWEEN.Easing.Exponential.In)
+			.delay(1000 * Math.random())
+			.start();
+	});
+	// curData = key;
+	// curV = db[key];
 }
 </script>
 
 <template>
 	<div ref="canvasContainer"></div>
-	<button class="absolute right-0 top-0" @click="handleChange">变化</button>
+	<div class="absolute right-0 top-0">
+		<button @click="handleChange('ac')">ac</button>
+		<button @click="handleChange('book')">book</button>
+		<button @click="handleChange('game')">game</button>
+		<button @click="handleChange('kv')">kv</button>
+		<button @click="handleChange('movie')">movie</button>
+	</div>
 </template>
