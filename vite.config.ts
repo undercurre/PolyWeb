@@ -23,7 +23,7 @@ export default defineConfig((configEnv) => {
 	}
 
 	return {
-		base: process.env.VITE_BASE_URL || '/',
+		base: process.env.VITE_BASE_URL || './',
 		plugins,
 		css: {
 			preprocessorOptions: {

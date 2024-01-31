@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { showToast } from 'vant';
-import 'vant/es/toast/style';
-
-const openVn = () => {
-	ElMessage({
-		message: h('p', null, [h('span', null, '不需要手动引入并引入css')])
-	});
-};
 </script>
 
 <template>
 	<div>
-		<h3 class="text-left">Based on Vue3+TS+Vite</h3>
+		<!-- <h3 class="text-left">Based on Vue3+TS+Vite</h3>
 		<h4 class="text-10px text-left">using Vue-router</h4>
 		<useStore></useStore>
 		<useAutoImport></useAutoImport>
@@ -28,6 +20,7 @@ const openVn = () => {
 		<UseFetch></UseFetch>
 		<UseEnv></UseEnv>
 		<SvgIcon name="vue"></SvgIcon>
-		<SvgIcon name="test-icon1"></SvgIcon>
+		<SvgIcon name="test-icon1"></SvgIcon> -->
+		<SheetXlsx></SheetXlsx>
 	</div>
 </template>
