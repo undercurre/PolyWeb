@@ -6,7 +6,10 @@ import * as TWEEN from 'tween.js';
 const canvasContainer = ref<HTMLElement | null>(null);
 
 // 先集中创建容器变量
-let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
+let scene: THREE.Scene,
+	renderer: THREE.WebGLRenderer,
+	camera: THREE.Camera,
+	material: THREE.ShaderMaterial;
 
 // 相机初始(默认)坐标
 const defaultMap = {
@@ -52,12 +55,23 @@ const setGeometry = () => {
 
 	const fragment = `
 		varying vec2 vUv;
+
+		uniform float uTime;
+
 		void main() {
-			gl_FragColor = vec4(vUv, 1.0, 1.0);
+			// 先重复 uv，再居中，再绘制圆形
+			float dist = length(fract(vUv * 5.0) - vec2(0.5));
+			// 半径大小随时间周期变化
+			float radius = 0.5 * (sin(uTime + vUv.x + vUv.y) * 0.5 + 0.5);
+			vec3 color = vec3(step(radius, dist));
+			gl_FragColor = vec4(color, 1.0);
 		}
 	`;
 
-	const material = new THREE.ShaderMaterial({
+	material = new THREE.ShaderMaterial({
+		uniforms: {
+			uTime: { value: 0 }
+		},
 		vertexShader: vertex,
 		fragmentShader: fragment
 	});
@@ -67,6 +81,7 @@ const setGeometry = () => {
 
 // 渲染函数
 const render = () => {
+	material.uniforms.uTime.value += 0.1;
 	requestAnimationFrame(render);
 	TWEEN.update();
 	renderer.render(scene, camera);
