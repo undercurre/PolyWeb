@@ -10,9 +10,9 @@ let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
 
 // 相机初始(默认)坐标
 const defaultMap = {
-	x: 50,
-	y: 50,
-	z: 50
+	x: 0,
+	y: 0,
+	z: 2
 };
 
 // 创建场景和渲染器
@@ -23,6 +23,7 @@ const setScene = () => {
 	renderer = new THREE.WebGLRenderer();
 	// 设置像素比例同步，让高性能显示更漂亮
 	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.setClearColor('#e6fcf5', 1);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	if (canvasContainer.value) {
 		canvasContainer.value.appendChild(renderer.domElement);
@@ -38,30 +39,15 @@ const setCamera = () => {
 	camera.lookAt(0, 0, 0);
 };
 
-// 创建粒子几何体
-const setPointGeometry = () => {
-	// 创建球体模型
-	let ball = new THREE.SphereGeometry(40, 30, 30);
-	// 着色器材质
-	const shaderMaterial = new THREE.ShaderMaterial({
-		uniforms: {},
-		vertexShader: `
-			void main() {
-				gl_PointSize = 4.;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-			}
-    	`,
-		fragmentShader: `
-      		uniform vec3 color;
-			void main() {
-				gl_FragColor = vec4(color, 1.0);
-			}
-    	`
+// 创建几何体
+const setGeometry = () => {
+	const geometry = new THREE.PlaneGeometry(1, 1);
+	const material = new THREE.MeshBasicMaterial({
+		color: 0x0ca678,
+		wireframe: true
 	});
-	// 创建粒子系统
-	let particleSystem = new THREE.Points(ball, shaderMaterial);
-	// 加入场景
-	scene.add(particleSystem);
+	const mesh = new THREE.Mesh(geometry, material);
+	scene.add(mesh);
 };
 
 // 渲染函数
@@ -75,7 +61,7 @@ const render = () => {
 const init = async () => {
 	setScene();
 	setCamera();
-	setPointGeometry();
+	setGeometry();
 	render();
 };
 
