@@ -10,8 +10,8 @@ let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
 
 // 相机初始(默认)坐标
 const defaultMap = {
-	x: 0,
-	y: 0,
+	x: 2,
+	y: 1,
 	z: 2
 };
 
@@ -41,7 +41,7 @@ const setCamera = () => {
 
 // 创建几何体
 const setGeometry = () => {
-	const geometry = new THREE.PlaneGeometry(1, 1);
+	const geometry = new THREE.BoxGeometry(1, 1, 1);
 	const vertex = `
 		varying vec2 vUv;
 		void main() {
