@@ -42,9 +42,24 @@ const setCamera = () => {
 // 创建几何体
 const setGeometry = () => {
 	const geometry = new THREE.PlaneGeometry(1, 1);
-	const material = new THREE.MeshBasicMaterial({
-		color: 0x0ca678,
-		wireframe: true
+	const vertex = `
+		varying vec2 vUv;
+		void main() {
+			vUv = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		}
+	`;
+
+	const fragment = `
+		varying vec2 vUv;
+		void main() {
+			gl_FragColor = vec4(vUv, 1.0, 1.0);
+		}
+	`;
+
+	const material = new THREE.ShaderMaterial({
+		vertexShader: vertex,
+		fragmentShader: fragment
 	});
 	const mesh = new THREE.Mesh(geometry, material);
 	scene.add(mesh);
