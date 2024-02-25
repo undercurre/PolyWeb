@@ -7,10 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ICustomVue: typeof import('~icons/custom/vue')['default']
-    IMdiAccountBox: typeof import('~icons/mdi/account-box')['default']
-    IMdiAlarmOff: typeof import('~icons/mdi/alarm-off')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/components/SvgIcon.vue')['default']
@@ -39,6 +35,5 @@ declare module 'vue' {
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
     UseVitest: typeof import('./../src/components/useVitest.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
-    VanButton: typeof import('vant/es')['Button']
   }
 }
