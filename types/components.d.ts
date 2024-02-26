@@ -35,5 +35,6 @@ declare module 'vue' {
     UseUnocss: typeof import('./../src/components/useUnocss.vue')['default']
     UseVitest: typeof import('./../src/components/useVitest.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
+    Works2Image: typeof import('./../src/components/works2Image.vue')['default']
   }
 }

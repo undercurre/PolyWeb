@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import { setupI18n } from './locales';
 import './assets/styles/index.scss';
 import 'virtual:svg-icons-register';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './App.vue';
 import router from './router';
