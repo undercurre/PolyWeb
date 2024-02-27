@@ -310,12 +310,13 @@ onBeforeUnmount(() => {
 				</div>
 			</div>
 		</div>
-		<transition name="fade">
+		<ParticleText :scene="scene" :camera="camera" :renderer="renderer"></ParticleText>
+		<!-- <transition name="fade">
 			<Works2Image
 				v-if="isWorksVisible"
 				class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
 			></Works2Image>
-		</transition>
+		</transition> -->
 	</div>
 </template>
 
