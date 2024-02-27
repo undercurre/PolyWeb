@@ -5,6 +5,8 @@ import { TweenMax, Power1 } from 'gsap';
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
 
+const textRef = ref<ReturnType<typeof defineComponent> | null>(null);
+
 // 先集中创建容器变量
 let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
 
@@ -232,6 +234,43 @@ let setLines = function () {
 	}
 };
 
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+
+const triggers: Array<string> = ['CREATIVE'];
+const loader = new FontLoader();
+let typeface = '/swiss_black_cond.json';
+let points: THREE.Points;
+// 创建粒子材质
+const particleMaterial = new THREE.PointsMaterial({
+	color: 0xffffff, // 设置粒子颜色
+	size: 0.1 // 设置粒子大小
+});
+
+function setPoints() {
+	loader.load(typeface, (font) => {
+		triggers.forEach((trigger) => {
+			const triggerGeometry = new TextGeometry('HELLO', {
+				font: font,
+				size: window.innerWidth * 0.02,
+				height: 4,
+				curveSegments: 10
+			});
+
+			// 根据文本几何体创建粒子
+			// points = new THREE.Points(triggerGeometry, particleMaterial);
+			// points.scale.set(0.05, 0.05, 0.05);
+			const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+			const mesh = new THREE.Mesh(triggerGeometry, material);
+			mesh.position.copy(camera.position);
+			mesh.scale.set(0.05, 0.05, 0.05);
+			mesh.lookAt(camera.position);
+			// 添加到场景中
+			scene.add(mesh);
+		});
+	});
+}
+
 // 渲染函数
 const render = () => {
 	requestAnimationFrame(render);
@@ -260,6 +299,7 @@ const init = () => {
 	setLight();
 	setGeometry();
 	setLines();
+	setPoints();
 	render();
 };
 
@@ -310,7 +350,7 @@ onBeforeUnmount(() => {
 				</div>
 			</div>
 		</div>
-		<ParticleText :scene="scene" :camera="camera" :renderer="renderer"></ParticleText>
+		<!-- <ParticleText ref="textRef" :scene="scene" :camera="camera" :renderer="renderer"></ParticleText> -->
 		<!-- <transition name="fade">
 			<Works2Image
 				v-if="isWorksVisible"
