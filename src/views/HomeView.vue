@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three';
-import { TweenMax, Power1 } from 'gsap';
+import * as GSAP from 'gsap';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
@@ -206,19 +207,26 @@ let createCars = function (cScale = 2, cPos = 10, cColor = 0xffff00) {
 		cElem.position.x = -cPos;
 		cElem.position.z = mathRandom(cAmp);
 
-		TweenMax.to(cElem.position, 3, { x: cPos, repeat: -1, yoyo: true, delay: mathRandom(3) });
+		GSAP.gsap.to(cElem.position, {
+			x: cPos,
+			repeat: -1,
+			duration: 3,
+			yoyo: true,
+			delay: mathRandom(3)
+		});
 	} else {
 		createCarPos = true;
 		cElem.position.x = mathRandom(cAmp);
 		cElem.position.z = -cPos;
 		cElem.rotation.y = (90 * Math.PI) / 180;
 
-		TweenMax.to(cElem.position, 5, {
+		GSAP.gsap.to(cElem.position, {
 			z: cPos,
 			repeat: -1,
+			duration: 5,
 			yoyo: true,
 			delay: mathRandom(3),
-			ease: Power1.easeInOut
+			ease: GSAP.Power1.easeInOut
 		});
 	}
 	cElem.receiveShadow = true;
@@ -236,37 +244,81 @@ let setLines = function () {
 
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { MeshBVH } from 'three-mesh-bvh';
 
 const triggers: Array<string> = ['CREATIVE'];
 const loader = new FontLoader();
 let typeface = '/swiss_black_cond.json';
 let points: THREE.Points;
-// 创建粒子材质
-const particleMaterial = new THREE.PointsMaterial({
-	color: 0xffffff, // 设置粒子颜色
-	size: 0.1 // 设置粒子大小
+const params = {
+	modelPreviewSize: 2,
+	modelSize: 9,
+	gridSize: 0.24,
+	boxSize: 0.24,
+	boxRoundness: 0.03,
+	voxelCount: 100
+};
+// 体素集成体
+let instancedMesh: THREE.InstancedMesh;
+// 创建体素
+const voxelGeometry = new RoundedBoxGeometry(
+	params.boxSize,
+	params.boxSize,
+	params.boxSize,
+	2,
+	params.boxRoundness
+);
+// 创建材质
+const voxelMaterial = new THREE.MeshLambertMaterial({
+	color: new THREE.Color(0xffff55)
 });
+
+function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry, numPoints: number) {
+	// 创建克隆对象， 避免原型被修改
+	const geometryClone = geometry.clone();
+	// 创建外框
+	const box = new THREE.Box3().setFromObject(new THREE.Mesh(geometry));
+	// 创建 BVH
+	const bvh = new MeshBVH(geometryClone);
+	const points = [];
+	for (let i = box.min.x; i < box.max.x; i += params.gridSize) {
+		for (let j = box.min.y; j < box.max.y; j += params.gridSize) {
+			for (let k = box.min.z; k < box.max.z; k += params.gridSize) {
+				const curPoint = new THREE.Vector3(i, j, k);
+				const direction = new THREE.Vector3(0, 0, -1); // 任意方向
+				const intersections = bvh.raycast(new THREE.Ray(curPoint, direction), THREE.DoubleSide);
+				if (intersections.length % 2 === 1) {
+					points.push(curPoint);
+				}
+			}
+		}
+	}
+
+	return points;
+}
 
 function setPoints() {
 	loader.load(typeface, (font) => {
 		triggers.forEach((trigger) => {
-			const triggerGeometry = new TextGeometry('HELLO', {
+			const triggerGeometry = new TextGeometry(trigger, {
 				font: font,
-				size: window.innerWidth * 0.02,
+				size: window.innerWidth * 0.03,
 				height: 4,
 				curveSegments: 10
 			});
+			// 计算文本的边界框
+			triggerGeometry.computeBoundingBox();
+			if (triggerGeometry.boundingBox) {
+				var textWidth = triggerGeometry.boundingBox.max.x - triggerGeometry.boundingBox.min.x;
 
+				// 计算偏移量使文本居中
+				triggerGeometry.translate(-0.5 * textWidth, 0, 0);
+			}
 			// 根据文本几何体创建粒子
-			// points = new THREE.Points(triggerGeometry, particleMaterial);
-			// points.scale.set(0.05, 0.05, 0.05);
-			const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-			const mesh = new THREE.Mesh(triggerGeometry, material);
-			mesh.position.copy(camera.position);
-			mesh.scale.set(0.05, 0.05, 0.05);
-			mesh.lookAt(camera.position);
-			// 添加到场景中
-			scene.add(mesh);
+			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, params.voxelCount);
+			instancedMesh.castShadow = true;
+			instancedMesh.receiveShadow = true;
+			scene.add(instancedMesh);
 		});
 	});
 }
@@ -296,9 +348,9 @@ const init = () => {
 	setMouse();
 	setScene();
 	setCamera();
-	setLight();
-	setGeometry();
-	setLines();
+	// setLight();
+	// setGeometry();
+	// setLines();
 	setPoints();
 	render();
 };
