@@ -280,7 +280,7 @@ function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
 	const geometryClone = geometry.clone();
 	//
 	const mesh = new THREE.Mesh(geometry);
-	mesh.scale.set(0.01, 0.01, 0.01);
+	mesh.scale.set(0.1, 0.1, 0.1);
 	// 创建外框
 	const box = new THREE.Box3().setFromObject(mesh);
 	// 创建 BVH
@@ -310,7 +310,7 @@ function setPoints() {
 			const triggerGeometry = new TextGeometry(trigger, {
 				font: font,
 				size: window.innerWidth * 0.003,
-				height: 2,
+				height: 3,
 				curveSegments: 10
 			});
 			// 计算文本的边界框
@@ -324,6 +324,11 @@ function setPoints() {
 				triggerGeometry.translate(-0.5 * textWidth, 0, 0);
 			}
 			// 得到随机点
+
+			let mesh = new THREE.Mesh(triggerGeometry, new THREE.MeshBasicMaterial({ color: '#ffff00' }));
+			mesh.rotation.set(-1.0, -1.0, 1.0);
+			mesh.scale.set(0.1, 0.1, 0.1);
+			scene.add(mesh);
 			generateRandomPointsInBufferGeometry(triggerGeometry);
 			// 实例化几何体
 			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, points.length);
