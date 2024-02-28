@@ -249,14 +249,16 @@ import { MeshBVH } from 'three-mesh-bvh';
 const triggers: Array<string> = ['CREATIVE'];
 const loader = new FontLoader();
 let typeface = '/swiss_black_cond.json';
-let points: THREE.Points;
+let points: Array<{
+	position: THREE.Vector3;
+	color: THREE.Color;
+}> = [];
 const params = {
 	modelPreviewSize: 2,
 	modelSize: 9,
 	gridSize: 0.24,
 	boxSize: 0.24,
-	boxRoundness: 0.03,
-	voxelCount: 100
+	boxRoundness: 0.03
 };
 // 体素集成体
 let instancedMesh: THREE.InstancedMesh;
@@ -273,14 +275,18 @@ const voxelMaterial = new THREE.MeshLambertMaterial({
 	color: new THREE.Color(0xffff55)
 });
 
-function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry, numPoints: number) {
+function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
 	// 创建克隆对象， 避免原型被修改
 	const geometryClone = geometry.clone();
+	//
+	const mesh = new THREE.Mesh(geometry);
+	mesh.scale.set(0.01, 0.01, 0.01);
 	// 创建外框
-	const box = new THREE.Box3().setFromObject(new THREE.Mesh(geometry));
+	const box = new THREE.Box3().setFromObject(mesh);
 	// 创建 BVH
 	const bvh = new MeshBVH(geometryClone);
-	const points = [];
+	// 使用统一随机颜色
+	const color = new THREE.Color().setHSL(Math.random(), 0.8, 0.8);
 	for (let i = box.min.x; i < box.max.x; i += params.gridSize) {
 		for (let j = box.min.y; j < box.max.y; j += params.gridSize) {
 			for (let k = box.min.z; k < box.max.z; k += params.gridSize) {
@@ -288,13 +294,14 @@ function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry, nu
 				const direction = new THREE.Vector3(0, 0, -1); // 任意方向
 				const intersections = bvh.raycast(new THREE.Ray(curPoint, direction), THREE.DoubleSide);
 				if (intersections.length % 2 === 1) {
-					points.push(curPoint);
+					points.push({
+						position: curPoint,
+						color
+					});
 				}
 			}
 		}
 	}
-
-	return points;
 }
 
 function setPoints() {
@@ -302,22 +309,36 @@ function setPoints() {
 		triggers.forEach((trigger) => {
 			const triggerGeometry = new TextGeometry(trigger, {
 				font: font,
-				size: window.innerWidth * 0.03,
-				height: 4,
+				size: window.innerWidth * 0.003,
+				height: 2,
 				curveSegments: 10
 			});
 			// 计算文本的边界框
 			triggerGeometry.computeBoundingBox();
+			// 计算顶点法线
+			triggerGeometry.computeVertexNormals();
 			if (triggerGeometry.boundingBox) {
 				var textWidth = triggerGeometry.boundingBox.max.x - triggerGeometry.boundingBox.min.x;
 
 				// 计算偏移量使文本居中
 				triggerGeometry.translate(-0.5 * textWidth, 0, 0);
 			}
-			// 根据文本几何体创建粒子
-			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, params.voxelCount);
+			// 得到随机点
+			generateRandomPointsInBufferGeometry(triggerGeometry);
+			// 实例化几何体
+			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, points.length);
 			instancedMesh.castShadow = true;
 			instancedMesh.receiveShadow = true;
+			const dummy = new THREE.Object3D();
+
+			for (let i = 0; i < points.length; i++) {
+				dummy.position.copy(points[i].position);
+				dummy.updateMatrix();
+				instancedMesh.setMatrixAt(i, dummy.matrix);
+				instancedMesh.setColorAt(i, points[i].color);
+			}
+			if (instancedMesh.instanceColor) instancedMesh.instanceColor.needsUpdate = true; // apply the colors
+			instancedMesh.instanceMatrix.needsUpdate = true;
 			scene.add(instancedMesh);
 		});
 	});
