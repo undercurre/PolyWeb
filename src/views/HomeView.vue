@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
@@ -78,19 +77,19 @@ const setGeometry = () => {
 			flatShading: false,
 			side: THREE.DoubleSide
 		});
-		let wmaterial = new THREE.MeshLambertMaterial({
-			color: 0xffffff,
-			wireframe: true,
-			transparent: true,
-			opacity: 0.03,
-			side: THREE.DoubleSide
-		});
+		// let wmaterial = new THREE.MeshLambertMaterial({
+		// 	color: 0xffffff,
+		// 	wireframe: true,
+		// 	transparent: true,
+		// 	opacity: 0.03,
+		// 	side: THREE.DoubleSide
+		// });
 
 		let cube = new THREE.Mesh(geometry, material);
 		let floor = new THREE.Mesh(geometry, material);
-		let wfloor = new THREE.Mesh(geometry, wmaterial);
+		// let wfloor = new THREE.Mesh(geometry, wmaterial);
 
-		cube.add(wfloor);
+		// cube.add(wfloor);
 		cube.castShadow = true;
 		cube.receiveShadow = true;
 
@@ -240,109 +239,6 @@ let setLines = function () {
 	}
 };
 
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { MeshBVH } from 'three-mesh-bvh';
-
-const triggers: Array<string> = ['CREATIVE'];
-const loader = new FontLoader();
-let typeface = '/swiss_black_cond.json';
-let triggerGeometry: Array<TextGeometry> = [];
-let points: Array<{
-	position: THREE.Vector3;
-	color: THREE.Color;
-}> = [];
-const params = {
-	modelPreviewSize: 2,
-	modelSize: 9,
-	gridSize: 0.08,
-	boxSize: 0.05,
-	boxRoundness: 0.1
-};
-// 体素集成体
-let instancedMesh: THREE.InstancedMesh;
-// 创建体素
-const voxelGeometry = new RoundedBoxGeometry(
-	params.boxSize,
-	params.boxSize,
-	params.boxSize,
-	4,
-	params.boxRoundness
-);
-// 创建材质
-const voxelMaterial = new THREE.MeshLambertMaterial({
-	color: new THREE.Color(0xffff55)
-});
-
-function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
-	// 创建克隆对象， 避免原型被修改
-	const geometryClone = geometry.clone();
-	//
-	const mesh = new THREE.Mesh(geometry);
-	// 创建外框
-	const box = new THREE.Box3().setFromObject(mesh);
-	// 创建 BVH
-	const bvh = new MeshBVH(geometryClone);
-	// 使用统一随机颜色
-	const color = new THREE.Color().setHSL(Math.random(), 0.8, 0.8);
-	for (let i = box.min.x; i < box.max.x; i += params.gridSize) {
-		for (let j = box.min.y; j < box.max.y; j += params.gridSize) {
-			for (let k = box.min.z; k < box.max.z; k += params.gridSize) {
-				const curPoint = new THREE.Vector3(i, j, k);
-				const direction = new THREE.Vector3(0, 0, -1); // 任意方向
-				const intersections = bvh.raycast(new THREE.Ray(curPoint, direction), THREE.DoubleSide);
-				if (intersections.length % 2 === 1 && intersections[0].distance <= 1.5 * params.gridSize) {
-					points.push({
-						position: curPoint,
-						color
-					});
-				}
-			}
-		}
-	}
-}
-
-function setPoints() {
-	loader.load(typeface, (font) => {
-		triggers.forEach((trigger, index) => {
-			triggerGeometry[index] = new TextGeometry(trigger, {
-				font: font,
-				size: window.innerWidth * 0.0005,
-				height: 2,
-				curveSegments: 10
-			});
-			// 计算文本的边界框
-			triggerGeometry[index].computeBoundingBox();
-			// 计算顶点法线
-			triggerGeometry[index].computeVertexNormals();
-			if (triggerGeometry[index].boundingBox) {
-				let outBox = triggerGeometry[index].boundingBox as THREE.Box3;
-				let textWidth = outBox.max.x - outBox.min.x;
-
-				// 计算偏移量使文本居中
-				triggerGeometry[index].translate(-0.5 * textWidth, 0, 0);
-			}
-			// 得到随机点
-			generateRandomPointsInBufferGeometry(triggerGeometry[index]);
-			// 实例化几何体
-			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, points.length);
-			// instancedMesh.castShadow = true;
-			// instancedMesh.receiveShadow = true;
-			const dummy = new THREE.Object3D();
-
-			for (let i = 0; i < points.length; i++) {
-				dummy.position.copy(points[i].position);
-				dummy.updateMatrix();
-				instancedMesh.setMatrixAt(i, dummy.matrix);
-				instancedMesh.setColorAt(i, points[i].color);
-			}
-			if (instancedMesh.instanceColor) instancedMesh.instanceColor.needsUpdate = true; // apply the colors
-			instancedMesh.instanceMatrix.needsUpdate = true;
-			scene.add(instancedMesh);
-		});
-	});
-}
-
 // 渲染函数
 const render = () => {
 	requestAnimationFrame(render);
@@ -354,38 +250,6 @@ const render = () => {
 
 	smoke.rotation.y += 0.01;
 	smoke.rotation.x += 0.01;
-
-	// 设置实例化几何体的位置在相机的前方
-	const distance = 5; // 与相机的距离
-	const cameraDirection = new THREE.Vector3();
-	camera.getWorldDirection(cameraDirection); // 获取相机的朝向向量
-	const targetPosition = new THREE.Vector3()
-		.copy(camera.position)
-		.add(cameraDirection.multiplyScalar(distance));
-	if (points.length > 0) {
-		let textWidth: number = 0;
-		let textHeight: number = 0;
-		if (triggerGeometry[0].boundingBox) {
-			let outBox = triggerGeometry[0].boundingBox as THREE.Box3;
-			textWidth = outBox.max.x - outBox.min.x;
-			textHeight = outBox.max.y - outBox.min.y;
-		}
-		const dv = targetPosition
-			.sub(points[0].position)
-			.add(new THREE.Vector3(-0.5 * textWidth, -0.5 * textHeight, 0));
-
-		// 更新每个实例的位置
-		const matrix = new THREE.Matrix4();
-		for (let i = 0, l = points.length; i < l; i++) {
-			const curTarget = points[i].position.add(dv);
-			// 获取当前实例的变换矩阵
-			instancedMesh.getMatrixAt(i, matrix);
-			// 将变换矩阵的位置部分设置为目标位置
-			matrix.setPosition(curTarget);
-			// 将更新后的变换矩阵应用到实例
-			instancedMesh.setMatrixAt(i, matrix);
-		}
-	}
 
 	camera.lookAt(city.position);
 	renderer.render(scene, camera);
@@ -403,9 +267,40 @@ const init = () => {
 	setLight();
 	setGeometry();
 	setLines();
-	setPoints();
 	render();
 };
+
+import TextPlugin from 'gsap/TextPlugin';
+
+GSAP.gsap.registerPlugin(TextPlugin);
+
+function introduce() {
+	let introduceRef = document.getElementById('introduce');
+
+	let tl = GSAP.gsap.timeline({
+		repeat: -1,
+		yoyo: false,
+		repeatDelay: 2
+	});
+	tl.to(introduceRef, {
+		text: { value: 'My name is Li Runhua.', padSpace: true },
+		ease: GSAP.Linear.easeNone,
+		duration: 1,
+		delay: 2
+	});
+	tl.to(introduceRef, {
+		text: { value: 'I am a creative / front-end developer.', padSpace: true },
+		ease: GSAP.Linear.easeNone,
+		duration: 1,
+		delay: 2
+	});
+	tl.to(introduceRef, {
+		text: { value: 'I write javascript code.', padSpace: true },
+		ease: GSAP.Linear.easeNone,
+		duration: 1,
+		delay: 2
+	});
+}
 
 function go2Home() {
 	// 重启
@@ -432,6 +327,7 @@ function go2Works() {
 //用vue钩子函数调用
 onMounted(() => {
 	init();
+	introduce();
 	window.addEventListener('resize', onWindowResize, false);
 });
 
@@ -444,8 +340,8 @@ onBeforeUnmount(() => {
 	<div ref="canvasContainer" class="body">
 		<div class="container-fluid fixed-top header disable-selection">
 			<div>
-				<div class="flex justify-between items-center">
-					<span class="text-30px pl-20px">undercurre</span>
+				<div class="flex justify-between items-center text-#fff">
+					<span ref="introduceRef" id="introduce" class="text-30px pl-20px">Hello ！</span>
 					<div class="text-20px">
 						<span class="pr-20px" @click="go2Home">Home</span
 						><span class="pr-20px" @click="go2Works">Works</span
@@ -454,12 +350,6 @@ onBeforeUnmount(() => {
 				</div>
 			</div>
 		</div>
-		<!-- <transition name="fade">
-			<Works2Image
-				v-if="isWorksVisible"
-				class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-			></Works2Image>
-		</transition> -->
 	</div>
 </template>
 
@@ -535,16 +425,5 @@ h2::after {
 .btn {
 	padding: 10px 25px;
 	border-radius: 100px;
-}
-
-/* 定义淡入淡出动画的 CSS */
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 1s;
-}
-
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
 }
 </style>
