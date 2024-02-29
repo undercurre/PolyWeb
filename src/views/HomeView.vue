@@ -245,6 +245,7 @@ const render = () => {
 
 	city.rotation.y -= (mouse.x * 8 - camera.rotation.y) * uSpeed;
 	city.rotation.x -= (-(mouse.y * 2) - camera.rotation.x) * uSpeed;
+	console.log(mouse);
 	if (city.rotation.x < -0.05) city.rotation.x = -0.05;
 	else if (city.rotation.x > 1) city.rotation.x = 1;
 
@@ -295,7 +296,7 @@ function introduce() {
 		delay: 2
 	});
 	tl.to(introduceRef, {
-		text: { value: 'I write javascript code.', padSpace: true },
+		text: { value: 'Welcome to my world！', padSpace: true },
 		ease: GSAP.Linear.easeNone,
 		duration: 1,
 		delay: 2
@@ -343,9 +344,8 @@ onBeforeUnmount(() => {
 				<div class="flex justify-between items-center text-#fff">
 					<span ref="introduceRef" id="introduce" class="text-30px pl-20px">Hello ！</span>
 					<div class="text-20px">
-						<span class="pr-20px" @click="go2Home">Home</span
-						><span class="pr-20px" @click="go2Works">Works</span
-						><span class="pr-20px">About me</span>
+						<span class="pr-20px" @click="go2Home">TopS</span
+						><span class="pr-20px" @click="go2Works">Works</span><span class="pr-20px">About</span>
 					</div>
 				</div>
 			</div>
