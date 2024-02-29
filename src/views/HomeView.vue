@@ -6,8 +6,6 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
 
-const textRef = ref<ReturnType<typeof defineComponent> | null>(null);
-
 // 先集中创建容器变量
 let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
 
@@ -256,9 +254,9 @@ let points: Array<{
 const params = {
 	modelPreviewSize: 2,
 	modelSize: 9,
-	gridSize: 0.24,
-	boxSize: 0.24,
-	boxRoundness: 0.03
+	gridSize: 0.08,
+	boxSize: 0.05,
+	boxRoundness: 0.1
 };
 // 体素集成体
 let instancedMesh: THREE.InstancedMesh;
@@ -267,7 +265,7 @@ const voxelGeometry = new RoundedBoxGeometry(
 	params.boxSize,
 	params.boxSize,
 	params.boxSize,
-	2,
+	4,
 	params.boxRoundness
 );
 // 创建材质
@@ -280,7 +278,6 @@ function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
 	const geometryClone = geometry.clone();
 	//
 	const mesh = new THREE.Mesh(geometry);
-	mesh.scale.set(0.1, 0.1, 0.1);
 	// 创建外框
 	const box = new THREE.Box3().setFromObject(mesh);
 	// 创建 BVH
@@ -293,7 +290,7 @@ function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
 				const curPoint = new THREE.Vector3(i, j, k);
 				const direction = new THREE.Vector3(0, 0, -1); // 任意方向
 				const intersections = bvh.raycast(new THREE.Ray(curPoint, direction), THREE.DoubleSide);
-				if (intersections.length % 2 === 1) {
+				if (intersections.length % 2 === 1 && intersections[0].distance <= 1.5 * params.gridSize) {
 					points.push({
 						position: curPoint,
 						color
@@ -309,8 +306,8 @@ function setPoints() {
 		triggers.forEach((trigger) => {
 			const triggerGeometry = new TextGeometry(trigger, {
 				font: font,
-				size: window.innerWidth * 0.003,
-				height: 3,
+				size: window.innerWidth * 0.0005,
+				height: 2,
 				curveSegments: 10
 			});
 			// 计算文本的边界框
@@ -321,19 +318,14 @@ function setPoints() {
 				var textWidth = triggerGeometry.boundingBox.max.x - triggerGeometry.boundingBox.min.x;
 
 				// 计算偏移量使文本居中
-				triggerGeometry.translate(-0.5 * textWidth, 0, 0);
+				triggerGeometry.translate(-0.5 * textWidth, window.innerHeight * 0.001, 0);
 			}
 			// 得到随机点
-
-			let mesh = new THREE.Mesh(triggerGeometry, new THREE.MeshBasicMaterial({ color: '#ffff00' }));
-			mesh.rotation.set(-1.0, -1.0, 1.0);
-			mesh.scale.set(0.1, 0.1, 0.1);
-			scene.add(mesh);
 			generateRandomPointsInBufferGeometry(triggerGeometry);
 			// 实例化几何体
 			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, points.length);
-			instancedMesh.castShadow = true;
-			instancedMesh.receiveShadow = true;
+			// instancedMesh.castShadow = true;
+			// instancedMesh.receiveShadow = true;
 			const dummy = new THREE.Object3D();
 
 			for (let i = 0; i < points.length; i++) {
@@ -374,9 +366,9 @@ const init = () => {
 	setMouse();
 	setScene();
 	setCamera();
-	// setLight();
-	// setGeometry();
-	// setLines();
+	setLight();
+	setGeometry();
+	setLines();
 	setPoints();
 	render();
 };
@@ -428,7 +420,6 @@ onBeforeUnmount(() => {
 				</div>
 			</div>
 		</div>
-		<!-- <ParticleText ref="textRef" :scene="scene" :camera="camera" :renderer="renderer"></ParticleText> -->
 		<!-- <transition name="fade">
 			<Works2Image
 				v-if="isWorksVisible"
