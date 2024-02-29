@@ -247,6 +247,7 @@ import { MeshBVH } from 'three-mesh-bvh';
 const triggers: Array<string> = ['CREATIVE'];
 const loader = new FontLoader();
 let typeface = '/swiss_black_cond.json';
+let triggerGeometry: Array<TextGeometry> = [];
 let points: Array<{
 	position: THREE.Vector3;
 	color: THREE.Color;
@@ -303,25 +304,26 @@ function generateRandomPointsInBufferGeometry(geometry: THREE.BufferGeometry) {
 
 function setPoints() {
 	loader.load(typeface, (font) => {
-		triggers.forEach((trigger) => {
-			const triggerGeometry = new TextGeometry(trigger, {
+		triggers.forEach((trigger, index) => {
+			triggerGeometry[index] = new TextGeometry(trigger, {
 				font: font,
 				size: window.innerWidth * 0.0005,
 				height: 2,
 				curveSegments: 10
 			});
 			// 计算文本的边界框
-			triggerGeometry.computeBoundingBox();
+			triggerGeometry[index].computeBoundingBox();
 			// 计算顶点法线
-			triggerGeometry.computeVertexNormals();
-			if (triggerGeometry.boundingBox) {
-				var textWidth = triggerGeometry.boundingBox.max.x - triggerGeometry.boundingBox.min.x;
+			triggerGeometry[index].computeVertexNormals();
+			if (triggerGeometry[index].boundingBox) {
+				let outBox = triggerGeometry[index].boundingBox as THREE.Box3;
+				let textWidth = outBox.max.x - outBox.min.x;
 
 				// 计算偏移量使文本居中
-				triggerGeometry.translate(-0.5 * textWidth, window.innerHeight * 0.001, 0);
+				triggerGeometry[index].translate(-0.5 * textWidth, 0, 0);
 			}
 			// 得到随机点
-			generateRandomPointsInBufferGeometry(triggerGeometry);
+			generateRandomPointsInBufferGeometry(triggerGeometry[index]);
 			// 实例化几何体
 			instancedMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, points.length);
 			// instancedMesh.castShadow = true;
@@ -352,6 +354,38 @@ const render = () => {
 
 	smoke.rotation.y += 0.01;
 	smoke.rotation.x += 0.01;
+
+	// 设置实例化几何体的位置在相机的前方
+	const distance = 5; // 与相机的距离
+	const cameraDirection = new THREE.Vector3();
+	camera.getWorldDirection(cameraDirection); // 获取相机的朝向向量
+	const targetPosition = new THREE.Vector3()
+		.copy(camera.position)
+		.add(cameraDirection.multiplyScalar(distance));
+	if (points.length > 0) {
+		let textWidth: number = 0;
+		let textHeight: number = 0;
+		if (triggerGeometry[0].boundingBox) {
+			let outBox = triggerGeometry[0].boundingBox as THREE.Box3;
+			textWidth = outBox.max.x - outBox.min.x;
+			textHeight = outBox.max.y - outBox.min.y;
+		}
+		const dv = targetPosition
+			.sub(points[0].position)
+			.add(new THREE.Vector3(-0.5 * textWidth, -0.5 * textHeight, 0));
+
+		// 更新每个实例的位置
+		const matrix = new THREE.Matrix4();
+		for (let i = 0, l = points.length; i < l; i++) {
+			const curTarget = points[i].position.add(dv);
+			// 获取当前实例的变换矩阵
+			instancedMesh.getMatrixAt(i, matrix);
+			// 将变换矩阵的位置部分设置为目标位置
+			matrix.setPosition(curTarget);
+			// 将更新后的变换矩阵应用到实例
+			instancedMesh.setMatrixAt(i, matrix);
+		}
+	}
 
 	camera.lookAt(city.position);
 	renderer.render(scene, camera);
