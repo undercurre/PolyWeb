@@ -2,51 +2,22 @@
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
 
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 // 容器
 const canvasContainer = ref<HTMLElement | null>(null);
 
 // 先集中创建容器变量
-let scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera;
-
-let mouse = new THREE.Vector2();
-
-let city = new THREE.Object3D();
-let smoke = new THREE.Object3D();
-let town = new THREE.Object3D();
-let cars: Array<THREE.Mesh> = [];
-let snows: Array<THREE.Mesh> = [];
-
-let createCarPos = true;
-let uSpeed = 0.001;
-let setcolor = 0xf02050;
-
-let setTintNum = true;
-let isWorksVisible = ref(true);
-
-function mathRandom(num = 8) {
-	let numValue = -Math.random() * num + Math.random() * num;
-	return numValue;
-}
-
-function setTintColor() {
-	let setColor;
-	if (setTintNum) {
-		setTintNum = false;
-		setColor = 0x000000;
-	} else {
-		setTintNum = true;
-		setColor = 0x000000;
-	}
-	return setColor;
-}
+let scene: THREE.Scene,
+	renderer: THREE.WebGLRenderer,
+	camera: THREE.Camera,
+	mainOrbit: OrbitControls;
 
 // 创建场景和渲染器
 const setScene = () => {
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color(setcolor);
-	scene.fog = new THREE.Fog(setcolor, 10, 16);
 
-	renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 	// 设置像素比例同步，让高性能显示更漂亮
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -63,196 +34,179 @@ const setScene = () => {
 // 创建相机
 const setCamera = () => {
 	camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 500);
-	camera.position.set(0, 2, 14);
+	camera.position.set(0, 2, 24);
+};
+
+// 创建控制器
+
+const setControls = () => {
+	if (canvasContainer.value) {
+		mainOrbit = new OrbitControls(camera, canvasContainer.value);
+	}
+	mainOrbit.enablePan = false;
+	mainOrbit.autoRotate = true;
+	mainOrbit.minDistance = 13;
+	mainOrbit.maxDistance = 40;
+	mainOrbit.enableDamping = true;
+};
+
+// 创建灯光
+const setLight = () => {
+	const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+	scene.add(ambientLight);
+
+	const lightHolder = new THREE.Group();
+	const topLight = new THREE.SpotLight(0xffffff, 0.4);
+	topLight.position.set(0, 15, 2);
+	topLight.castShadow = true;
+	topLight.shadow.camera.near = 10;
+	topLight.shadow.camera.far = 30;
+	topLight.shadow.mapSize = new THREE.Vector2(2048, 2048);
+	lightHolder.add(topLight);
+	const sideLight = new THREE.SpotLight(0xffffff, 0.4);
+	sideLight.position.set(0, -4, 5);
+	lightHolder.add(sideLight);
+	scene.add(lightHolder);
 };
 
 // 创建几何体
-const setGeometry = () => {
-	let segments = 2;
-	for (let i = 1; i < 100; i++) {
-		let geometry = new THREE.BoxGeometry(1, 1, 1, segments, segments, segments);
-		let material = new THREE.MeshPhongMaterial({
-			color: setTintColor(),
-			wireframe: false,
-			flatShading: false,
-			side: THREE.DoubleSide
-		});
-		// let wmaterial = new THREE.MeshLambertMaterial({
-		// 	color: 0xffffff,
-		// 	wireframe: true,
-		// 	transparent: true,
-		// 	opacity: 0.03,
-		// 	side: THREE.DoubleSide
-		// });
 
-		let cube = new THREE.Mesh(geometry, material);
-		let floor = new THREE.Mesh(geometry, material);
-		// let wfloor = new THREE.Mesh(geometry, wmaterial);
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
-		// cube.add(wfloor);
-		cube.castShadow = true;
-		cube.receiveShadow = true;
-
-		floor.scale.y = 0.05;
-		cube.scale.y = 0.1 + Math.abs(mathRandom(8));
-
-		let cubeWidth = 0.9;
-		cube.scale.x = cube.scale.z = cubeWidth + mathRandom(1 - cubeWidth);
-		cube.position.x = Math.round(mathRandom());
-		cube.position.z = Math.round(mathRandom());
-
-		floor.position.set(cube.position.x, 0, cube.position.z);
-
-		town.add(floor);
-		town.add(cube);
-	}
-
-	let gmaterial = new THREE.MeshToonMaterial({ color: 0xffff00, side: THREE.DoubleSide });
-	let gparticular = new THREE.CircleGeometry(0.01, 3);
-	let aparticular = 5;
-
-	for (let h = 1; h < 300; h++) {
-		let particular = new THREE.Mesh(gparticular, gmaterial);
-		particular.position.set(
-			mathRandom(aparticular),
-			mathRandom(aparticular),
-			mathRandom(aparticular)
-		);
-		particular.rotation.set(mathRandom(), mathRandom(), mathRandom());
-		snows.push(particular);
-		smoke.add(particular);
-	}
-
-	let pmaterial = new THREE.MeshStandardMaterial({
-		color: 0x000000,
-		side: THREE.DoubleSide,
-		roughness: 10,
-		metalness: 0.6,
-		opacity: 0.9,
-		transparent: true
-	});
-	let pgeometry = new THREE.PlaneGeometry(60, 60);
-	let pelement = new THREE.Mesh(pgeometry, pmaterial);
-	pelement.rotation.x = (-90 * Math.PI) / 180;
-	pelement.position.y = -0.001;
-	pelement.receiveShadow = true;
-
-	city.add(pelement);
+const params = {
+	gridSize: 0.1,
+	boxSize: 0.01,
+	boxRoundness: 0.1
 };
 
-// 设置鼠标事件
-const setMouse = () => {
-	function onMouseMove(event: MouseEvent) {
-		event.preventDefault();
-		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	}
-	function onDocumentTouchStart(event: TouchEvent) {
-		if (event.touches.length == 1) {
-			event.preventDefault();
-			mouse.x = event.touches[0].pageX - window.innerWidth / 2;
-			mouse.y = event.touches[0].pageY - window.innerHeight / 2;
-		}
-	}
-	function onDocumentTouchMove(event: TouchEvent) {
-		if (event.touches.length == 1) {
-			event.preventDefault();
-			mouse.x = event.touches[0].pageX - window.innerWidth / 2;
-			mouse.y = event.touches[0].pageY - window.innerHeight / 2;
-		}
-	}
-	window.addEventListener('mousemove', onMouseMove, false);
-	window.addEventListener('touchstart', onDocumentTouchStart, false);
-	window.addEventListener('touchmove', onDocumentTouchMove, false);
-};
+const models = [
+	new THREE.SphereGeometry(1),
+	new THREE.TorusGeometry(2, 1, 30, 30),
+	new THREE.TorusKnotGeometry(2, 0.6, 50, 10)
+];
 
-const setLight = () => {
-	let ambientLight = new THREE.AmbientLight(0xffffff, 4);
-	let lightFront = new THREE.SpotLight(0xffffff, 20, 10);
-	let lightBack = new THREE.PointLight(0xffffff, 0.5);
+let curModelIndex = 0;
 
-	lightFront.rotation.x = (45 * Math.PI) / 180;
-	lightFront.rotation.z = (-45 * Math.PI) / 180;
-	lightFront.position.set(5, 5, 5);
-	lightFront.castShadow = true;
-	lightFront.shadow.mapSize.width = 6000;
-	lightFront.shadow.mapSize.height = lightFront.shadow.mapSize.width;
-	lightFront.penumbra = 0.1;
-	lightBack.position.set(0, 6, 0);
+const voxelDatas: Array<
+	Array<{
+		position: THREE.Vector3;
+		color: THREE.Color;
+	}>
+> = [];
 
-	smoke.position.y = 2;
+const voxelGeometry = new RoundedBoxGeometry(
+	params.boxSize,
+	params.boxSize,
+	params.boxSize,
+	4,
+	params.boxRoundness
+);
+// 材质
+const voxelMaterial = new THREE.MeshLambertMaterial({
+	color: new THREE.Color(0xffff55)
+});
 
-	scene.add(ambientLight);
-	city.add(lightFront);
-	scene.add(lightBack);
-	scene.add(city);
-	city.add(smoke);
-	city.add(town);
+let voxelMesh: THREE.InstancedMesh;
 
-	let gridHelper = new THREE.GridHelper(60, 120, 0xff0000, 0x000000);
-	city.add(gridHelper);
-};
+import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
-let createCars = function (cScale = 2, cPos = 10, cColor = 0xffff00) {
-	let cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide });
-	let cGeo = new THREE.BoxGeometry(1, cScale / 40, cScale / 40);
-	let cElem = new THREE.Mesh(cGeo, cMat);
-	let cAmp = 3;
-
-	if (createCarPos) {
-		createCarPos = false;
-		cElem.position.x = -cPos;
-		cElem.position.z = mathRandom(cAmp);
-
-		GSAP.gsap.to(cElem.position, {
-			x: cPos,
-			repeat: -1,
-			duration: 3,
-			yoyo: true,
-			delay: mathRandom(3)
+function generateVoxelDataInBufferGeometry(geometry: THREE.BufferGeometry): Array<{
+	position: THREE.Vector3;
+	color: THREE.Color;
+}> {
+	const voxelData: Array<{
+		position: THREE.Vector3;
+		color: THREE.Color;
+	}> = [];
+	// 创建克隆对象， 避免原型被修改
+	const geometryClone = geometry.clone();
+	const mesh = new THREE.Mesh(geometryClone);
+	// 加载双面网格
+	if (Array.isArray(mesh.material)) {
+		mesh.material.map((m) => {
+			m.side = THREE.DoubleSide;
 		});
 	} else {
-		createCarPos = true;
-		cElem.position.x = mathRandom(cAmp);
-		cElem.position.z = -cPos;
-		cElem.rotation.y = (90 * Math.PI) / 180;
-
-		GSAP.gsap.to(cElem.position, {
-			z: cPos,
-			repeat: -1,
-			duration: 5,
-			yoyo: true,
-			delay: mathRandom(3),
-			ease: GSAP.Power1.easeInOut
-		});
+		mesh.material.side = THREE.DoubleSide;
 	}
-	cElem.receiveShadow = true;
-	cElem.castShadow = true;
-	cElem.position.y = Math.abs(mathRandom(5));
-	cars.push(cElem);
-	city.add(cElem);
-};
-
-let setLines = function () {
-	for (let i = 0; i < 60; i++) {
-		createCars(0.1, 20);
+	// 创建外框
+	const box = new THREE.Box3().setFromObject(mesh);
+	mesh.updateMatrixWorld(); // 更新网格的世界矩阵，以确保射线投射到正确位置
+	// 创建 BVH
+	const bvh = new MeshBVH(geometryClone);
+	// 使用统一随机颜色
+	const color = new THREE.Color().setHSL(Math.random(), 0.8, 0.8);
+	console.log(box.min, box.max);
+	for (let i = box.min.x; i < box.max.x; i += params.gridSize) {
+		for (let j = box.min.y; j < box.max.y; j += params.gridSize) {
+			for (let k = box.min.z; k < box.max.z; k += params.gridSize) {
+				const curPoint = new THREE.Vector3(i, j, k);
+				const direction = new THREE.Vector3(0, -1, 0); // 任意方向
+				const intersections = bvh.raycast(new THREE.Ray(curPoint, direction), THREE.DoubleSide);
+				if (intersections.length % 2 === 1) {
+					voxelData.push({
+						position: curPoint,
+						color
+					});
+				}
+			}
+		}
 	}
+	return voxelData;
+}
+
+function createVoxelMesh(
+	voxelData: Array<{
+		position: THREE.Vector3;
+		color: THREE.Color;
+	}>
+) {
+	// 实例化几何体
+	voxelMesh = new THREE.InstancedMesh(voxelGeometry, voxelMaterial, voxelData.length);
+	voxelMesh.castShadow = true;
+	voxelMesh.receiveShadow = true;
+	scene.add(voxelMesh);
+}
+
+function updateVoxelMesh(
+	voxelData: Array<{
+		position: THREE.Vector3;
+		color: THREE.Color;
+	}>
+) {
+	const dummy = new THREE.Object3D();
+
+	for (let i = 0; i < voxelData.length; i++) {
+		dummy.position.copy(voxelData[i].position);
+		dummy.updateMatrix();
+		voxelMesh.setMatrixAt(i, dummy.matrix);
+		voxelMesh.setColorAt(i, voxelData[i].color);
+	}
+	if (voxelMesh.instanceColor) voxelMesh.instanceColor.needsUpdate = true; // apply the colors
+	voxelMesh.instanceMatrix.needsUpdate = true;
+}
+
+models.map((model) => {
+	voxelDatas.push(generateVoxelDataInBufferGeometry(model));
+});
+
+const setGeometry = () => {
+	createVoxelMesh(voxelDatas[curModelIndex]);
+	updateVoxelMesh(voxelDatas[curModelIndex]);
+	// setInterval(() => {
+	// 	scene.remove(voxelMesh);
+	// 	if (curModelIndex === voxelDatas.length) curModelIndex = 0;
+	// 	createVoxelMesh(voxelDatas[curModelIndex]);
+	// 	updateVoxelMesh(voxelDatas[curModelIndex]);
+	// 	curModelIndex += 1;
+	// }, 5000);
 };
 
 // 渲染函数
 const render = () => {
+	mainOrbit.update();
 	requestAnimationFrame(render);
-
-	city.rotation.y -= (mouse.x * 8 - camera.rotation.y) * uSpeed;
-	city.rotation.x -= (-(mouse.y * 2) - camera.rotation.x) * uSpeed;
-	console.log(mouse);
-	if (city.rotation.x < -0.05) city.rotation.x = -0.05;
-	else if (city.rotation.x > 1) city.rotation.x = 1;
-
-	smoke.rotation.y += 0.01;
-	smoke.rotation.x += 0.01;
-
-	camera.lookAt(city.position);
 	renderer.render(scene, camera);
 };
 
@@ -262,12 +216,11 @@ function onWindowResize() {
 
 // 初始化所有函数
 const init = () => {
-	setMouse();
 	setScene();
 	setCamera();
 	setLight();
 	setGeometry();
-	setLines();
+	setControls();
 	render();
 };
 
@@ -305,24 +258,10 @@ function introduce() {
 
 function go2Home() {
 	// 重启
-	cars.map((car) => {
-		city.add(car);
-	});
-	snows.map((snow) => {
-		smoke.add(snow);
-	});
-	isWorksVisible.value = false;
 }
 
 function go2Works() {
 	// 停止
-	cars.map((car) => {
-		city.remove(car);
-	});
-	snows.map((snow) => {
-		smoke.remove(snow);
-	});
-	isWorksVisible.value = true;
 }
 
 //用vue钩子函数调用
@@ -344,7 +283,7 @@ onBeforeUnmount(() => {
 				<div class="flex justify-between items-center text-#fff">
 					<span ref="introduceRef" id="introduce" class="text-30px pl-20px">Hello ！</span>
 					<div class="text-20px">
-						<span class="pr-20px" @click="go2Home">TopS</span
+						<span class="pr-20px" @click="go2Home">Top</span
 						><span class="pr-20px" @click="go2Works">Works</span><span class="pr-20px">About</span>
 					</div>
 				</div>
