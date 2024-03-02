@@ -71,19 +71,15 @@ const setLight = () => {
 
 // 创建几何体
 
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+// import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
 const params = {
-	gridSize: 0.1,
-	boxSize: 0.01,
-	boxRoundness: 0.1
+	gridSize: 0.05,
+	boxSize: 0.15,
+	boxRoundness: 1
 };
 
-const models = [
-	new THREE.SphereGeometry(1),
-	new THREE.TorusGeometry(2, 1, 30, 30),
-	new THREE.TorusKnotGeometry(2, 0.6, 50, 10)
-];
+const models = [new THREE.BoxGeometry(1.4, 1.4, 1.4)];
 
 let curModelIndex = 0;
 
@@ -94,13 +90,7 @@ const voxelDatas: Array<
 	}>
 > = [];
 
-const voxelGeometry = new RoundedBoxGeometry(
-	params.boxSize,
-	params.boxSize,
-	params.boxSize,
-	4,
-	params.boxRoundness
-);
+const voxelGeometry = new THREE.BoxGeometry(params.boxSize, params.boxSize, params.boxSize);
 // 材质
 const voxelMaterial = new THREE.MeshLambertMaterial({
 	color: new THREE.Color(0xffff55)
@@ -194,13 +184,13 @@ models.map((model) => {
 const setGeometry = () => {
 	createVoxelMesh(voxelDatas[curModelIndex]);
 	updateVoxelMesh(voxelDatas[curModelIndex]);
-	// setInterval(() => {
-	// 	scene.remove(voxelMesh);
-	// 	if (curModelIndex === voxelDatas.length) curModelIndex = 0;
-	// 	createVoxelMesh(voxelDatas[curModelIndex]);
-	// 	updateVoxelMesh(voxelDatas[curModelIndex]);
-	// 	curModelIndex += 1;
-	// }, 5000);
+	setInterval(() => {
+		scene.remove(voxelMesh);
+		if (curModelIndex === voxelDatas.length) curModelIndex = 0;
+		createVoxelMesh(voxelDatas[curModelIndex]);
+		updateVoxelMesh(voxelDatas[curModelIndex]);
+		curModelIndex += 1;
+	}, 5000);
 };
 
 // 渲染函数
