@@ -44,7 +44,7 @@ const setCamera = () => {
 	camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 10, 1000);
 	camera.position.x = 500;
 	camera.position.y = 500;
-	camera.position.z = 75;
+	camera.position.z = 500;
 };
 
 // 创建控制器
@@ -300,11 +300,11 @@ function computer() {
 		.fromTo(
 			homeShape.position,
 			{
-				y: -8
+				y: 0
 			},
 			{
 				duration: 1,
-				y: -50
+				y: -120
 			},
 			0
 		);
@@ -429,6 +429,7 @@ function computer() {
 	// ---------------------------------------------------
 	const mainTl = GSAP.gsap
 		.timeline({
+			delay: 2,
 			defaults: {
 				ease: 'none'
 			}
@@ -483,12 +484,16 @@ function computer() {
 
 function disappearComputer() {
 	// ---------------------------------------------------
-	const cubeShapeDisappearTl = GSAP.gsap
+	const cubeShapeAppearTl = GSAP.gsap
 		.timeline({
 			paused: true
 		})
-		.to(
+		.fromTo(
 			homeShape.rotation,
+			{
+				x: 0,
+				y: 0
+			},
 			{
 				duration: 2,
 				x: 2 * Math.PI,
@@ -496,23 +501,54 @@ function disappearComputer() {
 			},
 			0
 		)
-		.to(
+		.fromTo(
 			homeShape.position,
 			{
+				y: -120
+			},
+			{
 				duration: 1,
-				y: -8
+				y: 0
 			},
 			0
 		);
 
 	// ---------------------------------------------------
-	const laptopAppearTl = GSAP.gsap
+	const laptopClosingTl = GSAP.gsap
 		.timeline({
 			paused: true,
-			reversed: true // Reverse the timeline
+			onUpdate: () => {}
 		})
-		.to(
+		.from(
+			lidGroup.position,
+			{
+				duration: 0.75,
+				z: '-=.5'
+			},
+			0
+		)
+		.fromTo(
+			lidGroup.rotation,
+			{
+				duration: 1,
+				x: -0.2 * Math.PI
+			},
+			{
+				x: -0.5 * Math.PI
+			},
+			0
+		);
+
+	const laptopAppearTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
 			macGroup.rotation,
+			{
+				x: 0.05 * Math.PI,
+				y: -0.1 * Math.PI
+			},
 			{
 				duration: 2,
 				x: 0.5 * Math.PI,
@@ -520,82 +556,14 @@ function disappearComputer() {
 			},
 			0
 		)
-		.to(
+		.fromTo(
 			macGroup.position,
 			{
-				duration: 1,
-				y: -50
+				y: -8
 			},
-			0
-		);
-	// ---------------------------------------------------
-	const screenOnTl = GSAP.gsap
-		.timeline({
-			paused: true,
-			reversed: true // Reverse the timeline
-		})
-		.to(
-			screenMaterial,
-			{
-				duration: 0.1,
-				opacity: 0
-			},
-			0
-		)
-		.to(
-			screenLight,
-			{
-				duration: 0.1,
-				intensity: 0
-			},
-			0
-		);
-
-	// ---------------------------------------------------
-	// ---------------------------------------------------
-	const laptopOpeningTl = GSAP.gsap
-		.timeline({
-			paused: true,
-			reversed: true, // Reverse the timeline
-			onUpdate: () => {}
-		})
-		.to(
-			lidGroup.position,
-			{
-				duration: 0.75,
-				z: '+=.5'
-			},
-			0
-		)
-		.to(
-			lidGroup.rotation,
 			{
 				duration: 1,
-				x: 0.5 * Math.PI
-			},
-			0
-		)
-		.to(
-			screenOnTl,
-			{
-				duration: 0.06,
-				progress: 0
-			},
-			0.05
-		);
-
-	// ---------------------------------------------------
-	const textureScrollTl = GSAP.gsap
-		.timeline({
-			paused: true,
-			reversed: true, // Reverse the timeline
-			onUpdate: () => {}
-		})
-		.to(
-			screenImageTexture.offset,
-			{
-				duration: 2,
-				y: 0
+				y: -80
 			},
 			0
 		);
@@ -607,20 +575,20 @@ function disappearComputer() {
 			}
 		})
 		.to(
-			textureScrollTl,
+			cubeShapeAppearTl,
 			{
-				duration: 1,
-				progress: 0
+				duration: 1.5,
+				progress: 1
 			},
 			0
 		)
 		.to(
-			laptopOpeningTl,
+			laptopClosingTl,
 			{
 				duration: 1,
-				progress: 1
+				progress: 0.34
 			},
-			0
+			0.5
 		)
 		.to(
 			laptopAppearTl,
@@ -628,15 +596,7 @@ function disappearComputer() {
 				duration: 1.5,
 				progress: 1
 			},
-			0
-		)
-		.to(
-			cubeShapeDisappearTl,
-			{
-				duration: 1.5,
-				progress: 0
-			},
-			0
+			0.2
 		);
 
 	mainTl.play(0);
@@ -657,12 +617,19 @@ function cubeShape() {
 const isWorksVisible = ref(false);
 
 function go2Home() {
-	// 重启
+	if (!isWorksVisible.value) return;
+	camera.position.x = 500;
+	camera.position.y = 500;
+	camera.position.z = 500;
 	isWorksVisible.value = false;
 	disappearComputer();
 }
 
 function go2Works() {
+	if (isWorksVisible.value) return;
+	camera.position.x = 0;
+	camera.position.y = 0;
+	camera.position.z = 75;
 	isWorksVisible.value = true;
 	setComputer(macglb);
 }
