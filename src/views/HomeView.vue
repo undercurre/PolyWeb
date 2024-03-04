@@ -99,8 +99,10 @@ const setComputer = (macglb: GLTF) => {
 	const screenSize = [29.4, 20];
 	macGroup = new THREE.Group();
 	macGroup.position.z = -10;
+	macGroup.visible = false;
 	scene.add(macGroup);
 	lidGroup = new THREE.Group();
+	macGroup.visible = false;
 	macGroup.add(lidGroup);
 	bottomGroup = new THREE.Group();
 	macGroup.add(bottomGroup);
@@ -112,7 +114,6 @@ const setComputer = (macglb: GLTF) => {
 			tex.flipY = false;
 			tex.wrapS = THREE.RepeatWrapping;
 			tex.repeat.y = (tex.image.width / tex.image.height / screenSize[0]) * screenSize[1];
-			computer();
 		}
 	);
 
@@ -239,11 +240,16 @@ const init = () => {
 };
 
 const modelLoader = new GLTFLoader();
-let macglb: GLTF;
 modelLoader.load('https://ksenia-k.com/models/mac-noUv.glb', (glb) => {
-	macglb = glb;
+	setComputer(glb);
 	onWindowResize();
 	window.addEventListener('resize', onWindowResize, false);
+});
+
+modelLoader.load('../gltf/clipboard/scene.gltf', (gltf) => {
+	const model = gltf.scene;
+	console.log('clipboard', model);
+	scene.add(model);
 });
 
 import TextPlugin from 'gsap/TextPlugin';
@@ -279,6 +285,25 @@ function introduce() {
 }
 
 function computer() {
+	const gsapCamera = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+	// ---------------------------------------------------
+	const cameraTransformTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
+			gsapCamera,
+			{
+				x: 500,
+				y: 500,
+				z: 500
+			},
+			{
+				x: 0,
+				y: 0,
+				z: 75
+			}
+		);
 	// ---------------------------------------------------
 	const cubeShapeDisappearTl = GSAP.gsap
 		.timeline({
@@ -427,6 +452,8 @@ function computer() {
 			0
 		);
 	// ---------------------------------------------------
+	macGroup.position.y = -50;
+	macGroup.visible = true;
 	const mainTl = GSAP.gsap
 		.timeline({
 			delay: 2,
@@ -449,6 +476,21 @@ function computer() {
 				progress: 1
 			},
 			0.2
+		)
+		.to(
+			cameraTransformTl,
+			{
+				duration: 2,
+				progress: 1,
+				onUpdate: () => {
+					console.log(gsapCamera);
+					camera.position.x = gsapCamera.x;
+					camera.position.y = gsapCamera.y;
+					camera.position.z = gsapCamera.z;
+					camera.updateProjectionMatrix(); // 在动画更新时手动更新相机的投影矩阵
+				}
+			},
+			0
 		)
 		.to(
 			laptopOpeningTl,
@@ -483,6 +525,25 @@ function computer() {
 }
 
 function disappearComputer() {
+	const gsapCamera = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+	// ---------------------------------------------------
+	const cameraTransformTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
+			gsapCamera,
+			{
+				x: 0,
+				y: 0,
+				z: 75
+			},
+			{
+				x: 500,
+				y: 500,
+				z: 500
+			}
+		);
 	// ---------------------------------------------------
 	const cubeShapeAppearTl = GSAP.gsap
 		.timeline({
@@ -523,7 +584,7 @@ function disappearComputer() {
 			lidGroup.position,
 			{
 				duration: 0.75,
-				z: '-=.5'
+				z: '+=.5'
 			},
 			0
 		)
@@ -531,10 +592,10 @@ function disappearComputer() {
 			lidGroup.rotation,
 			{
 				duration: 1,
-				x: -0.2 * Math.PI
+				x: 0.2 * Math.PI
 			},
 			{
-				x: -0.5 * Math.PI
+				x: 0.5 * Math.PI
 			},
 			0
 		);
@@ -563,7 +624,7 @@ function disappearComputer() {
 			},
 			{
 				duration: 1,
-				y: -80
+				y: -120
 			},
 			0
 		);
@@ -579,6 +640,20 @@ function disappearComputer() {
 			{
 				duration: 1.5,
 				progress: 1
+			},
+			0
+		)
+		.to(
+			cameraTransformTl,
+			{
+				duration: 2,
+				progress: 1,
+				onUpdate: () => {
+					camera.position.x = gsapCamera.x;
+					camera.position.y = gsapCamera.y;
+					camera.position.z = gsapCamera.z;
+					camera.updateProjectionMatrix(); // 在动画更新时手动更新相机的投影矩阵
+				}
 			},
 			0
 		)
@@ -618,20 +693,14 @@ const isWorksVisible = ref(false);
 
 function go2Home() {
 	if (!isWorksVisible.value) return;
-	camera.position.x = 500;
-	camera.position.y = 500;
-	camera.position.z = 500;
 	isWorksVisible.value = false;
 	disappearComputer();
 }
 
 function go2Works() {
 	if (isWorksVisible.value) return;
-	camera.position.x = 0;
-	camera.position.y = 0;
-	camera.position.z = 75;
 	isWorksVisible.value = true;
-	setComputer(macglb);
+	computer();
 }
 
 //用vue钩子函数调用
