@@ -246,9 +246,10 @@ modelLoader.load('https://ksenia-k.com/models/mac-noUv.glb', (glb) => {
 	window.addEventListener('resize', onWindowResize, false);
 });
 
-modelLoader.load('../gltf/clipboard/scene.gltf', (gltf) => {
-	const model = gltf.scene;
-	console.log('clipboard', model);
+modelLoader.load('src/assets/glb/regular_ole_clipboard.glb', (glb) => {
+	const model = glb.scene;
+	glb.scene.scale.set(10, 10, 10);
+	console.log(model);
 	scene.add(model);
 });
 
@@ -483,7 +484,6 @@ function computer() {
 				duration: 2,
 				progress: 1,
 				onUpdate: () => {
-					console.log(gsapCamera);
 					camera.position.x = gsapCamera.x;
 					camera.position.y = gsapCamera.y;
 					camera.position.z = gsapCamera.z;
