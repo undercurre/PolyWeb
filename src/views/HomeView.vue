@@ -299,19 +299,11 @@ function computer() {
 		.timeline({
 			paused: true
 		})
-		.fromTo(
-			gsapCamera,
-			{
-				x: 500,
-				y: 500,
-				z: 500
-			},
-			{
-				x: 0,
-				y: 0,
-				z: 75
-			}
-		);
+		.fromTo(gsapCamera, {
+			x: 0,
+			y: 0,
+			z: 75
+		});
 	// ---------------------------------------------------
 	const cubeShapeDisappearTl = GSAP.gsap
 		.timeline({
@@ -656,26 +648,18 @@ function clipboard() {
 	mainTl.play(0);
 }
 
-function disappearComputer() {
+function cubebox() {
 	const gsapCamera = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
 	// ---------------------------------------------------
 	const cameraTransformTl = GSAP.gsap
 		.timeline({
 			paused: true
 		})
-		.fromTo(
-			gsapCamera,
-			{
-				x: 0,
-				y: 0,
-				z: 75
-			},
-			{
-				x: 500,
-				y: 500,
-				z: 500
-			}
-		);
+		.to(gsapCamera, {
+			x: 500,
+			y: 500,
+			z: 500
+		});
 	// ---------------------------------------------------
 	const cubeShapeAppearTl = GSAP.gsap
 		.timeline({
@@ -702,61 +686,6 @@ function disappearComputer() {
 			{
 				duration: 1,
 				y: 0
-			},
-			0
-		);
-
-	// ---------------------------------------------------
-	const laptopClosingTl = GSAP.gsap
-		.timeline({
-			paused: true,
-			onUpdate: () => {}
-		})
-		.from(
-			lidGroup.position,
-			{
-				duration: 0.75,
-				z: '+=.5'
-			},
-			0
-		)
-		.fromTo(
-			lidGroup.rotation,
-			{
-				duration: 1,
-				x: 0.2 * Math.PI
-			},
-			{
-				x: 0.5 * Math.PI
-			},
-			0
-		);
-
-	const laptopAppearTl = GSAP.gsap
-		.timeline({
-			paused: true
-		})
-		.fromTo(
-			macGroup.rotation,
-			{
-				x: 0.05 * Math.PI,
-				y: -0.1 * Math.PI
-			},
-			{
-				duration: 2,
-				x: 0.5 * Math.PI,
-				y: 0.2 * Math.PI
-			},
-			0
-		)
-		.fromTo(
-			macGroup.position,
-			{
-				y: -8
-			},
-			{
-				duration: 1,
-				y: -120
 			},
 			0
 		);
@@ -809,6 +738,83 @@ function disappearComputer() {
 	mainTl.play(0);
 }
 
+function disappearComputer() {
+	// ---------------------------------------------------
+	const laptopClosingTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.from(
+			lidGroup.position,
+			{
+				duration: 0.75,
+				z: '+=.5'
+			},
+			0
+		)
+		.to(
+			lidGroup.rotation,
+			{
+				x: 0.5 * Math.PI
+			},
+			0
+		);
+
+	const laptopDisappearTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
+			macGroup.rotation,
+			{
+				x: 0.05 * Math.PI,
+				y: -0.1 * Math.PI
+			},
+			{
+				duration: 2,
+				x: 0.5 * Math.PI,
+				y: 0.2 * Math.PI
+			},
+			0
+		)
+		.fromTo(
+			macGroup.position,
+			{
+				y: -8
+			},
+			{
+				duration: 1,
+				y: -120
+			},
+			0
+		);
+	// ---------------------------------------------------
+	const mainTl = GSAP.gsap
+		.timeline({
+			defaults: {
+				ease: 'none'
+			}
+		})
+		.to(
+			laptopClosingTl,
+			{
+				duration: 1,
+				progress: 0.34
+			},
+			0.5
+		)
+		.to(
+			laptopDisappearTl,
+			{
+				duration: 1.5,
+				progress: 1
+			},
+			0.2
+		);
+
+	mainTl.play(0);
+}
+
 function cubeShape() {
 	let tl = GSAP.gsap.timeline({
 		repeat: -1,
@@ -827,9 +833,15 @@ const isAboutVisible = ref(false);
 
 function go2Home() {
 	if (!isWorksVisible.value && !isAboutVisible.value) return;
-	isWorksVisible.value = false;
-	isAboutVisible.value = false;
-	disappearComputer();
+	if (isWorksVisible.value) {
+		isWorksVisible.value = false;
+		disappearComputer();
+	}
+	if (isAboutVisible.value) {
+		isAboutVisible.value = false;
+		disappearClipboard();
+	}
+	cubebox();
 }
 
 function go2Works() {
