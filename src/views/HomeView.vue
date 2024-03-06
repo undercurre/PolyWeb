@@ -254,7 +254,10 @@ function setComputer() {
 let clipboardInstance = new THREE.Group();
 function setClipboard() {
 	modelLoader.load('src/assets/glb/regular_ole_clipboard.glb', (glb) => {
-		let clipboardInstance = glb.scene;
+		[...glb.scene.children[0].children[0].children[0].children].forEach((mesh) => {
+			clipboardInstance.add(mesh);
+		});
+		clipboardInstance.scale.set(0.1, 0.1, 0.1);
 		clipboardInstance.visible = false;
 		scene.add(clipboardInstance);
 	});
@@ -299,40 +302,12 @@ function computer() {
 		.timeline({
 			paused: true
 		})
-		.fromTo(gsapCamera, {
+		.to(gsapCamera, {
+			duration: 1.5,
 			x: 0,
 			y: 0,
 			z: 75
 		});
-	// ---------------------------------------------------
-	const cubeShapeDisappearTl = GSAP.gsap
-		.timeline({
-			paused: true
-		})
-		.fromTo(
-			homeShape.rotation,
-			{
-				x: 2 * Math.PI,
-				y: -2 * Math.PI
-			},
-			{
-				duration: 2,
-				x: 0,
-				y: 0
-			},
-			0
-		)
-		.fromTo(
-			homeShape.position,
-			{
-				y: 0
-			},
-			{
-				duration: 1,
-				y: -120
-			},
-			0
-		);
 	// ---------------------------------------------------
 	const floatingTl = GSAP.gsap
 		.timeline({
@@ -462,14 +437,6 @@ function computer() {
 			}
 		})
 		.to(
-			cubeShapeDisappearTl,
-			{
-				duration: 1.5,
-				progress: 1
-			},
-			0
-		)
-		.to(
 			laptopAppearTl,
 			{
 				duration: 1.5,
@@ -536,51 +503,39 @@ function clipboard() {
 			z: 75
 		});
 	// ---------------------------------------------------
-	const cubeShapeDisappearTl = GSAP.gsap
-		.timeline({
-			paused: true
-		})
-		.fromTo(
-			homeShape.rotation,
-			{
-				x: 2 * Math.PI,
-				y: -2 * Math.PI
-			},
-			{
-				duration: 2,
-				x: 0,
-				y: 0
-			},
-			0
-		)
-		.fromTo(
-			homeShape.position,
-			{
-				y: 0
-			},
-			{
-				duration: 1,
-				y: -120
-			},
-			0
-		);
 	// ---------------------------------------------------
-	const laptopAppearTl = GSAP.gsap
+	const clipBoardAppearTl = GSAP.gsap
 		.timeline({
 			paused: true
 		})
 		.fromTo(
 			clipboardInstance.rotation,
 			{
-				x: 0.5 * Math.PI,
-				y: 0.2 * Math.PI
+				x: 0,
+				y: 0,
+				z: 0
 			},
 			{
 				duration: 2,
-				x: 0.05 * Math.PI,
-				y: -0.1 * Math.PI
+				x: 2 * Math.PI,
+				y: -2 * Math.PI,
+				z: 2 * Math.PI
 			},
 			0
+		)
+		.fromTo(
+			clipboardInstance.scale,
+			{
+				x: 0,
+				y: 0,
+				z: 0
+			},
+			{
+				duration: 2,
+				x: 0.1,
+				y: 0.1,
+				z: 0.1
+			}
 		)
 		.fromTo(
 			clipboardInstance.position,
@@ -589,24 +544,12 @@ function clipboard() {
 			},
 			{
 				duration: 1,
-				y: -8
-			},
-			0
-		)
-		.fromTo(
-			clipboardInstance.scale,
-			{
-				scale: -120
-			},
-			{
-				duration: 1,
-				y: -8
+				y: 0
 			},
 			0
 		);
 	// ---------------------------------------------------
-	macGroup.position.y = -50;
-	macGroup.visible = true;
+	clipboardInstance.visible = true;
 	const mainTl = GSAP.gsap
 		.timeline({
 			delay: 2,
@@ -615,15 +558,7 @@ function clipboard() {
 			}
 		})
 		.to(
-			cubeShapeDisappearTl,
-			{
-				duration: 1.5,
-				progress: 1
-			},
-			0
-		)
-		.to(
-			laptopAppearTl,
+			clipBoardAppearTl,
 			{
 				duration: 1.5,
 				progress: 1
@@ -666,7 +601,7 @@ function cubebox() {
 			paused: true
 		})
 		.fromTo(
-			homeShape.rotation,
+			cubeShapeInstance.rotation,
 			{
 				x: 0,
 				y: 0
@@ -679,7 +614,7 @@ function cubebox() {
 			0
 		)
 		.fromTo(
-			homeShape.position,
+			cubeShapeInstance.position,
 			{
 				y: -120
 			},
@@ -717,17 +652,50 @@ function cubebox() {
 				}
 			},
 			0
+		);
+
+	mainTl.play(0);
+}
+
+function disappearCubebox() {
+	// ---------------------------------------------------
+	const cubeboxDisappearTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
+			cubeShapeInstance.rotation,
+			{
+				x: 0.05 * Math.PI,
+				y: -0.1 * Math.PI
+			},
+			{
+				duration: 2,
+				x: 0.5 * Math.PI,
+				y: 0.2 * Math.PI
+			},
+			0
 		)
-		.to(
-			laptopClosingTl,
+		.fromTo(
+			cubeShapeInstance.position,
+			{
+				y: -8
+			},
 			{
 				duration: 1,
-				progress: 0.34
+				y: -120
 			},
-			0.5
-		)
+			0
+		);
+	// ---------------------------------------------------
+	const mainTl = GSAP.gsap
+		.timeline({
+			defaults: {
+				ease: 'none'
+			}
+		})
 		.to(
-			laptopAppearTl,
+			cubeboxDisappearTl,
 			{
 				duration: 1.5,
 				progress: 1
@@ -815,6 +783,72 @@ function disappearComputer() {
 	mainTl.play(0);
 }
 
+function disappearClipboard() {
+	const clipBoardDisappearTl = GSAP.gsap
+		.timeline({
+			paused: true
+		})
+		.fromTo(
+			clipboardInstance.rotation,
+			{
+				x: 2 * Math.PI,
+				y: -2 * Math.PI,
+				z: 2 * Math.PI
+			},
+			{
+				duration: 2,
+				x: 0,
+				y: 0,
+				z: 0
+			},
+			0
+		)
+		.fromTo(
+			clipboardInstance.scale,
+			{
+				x: 0.1,
+				y: 0.1,
+				z: 0.1
+			},
+			{
+				duration: 2,
+				x: 0,
+				y: 0,
+				z: 0
+			}
+		)
+		.fromTo(
+			clipboardInstance.position,
+			{
+				y: 0
+			},
+			{
+				duration: 1,
+				y: -120
+			},
+			0
+		);
+	// ---------------------------------------------------
+	clipboardInstance.visible = true;
+	const mainTl = GSAP.gsap
+		.timeline({
+			delay: 2,
+			defaults: {
+				ease: 'none'
+			}
+		})
+		.to(
+			clipBoardDisappearTl,
+			{
+				duration: 1.5,
+				progress: 1
+			},
+			0.2
+		);
+
+	mainTl.play(0);
+}
+
 function cubeShape() {
 	let tl = GSAP.gsap.timeline({
 		repeat: -1,
@@ -832,7 +866,8 @@ const isWorksVisible = ref(false);
 const isAboutVisible = ref(false);
 
 function go2Home() {
-	if (!isWorksVisible.value && !isAboutVisible.value) return;
+	if (isHomeVisible.value) return;
+	isHomeVisible.value = true;
 	if (isWorksVisible.value) {
 		isWorksVisible.value = false;
 		disappearComputer();
@@ -847,14 +882,28 @@ function go2Home() {
 function go2Works() {
 	if (isWorksVisible.value) return;
 	isWorksVisible.value = true;
-	isHomeVisible.value = false;
+	if (isHomeVisible.value) {
+		isHomeVisible.value = false;
+		disappearCubebox();
+	}
+	if (isAboutVisible.value) {
+		isAboutVisible.value = false;
+		disappearClipboard();
+	}
 	computer();
 }
 
 function go2About() {
 	if (isAboutVisible.value) return;
 	isAboutVisible.value = true;
-	isHomeVisible.value = false;
+	if (isHomeVisible.value) {
+		isHomeVisible.value = true;
+		disappearCubebox();
+	}
+	if (isWorksVisible.value) {
+		isWorksVisible.value = true;
+		disappearComputer();
+	}
 	clipboard();
 }
 
@@ -881,7 +930,7 @@ onBeforeUnmount(() => {
 		</div>
 		<transition name="fade">
 			<div
-				v-if="!isWorksVisible"
+				v-if="!isWorksVisible && !isAboutVisible"
 				class="w-full absolute bottom-20% flex w-full justify-center items-center text-36px text-#fff"
 			>
 				<span>Continuous improvement</span>
