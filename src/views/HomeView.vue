@@ -2,8 +2,6 @@
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // static
@@ -13,7 +11,6 @@ const canvasContainer = ref<HTMLElement | null>(null);
 // 先集中创建容器变量
 let scene: THREE.Scene,
 	renderer: THREE.WebGLRenderer,
-	css3DRenderer: CSS3DRenderer,
 	camera: THREE.PerspectiveCamera,
 	mainOrbit: OrbitControls,
 	lightHolder: THREE.Group;
@@ -23,11 +20,7 @@ const setScene = () => {
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color('#4bd327');
 	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-	css3DRenderer = new CSS3DRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	css3DRenderer.setSize(window.innerWidth, window.innerHeight);
-	css3DRenderer.domElement.style.position = 'absolute';
-	css3DRenderer.domElement.style.top = '0';
 
 	// 设置像素比例同步，让高性能显示更漂亮
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -39,7 +32,6 @@ const setScene = () => {
 	}
 	if (canvasContainer.value) {
 		canvasContainer.value.appendChild(renderer.domElement);
-		canvasContainer.value.appendChild(css3DRenderer.domElement);
 	}
 };
 
@@ -236,7 +228,6 @@ const render = () => {
 	lightHolder.quaternion.copy(camera.quaternion);
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
-	css3DRenderer.render(scene, camera);
 };
 
 // 初始化所有函数
