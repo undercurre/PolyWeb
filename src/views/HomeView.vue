@@ -2,6 +2,8 @@
 import * as THREE from 'three';
 import * as GSAP from 'gsap';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // static
@@ -11,6 +13,7 @@ const canvasContainer = ref<HTMLElement | null>(null);
 // 先集中创建容器变量
 let scene: THREE.Scene,
 	renderer: THREE.WebGLRenderer,
+	css3DRenderer: CSS3DRenderer,
 	camera: THREE.PerspectiveCamera,
 	mainOrbit: OrbitControls,
 	lightHolder: THREE.Group;
@@ -20,6 +23,12 @@ const setScene = () => {
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color('#4bd327');
 	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+	css3DRenderer = new CSS3DRenderer();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	css3DRenderer.setSize(window.innerWidth, window.innerHeight);
+	css3DRenderer.domElement.style.position = 'absolute';
+	css3DRenderer.domElement.style.top = '0';
+
 	// 设置像素比例同步，让高性能显示更漂亮
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -30,6 +39,7 @@ const setScene = () => {
 	}
 	if (canvasContainer.value) {
 		canvasContainer.value.appendChild(renderer.domElement);
+		canvasContainer.value.appendChild(css3DRenderer.domElement);
 	}
 };
 
@@ -226,6 +236,7 @@ const render = () => {
 	lightHolder.quaternion.copy(camera.quaternion);
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
+	css3DRenderer.render(scene, camera);
 };
 
 // 初始化所有函数
@@ -252,6 +263,7 @@ function setComputer() {
 }
 
 let clipboardInstance = new THREE.Group();
+
 function setClipboard() {
 	modelLoader.load('src/assets/glb/regular_ole_clipboard.glb', (glb) => {
 		[...glb.scene.children[0].children[0].children[0].children].forEach((mesh) => {
@@ -897,11 +909,11 @@ function go2About() {
 	if (isAboutVisible.value) return;
 	isAboutVisible.value = true;
 	if (isHomeVisible.value) {
-		isHomeVisible.value = true;
+		isHomeVisible.value = false;
 		disappearCubebox();
 	}
 	if (isWorksVisible.value) {
-		isWorksVisible.value = true;
+		isWorksVisible.value = false;
 		disappearComputer();
 	}
 	clipboard();
@@ -919,10 +931,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-	<div ref="canvasContainer" class="body">
-		<div class="w-full flex absolute top-0 left-0 p-20px justify-between items-center text-#fff">
-			<span ref="introduceRef" id="introduce" class="text-30px pl-20px">Hello ！</span>
-			<div class="text-20px">
+	<div ref="canvasContainer" class="w-100vw h-100vh">
+		<div
+			class="w-full h-10 leading-5 flex absolute top-0 left-0 p-20px justify-between items-center text-#fff z-999"
+		>
+			<span ref="introduceRef" id="introduce" class="text-4 pl-20px max-w-1/2">Hello ！</span>
+			<div class="text-3 max-w-1/2">
 				<span class="pr-20px" @click="go2Home">Top</span
 				><span class="pr-20px" @click="go2Works">Works</span
 				><span class="pr-20px" @click="go2About">About me</span>
@@ -931,7 +945,7 @@ onBeforeUnmount(() => {
 		<transition name="fade">
 			<div
 				v-if="!isWorksVisible && !isAboutVisible"
-				class="w-full absolute bottom-20% flex w-full justify-center items-center text-36px text-#fff"
+				class="w-full absolute bottom-20% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
 				<span>Continuous improvement</span>
 				<span class="p-20px">&</span>
