@@ -943,6 +943,20 @@ onBeforeUnmount(() => {
 				<span>Infinite transcendence</span>
 			</div>
 		</transition>
+		<transition name="exfade">
+			<div
+				v-if="isWorksVisible"
+				class="w-full absolute bottom-0 left-0 flex w-full justify-center items-center text-4 text-#fff"
+			></div>
+		</transition>
+		<transition name="cvfade">
+			<div
+				v-if="isAboutVisible"
+				class="w-full absolute top-15% left-0 flex w-full justify-center items-center text-4 text-#fff"
+			>
+				<el-button>Download CV</el-button>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -954,6 +968,26 @@ onBeforeUnmount(() => {
 
 .fade-enter,
 .fade-leave-to {
+	opacity: 0;
+}
+
+.exfade-enter-active,
+.exfade-leave-active {
+	transition: opacity 0.5s;
+}
+
+.exfade-enter,
+.exfade-leave-to {
+	opacity: 0;
+}
+
+.cvfade-enter-active,
+.cvfade-leave-active {
+	transition: opacity 0.5s;
+}
+
+.cvfade-enter,
+.cvfade-leave-to {
 	opacity: 0;
 }
 </style>
