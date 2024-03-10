@@ -110,18 +110,15 @@ const setComputerInstance = (macglb: GLTF) => {
 	macGroup.add(bottomGroup);
 
 	const textLoader = new THREE.TextureLoader();
-	screenImageTexture = textLoader.load(
-		'https://ksenia-k.com/img/threejs/macbook-screen-texture.png',
-		(tex) => {
-			tex.flipY = false;
-			tex.wrapS = THREE.RepeatWrapping;
-			tex.repeat.y = (tex.image.width / tex.image.height / screenSize[0]) * screenSize[1];
-		}
-	);
+	screenImageTexture = textLoader.load('github.png', (tex) => {
+		tex.flipY = false;
+		tex.wrapS = THREE.RepeatWrapping;
+		tex.repeat.y = (tex.image.width / tex.image.height / screenSize[0]) * screenSize[1];
+	});
 
-	const videoEl = document.createElement('video');
-	const screenCameraTexture = new THREE.VideoTexture(videoEl);
-	screenCameraTexture.flipY = false;
+	// const videoEl = document.createElement('video');
+	// const screenCameraTexture = new THREE.VideoTexture(videoEl);
+	// screenCameraTexture.flipY = false;
 	screenMaterial = new THREE.MeshBasicMaterial({
 		map: screenImageTexture,
 		transparent: true,
@@ -265,6 +262,29 @@ function setClipboard() {
 		scene.add(clipboardInstance);
 	});
 }
+
+let textureLoader = new THREE.TextureLoader();
+
+textureLoader.load(
+	'cv.jpg',
+	function (texture) {
+		// 设置纹理的过滤方式为三线性过滤
+		texture.magFilter = THREE.LinearFilter;
+		texture.minFilter = THREE.LinearMipmapLinearFilter;
+		let geometry = new THREE.PlaneGeometry(1080, 1786); // 平面大小为2x2
+		geometry.rotateX(-Math.PI / 2); // 绕 X 轴旋转 -90 度
+		var material = new THREE.MeshBasicMaterial({ map: texture }); // 使用基础材质
+		var plane = new THREE.Mesh(geometry, material);
+		plane.position.set(0, 10, 0);
+		plane.scale.set(0.4, 0.4, 0.4);
+		// 渲染场景
+		clipboardInstance.add(plane);
+	},
+	undefined,
+	function (error) {
+		console.error('An error happened when loading the texture:', error);
+	}
+);
 
 import TextPlugin from 'gsap/TextPlugin';
 
@@ -938,7 +958,7 @@ onBeforeUnmount(() => {
 				v-if="!isWorksVisible && !isAboutVisible"
 				class="w-full absolute bottom-20% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
-				<span>Continuous improvement</span>
+				<span class="text-right">Continuous improvement</span>
 				<span class="p-20px">&</span>
 				<span>Infinite transcendence</span>
 			</div>
