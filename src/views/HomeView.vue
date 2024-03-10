@@ -110,7 +110,7 @@ const setComputerInstance = (macglb: GLTF) => {
 	macGroup.add(bottomGroup);
 
 	const textLoader = new THREE.TextureLoader();
-	screenImageTexture = textLoader.load('github.png', (tex) => {
+	screenImageTexture = textLoader.load('works.png', (tex) => {
 		tex.flipY = false;
 		tex.wrapS = THREE.RepeatWrapping;
 		tex.repeat.y = (tex.image.width / tex.image.height / screenSize[0]) * screenSize[1];
@@ -916,6 +916,28 @@ function go2Works() {
 	computer();
 }
 
+const page = ref(1);
+
+function leftWorks() {
+	if (page.value < 2) return;
+	page.value = page.value - 1;
+	GSAP.gsap.to(screenImageTexture.offset, {
+		duration: 2,
+		y: 0.06 + page.value * 0.06,
+		ease: 'power1.inOut'
+	});
+}
+
+function rightWorks() {
+	if (page.value > 7) return;
+	page.value = page.value + 1;
+	GSAP.gsap.to(screenImageTexture.offset, {
+		duration: 2,
+		y: 0.06 + page.value * 0.06,
+		ease: 'power1.inOut'
+	});
+}
+
 function go2About() {
 	if (isAboutVisible.value) return;
 	isAboutVisible.value = true;
@@ -966,8 +988,28 @@ onBeforeUnmount(() => {
 		<transition name="exfade">
 			<div
 				v-if="isWorksVisible"
-				class="w-full absolute bottom-0 left-0 flex w-full justify-center items-center text-4 text-#fff"
-			></div>
+				class="w-full absolute top-15% left-0 flex w-full justify-center items-center text-4 text-#fff"
+			>
+				<div class="flex">
+					<div @click="leftWorks">
+						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M18.464 2.114a.998.998 0 0 0-1.033.063l-13 9a1.003 1.003 0 0 0 0 1.645l13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-.536-.886M17 19.091L6.757 12L17 4.909z"
+							/>
+						</svg>
+					</div>
+					<span class="tracking--8 mx-20px">{{ page }}/8</span>
+					<div @click="rightWorks">
+						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A.998.998 0 0 0 5 3v18a1 1 0 0 0 .536.886M7 4.909L17.243 12L7 19.091z"
+							/>
+						</svg>
+					</div>
+				</div>
+			</div>
 		</transition>
 		<transition name="cvfade">
 			<div
