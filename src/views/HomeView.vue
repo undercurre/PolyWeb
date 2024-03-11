@@ -253,7 +253,7 @@ function setComputer() {
 let clipboardInstance = new THREE.Group();
 
 function setClipboard() {
-	modelLoader.load('src/assets/glb/regular_ole_clipboard.glb', (glb) => {
+	modelLoader.load('/regular_ole_clipboard.glb', (glb) => {
 		[...glb.scene.children[0].children[0].children[0].children].forEach((mesh) => {
 			clipboardInstance.add(mesh);
 		});
@@ -1107,7 +1107,7 @@ onBeforeUnmount(() => {
 		<transition name="cvfade">
 			<div
 				v-if="isAboutVisible"
-				class="w-full absolute top-5% left-0 flex w-full justify-center items-center text-4 text-#fff"
+				class="w-full absolute top-8% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
 				<el-button @click="downCV" class="w-40 h-12 text-4 rounded-full" size="large"
 					>Download CV</el-button

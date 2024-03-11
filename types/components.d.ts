@@ -7,8 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElInput: typeof import('element-plus/es')['ElInput']
+    ElEmpty: typeof import('element-plus/es')['ElEmpty']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTree: typeof import('element-plus/es')['ElTree']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/components/SvgIcon.vue')['default']
@@ -38,5 +41,8 @@ declare module 'vue' {
     UseVitest: typeof import('./../src/components/useVitest.vue')['default']
     UseVueuse: typeof import('./../src/components/useVueuse.vue')['default']
     Works2Image: typeof import('./../src/components/works2Image.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
