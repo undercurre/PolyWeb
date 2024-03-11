@@ -970,14 +970,21 @@ function downCV() {
 
 import { pipeline } from '@xenova/transformers';
 
-async function go2AI(question) {
-	let pipe = await pipeline('question-answering');
+const questionAI = ref('你是谁');
 
-	let context =
-		"You are an AI chatbot developed based on transformer.js. You know some information about the work of the host, Li Yunhua, which will help visitors understand the master's abilities, work experience, and development habits. The visitor is currently on the owner's profile. The owner, Li Runhua, is a Web front-end development engineer with a professional degree in network engineering, and is accustomed to using the front-end framework Vue in his work, and mostly develops in a cross-terminal environment.";
-	let out = await pipe(question, context);
+const answerAI = ref('');
 
-	console.log(out);
+async function go2AI() {
+	let pipe = await pipeline('question-answering', 'uer/roberta-base-chinese-extractive-qa');
+
+	// let context =
+	// 	"You are an AI chatbot developed based on transformer.js. You know some information about the work of the host, Li Yunhua, which will help visitors understand the master's abilities, work experience, and development habits. The visitor is currently on the owner's profile. The owner, Li Runhua, is a Web front-end development engineer with a professional degree in network engineering, and is accustomed to using the front-end framework Vue in his work, and mostly develops in a cross-terminal environment.";
+
+	let context = '我是黎润华制作的基于transformer.js的聊天机器人！';
+
+	let out = await pipe('你是什么?', context);
+
+	answerAI.value = out;
 }
 
 //用vue钩子函数调用
@@ -1001,17 +1008,21 @@ onBeforeUnmount(() => {
 				<span class="pr-20px" @click="go2Home">Top</span
 				><span class="pr-20px" @click="go2Works">Works</span
 				><span class="pr-20px" @click="go2About">About me</span>
-				<span class="pr-20px" @click="go2AI('What are you?')">AI</span>
 			</div>
 		</div>
 		<transition name="fade">
 			<div
 				v-if="!isWorksVisible && !isAboutVisible"
-				class="w-full absolute bottom-20% left-0 flex w-full justify-center items-center text-4 text-#fff"
+				class="w-full absolute bottom-20% left-0 flex-col w-full justify-center items-center text-4 text-#fff"
 			>
-				<span class="text-right">Continuous improvement</span>
-				<span class="p-20px">&</span>
-				<span>Infinite transcendence</span>
+				<span class="">Chatbot help you learn me!</span>
+				<el-input
+					v-model="questionAI"
+					style="width: 240px"
+					placeholder="Please input"
+					@change="go2AI"
+				/>
+				<p>{{ answerAI }}</p>
 			</div>
 		</transition>
 		<transition name="exfade">
