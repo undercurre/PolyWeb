@@ -28,6 +28,7 @@
   "dependencies": {
     "@tweenjs/tween.js": "^23.1.1",
     "@vueuse/core": "^10.3.0",
+    "@xenova/transformers": "^2.16.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.3",
     "crypto-js": "^4.1.1",

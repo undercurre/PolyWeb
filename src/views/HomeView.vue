@@ -968,6 +968,18 @@ function downCV() {
 	document.body.removeChild(link);
 }
 
+import { pipeline } from '@xenova/transformers';
+
+async function go2AI(question) {
+	let pipe = await pipeline('question-answering');
+
+	let context =
+		"You are an AI chatbot developed based on transformer.js. You know some information about the work of the host, Li Yunhua, which will help visitors understand the master's abilities, work experience, and development habits. The visitor is currently on the owner's profile. The owner, Li Runhua, is a Web front-end development engineer with a professional degree in network engineering, and is accustomed to using the front-end framework Vue in his work, and mostly develops in a cross-terminal environment.";
+	let out = await pipe(question, context);
+
+	console.log(out);
+}
+
 //用vue钩子函数调用
 onMounted(() => {
 	init();
@@ -989,6 +1001,7 @@ onBeforeUnmount(() => {
 				<span class="pr-20px" @click="go2Home">Top</span
 				><span class="pr-20px" @click="go2Works">Works</span
 				><span class="pr-20px" @click="go2About">About me</span>
+				<span class="pr-20px" @click="go2AI('What are you?')">AI</span>
 			</div>
 		</div>
 		<transition name="fade">
