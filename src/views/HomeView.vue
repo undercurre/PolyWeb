@@ -916,25 +916,31 @@ function go2Works() {
 	computer();
 }
 
-const page = ref(1);
+const page = ref(0);
 
 function leftWorks() {
-	if (page.value < 2) return;
+	if (page.value < 1) return;
 	page.value = page.value - 1;
 	GSAP.gsap.to(screenImageTexture.offset, {
 		duration: 2,
-		y: 0.06 + page.value * 0.06,
-		ease: 'power1.inOut'
+		y: page.value * 0.12,
+		ease: 'power1.inOut',
+		onComplete: () => {
+			console.log(screenImageTexture.offset);
+		}
 	});
 }
 
 function rightWorks() {
-	if (page.value > 7) return;
+	if (page.value > 6) return;
 	page.value = page.value + 1;
 	GSAP.gsap.to(screenImageTexture.offset, {
 		duration: 2,
-		y: 0.06 + page.value * 0.06,
-		ease: 'power1.inOut'
+		y: page.value * 0.12,
+		ease: 'power1.inOut',
+		onComplete: () => {
+			console.log(screenImageTexture.offset);
+		}
 	});
 }
 
@@ -950,6 +956,16 @@ function go2About() {
 		disappearComputer();
 	}
 	clipboard();
+}
+
+function downCV() {
+	const url = '/cv.pdf';
+	const link = document.createElement('a');
+	link.href = url;
+	link.setAttribute('download', '');
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
 }
 
 //用vue钩子函数调用
@@ -999,7 +1015,7 @@ onBeforeUnmount(() => {
 							/>
 						</svg>
 					</div>
-					<span class="tracking--8 mx-20px">{{ page }}/8</span>
+					<span class="tracking--8 mx-20px">{{ page + 1 }}/8</span>
 					<div @click="rightWorks">
 						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
 							<path
@@ -1016,7 +1032,9 @@ onBeforeUnmount(() => {
 				v-if="isAboutVisible"
 				class="w-full absolute top-15% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
-				<el-button>Download CV</el-button>
+				<el-button @click="downCV" class="w-400px h-120px text-4" size="large"
+					>Download CV</el-button
+				>
 			</div>
 		</transition>
 	</div>
