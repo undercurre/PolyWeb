@@ -944,6 +944,51 @@ function rightWorks() {
 	});
 }
 
+const works = computed(() => {
+	switch (page.value) {
+		case 0:
+			return {
+				title: 'My Blog',
+				link: 'https://blog.lirh42.xyz/'
+			};
+		case 1:
+			return {
+				title: 'My Github',
+				link: 'https://github.com/undercurre'
+			};
+		case 2:
+			return {
+				title: 'HOMLUX System(Home version)',
+				link: 'https://www.sohu.com/a/729938927_121123819'
+			};
+		case 3:
+			return {
+				title: 'Midea App',
+				link: 'https://sj.qq.com/appdetail/com.midea.ai.appliances?g_f=1185403&fromcase=70053'
+			};
+		case 4:
+			return {
+				title: 'NPM Packages',
+				link: 'https://www.npmjs.com/~lirh42'
+			};
+		case 5:
+			return {
+				title: 'HOMLUX System(Business version)',
+				link: 'https://m.tech.china.com/hea/article/20231225/122023_1461206.html'
+			};
+		case 6:
+			return {
+				title: 'Midea SmartScreen',
+				link: 'https://tech.chinadaily.com.cn/a/202205/30/WS629480e6a3101c3ee7ad7ee0.html'
+			};
+		case 7:
+			return {
+				title: 'My UI Component Library',
+				link: 'https://undercurre.github.io/Marvels-Dosc/'
+			};
+	}
+});
+
 function go2About() {
 	if (isAboutVisible.value) return;
 	isAboutVisible.value = true;
@@ -968,24 +1013,24 @@ function downCV() {
 	document.body.removeChild(link);
 }
 
-import { pipeline } from '@xenova/transformers';
+// import { pipeline } from '@xenova/transformers';
 
-const questionAI = ref('你是谁');
+// const questionAI = ref('你是谁');
 
-const answerAI = ref('');
+// const answerAI = ref('');
 
-async function go2AI() {
-	let pipe = await pipeline('question-answering', 'uer/roberta-base-chinese-extractive-qa');
+// async function go2AI() {
+// 	let pipe = await pipeline('question-answering', 'uer/roberta-base-chinese-extractive-qa');
 
-	// let context =
-	// 	"You are an AI chatbot developed based on transformer.js. You know some information about the work of the host, Li Yunhua, which will help visitors understand the master's abilities, work experience, and development habits. The visitor is currently on the owner's profile. The owner, Li Runhua, is a Web front-end development engineer with a professional degree in network engineering, and is accustomed to using the front-end framework Vue in his work, and mostly develops in a cross-terminal environment.";
+// 	// let context =
+// 	// 	"You are an AI chatbot developed based on transformer.js. You know some information about the work of the host, Li Yunhua, which will help visitors understand the master's abilities, work experience, and development habits. The visitor is currently on the owner's profile. The owner, Li Runhua, is a Web front-end development engineer with a professional degree in network engineering, and is accustomed to using the front-end framework Vue in his work, and mostly develops in a cross-terminal environment.";
 
-	let context = '我是黎润华制作的基于transformer.js的聊天机器人！';
+// 	let context = '我是黎润华制作的基于transformer.js的聊天机器人！';
 
-	let out = await pipe('你是什么?', context);
+// 	let out = await pipe('你是什么?', context);
 
-	answerAI.value = out;
-}
+// 	answerAI.value = out;
+// }
 
 //用vue钩子函数调用
 onMounted(() => {
@@ -1013,16 +1058,19 @@ onBeforeUnmount(() => {
 		<transition name="fade">
 			<div
 				v-if="!isWorksVisible && !isAboutVisible"
-				class="w-full absolute bottom-20% left-0 flex-col w-full justify-center items-center text-4 text-#fff"
+				class="w-full absolute bottom-20% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
-				<span class="">Chatbot help you learn me!</span>
+				<!-- <span class="">Chatbot help you learn me!</span>
 				<el-input
 					v-model="questionAI"
 					style="width: 240px"
 					placeholder="Please input"
 					@change="go2AI"
 				/>
-				<p>{{ answerAI }}</p>
+				<p>{{ answerAI }}</p> -->
+				<span class="text-right">Continuous improvement</span>
+				<span class="p-20px">&</span>
+				<span>Infinite transcendence</span>
 			</div>
 		</transition>
 		<transition name="exfade">
@@ -1030,23 +1078,28 @@ onBeforeUnmount(() => {
 				v-if="isWorksVisible"
 				class="w-full absolute top-15% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
-				<div class="flex">
-					<div @click="leftWorks">
-						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-							<path
-								fill="currentColor"
-								d="M18.464 2.114a.998.998 0 0 0-1.033.063l-13 9a1.003 1.003 0 0 0 0 1.645l13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-.536-.886M17 19.091L6.757 12L17 4.909z"
-							/>
-						</svg>
+				<div class="w-full flex flex-col items-center justify-center">
+					<div class="flex mb-1">
+						<div @click="leftWorks">
+							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+								<path
+									fill="currentColor"
+									d="M18.464 2.114a.998.998 0 0 0-1.033.063l-13 9a1.003 1.003 0 0 0 0 1.645l13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-.536-.886M17 19.091L6.757 12L17 4.909z"
+								/>
+							</svg>
+						</div>
+						<span class="tracking--8 mx-20px">{{ page + 1 }}/8</span>
+						<div @click="rightWorks">
+							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+								<path
+									fill="currentColor"
+									d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A.998.998 0 0 0 5 3v18a1 1 0 0 0 .536.886M7 4.909L17.243 12L7 19.091z"
+								/>
+							</svg>
+						</div>
 					</div>
-					<span class="tracking--8 mx-20px">{{ page + 1 }}/8</span>
-					<div @click="rightWorks">
-						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-							<path
-								fill="currentColor"
-								d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A.998.998 0 0 0 5 3v18a1 1 0 0 0 .536.886M7 4.909L17.243 12L7 19.091z"
-							/>
-						</svg>
+					<div class="text-6 text-#fff">
+						<a class="text-#fff" :href="works.link">{{ works.title }}</a>
 					</div>
 				</div>
 			</div>
@@ -1054,9 +1107,9 @@ onBeforeUnmount(() => {
 		<transition name="cvfade">
 			<div
 				v-if="isAboutVisible"
-				class="w-full absolute top-15% left-0 flex w-full justify-center items-center text-4 text-#fff"
+				class="w-full absolute top-5% left-0 flex w-full justify-center items-center text-4 text-#fff"
 			>
-				<el-button @click="downCV" class="w-400px h-120px text-4" size="large"
+				<el-button @click="downCV" class="w-40 h-12 text-4 rounded-full" size="large"
 					>Download CV</el-button
 				>
 			</div>
