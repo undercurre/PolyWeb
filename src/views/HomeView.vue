@@ -200,6 +200,9 @@ const setComputerInstance = (macglb: GLTF) => {
 	keyboardKeys.rotation.set(-0.5 * Math.PI, 0, 0);
 	keyboardKeys.position.set(0, 0.045, 7.21);
 	bottomGroup.add(keyboardKeys);
+	macGroup.visible = false;
+	lidGroup.visible = false;
+	bottomGroup.visible = false;
 };
 
 // 创建首页立方体
@@ -775,7 +778,12 @@ function disappearComputer() {
 			},
 			{
 				duration: 1,
-				y: -120
+				y: -120,
+				onComplete: () => {
+					macGroup.visible = false;
+					lidGroup.visible = false;
+					bottomGroup.visible = false;
+				}
 			},
 			0
 		);
@@ -903,6 +911,9 @@ function go2Home() {
 }
 
 function go2Works() {
+	macGroup.visible = true;
+	lidGroup.visible = true;
+	bottomGroup.visible = true;
 	if (isWorksVisible.value) return;
 	isWorksVisible.value = true;
 	if (isHomeVisible.value) {
