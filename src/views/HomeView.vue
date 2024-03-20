@@ -53,10 +53,9 @@ async function changeInput(value: string) {
 }
 
 onMounted(async () => {
-	env.allowLocalModels = true;
-	env.allowRemoteModels = false;
-	env.localModelPath = 'models/';
-	env.backends.onnx.wasm.wasmPaths = 'file/';
+	env.remoteHost = 'http://81.71.85.68:7010/';
+
+	env.remotePathTemplate = 'models/Xenova/opus-mt-zh-en/';
 
 	pipe = await pipeline('translation', 'Xenova/opus-mt-zh-en');
 });
