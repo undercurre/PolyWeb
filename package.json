@@ -3,7 +3,7 @@
 	"version": "0.0.11",
 	"private": true,
 	"scripts": {
-		"dev": "vite --port 4173",
+		"dev": "vite --port 7173",
 		"prod": "vite --mode=production",
 		"test": "vite --mode=test",
 		"build": "run-p type-check build-only",

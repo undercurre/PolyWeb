@@ -22,6 +22,13 @@
 				>
 				<p class="text-16px font-bold mt-10px">{{ out[0].translation_text }}</p>
 			</div>
+			<el-progress
+				v-for="item in Object.keys(modelsResources)"
+				:key="item"
+				:text-inside="true"
+				:stroke-width="26"
+				:percentage="modelsResources[item].progress"
+			/>
 		</el-col>
 	</el-row>
 </template>
@@ -38,6 +45,17 @@ const translationLoading = ref(false);
 const out = ref<translationOutput[]>([{ translation_text: '' }]);
 
 let pipe: TranslationPipeline | ((arg0: string) => string | PromiseLike<string>);
+
+type Progress = {
+	status: 'progress' | 'done' | 'initiate' | 'download';
+	file: string;
+	loaded?: number;
+	progress?: number;
+	total?: number;
+	name: string;
+};
+
+let modelsResources = ref<Record<Progress['file'], Progress>>({});
 
 async function handleTranslation(text: string) {
 	translationLoading.value = true;
@@ -57,6 +75,18 @@ onMounted(async () => {
 
 	env.remotePathTemplate = 'models/Xenova/opus-mt-zh-en/';
 
-	pipe = await pipeline('translation', 'Xenova/opus-mt-zh-en');
+	env.backends.onnx.wasm.wasmPaths = 'http://81.71.85.68:7010/file/';
+
+	pipe = await pipeline('translation', 'Xenova/opus-mt-zh-en', {
+		progress_callback: (x: Progress) => {
+			modelsResources.value[x.file] = x;
+			if (x.status === 'initiate' || x.status === 'download') {
+				modelsResources.value[x.file].progress = 0;
+			}
+			if (x.status === 'done') {
+				modelsResources.value[x.file].progress = 100;
+			}
+		}
+	});
 });
 </script>
