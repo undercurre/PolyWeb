@@ -33,13 +33,22 @@
 		<el-col :span="8"
 			><div class="grid-content ep-bg-purple" />
 			<div class="w-full h-full p-20px box-border">
-				<p class="text-20px font-bold text-center">文本生成</p>
+				<p class="text-20px font-bold text-center">AI问答</p>
 				<el-input
-					label="原文"
+					label="问题"
 					v-model="textGeneratorInput"
-					placeholder="输入提示词"
+					placeholder="输入问题"
 					clearable
 					type="textarea"
+					resize="none"
+					@change="changeTextGeneratorInput"
+				></el-input>
+				<el-input
+					label="内容"
+					v-model="textGeneratorInput"
+					type="textarea"
+					placeholder="输入内容"
+					clearable
 					resize="none"
 					@change="changeTextGeneratorInput"
 				></el-input>
@@ -50,7 +59,7 @@
 					@click="handleTextGenerator(textGeneratorInput)"
 					>提交</el-button
 				>
-				<p class="text-16px font-bold mt-10px">{{ textGeneratorOut[0].translation_text }}</p>
+				<p class="text-16px font-bold mt-10px">{{ textGeneratorOut.answer }}</p>
 			</div>
 			<el-progress
 				v-for="item in Object.keys(tgModelsResources)"
@@ -64,7 +73,12 @@
 </template>
 
 <script lang="ts" setup>
-import { pipeline, env, TranslationPipeline } from '@xenova/transformers';
+import {
+	pipeline,
+	env,
+	TranslationPipeline,
+	QuestionAnsweringPipeline
+} from '@xenova/transformers';
 
 type Progress = {
 	status: 'progress' | 'done' | 'initiate' | 'download';
@@ -87,6 +101,10 @@ let tspipe: TranslationPipeline | ((arg0: string) => string | PromiseLike<string
 
 let tsModelsResources = ref<Record<Progress['file'], Progress>>({});
 
+let tsbpipe: TranslationPipeline | ((arg0: string) => string | PromiseLike<string>);
+
+let tsbModelsResources = ref<Record<Progress['file'], Progress>>({});
+
 async function handleTranslation(text: string) {
 	translationLoading.value = true;
 	translationOut.value = (await tspipe(text)) as translationOutput[];
@@ -100,17 +118,32 @@ async function changeTranslationInput(value: string) {
 	handleTranslation(value);
 }
 
+type TextGeneratorOutput = {
+	score: number;
+	start: number;
+	end: number;
+	answer: string;
+};
+
 const textGeneratorInput = ref('');
 
 const textGeneratorLoading = ref(false);
 
-const textGeneratorOut = ref<translationOutput[]>([{ translation_text: '' }]);
+const textGeneratorOut = ref<TextGeneratorOutput>({
+	score: 0,
+	start: 0,
+	end: 0,
+	answer: ''
+});
 
-let tgpipe: TranslationPipeline | ((arg0: string) => string | PromiseLike<string>);
+let tgpipe: QuestionAnsweringPipeline;
 
 async function handleTextGenerator(text: string) {
 	textGeneratorLoading.value = true;
-	textGeneratorOut.value = (await tgpipe(text)) as translationOutput[];
+	textGeneratorOut.value = (await tgpipe(
+		`What proportion of the planet's rainforests are found in the Amazon?`,
+		`The Amazon rainforest (Portuguese: Floresta Amazônica or Amazônia; Spanish: Selva Amazónica, Amazonía or usually Amazonia; French: Forêt amazonienne; Dutch: Amazoneregenwoud), also known in English as Amazonia or the Amazon Jungle, is a moist broadleaf forest that covers most of the Amazon basin of South America. This basin encompasses 7,000,000 square kilometres (2,700,000 sq mi), of which 5,500,000 square kilometres (2,100,000 sq mi) are covered by the rainforest. This region includes territory belonging to nine nations. The majority of the forest is contained within Brazil, with 60% of the rainforest, followed by Peru with 13%, Colombia with 10%, and with minor amounts in Venezuela, Ecuador, Bolivia, Guyana, Suriname and French Guiana. States or departments in four nations contain "Amazonas" in their names. The Amazon represents over half of the planet's remaining rainforests, and comprises the largest and most biodiverse tract of tropical rainforest in the world, with an estimated 390 billion individual trees divided into 16,000 species.`
+	)) as TextGeneratorOutput;
 	setTimeout(() => {
 		textGeneratorLoading.value = false;
 	}, 1200);
@@ -124,25 +157,49 @@ async function changeTextGeneratorInput(value: string) {
 let tgModelsResources = ref<Record<Progress['file'], Progress>>({});
 
 onMounted(async () => {
+	// env.remoteHost = 'http://81.71.85.68:7010/';
+
+	// env.remotePathTemplate = 'models/Xenova/opus-mt-zh-en/';
+
+	// env.backends.onnx.wasm.wasmPaths = 'http://81.71.85.68:7010/file/';
+
+	// tspipe = await pipeline('translation', 'Xenova/opus-mt-zh-en', {
+	// 	progress_callback: (x: Progress) => {
+	// 		tsModelsResources.value[x.file] = x;
+	// 		if (x.status === 'initiate' || x.status === 'download') {
+	// 			tsModelsResources.value[x.file].progress = 0;
+	// 		}
+	// 		if (x.status === 'done') {
+	// 			tsModelsResources.value[x.file].progress = 100;
+	// 		}
+	// 	}
+	// });
+
 	env.remoteHost = 'http://81.71.85.68:7010/';
 
-	env.remotePathTemplate = 'models/Xenova/opus-mt-zh-en/';
+	env.remotePathTemplate = 'models/Xenova/opus-mt-en-zh/';
 
 	env.backends.onnx.wasm.wasmPaths = 'http://81.71.85.68:7010/file/';
 
-	tspipe = await pipeline('translation', 'Xenova/opus-mt-zh-en', {
+	tsbpipe = await pipeline('translation', 'Xenova/Xenova/opus-mt-en-zh', {
 		progress_callback: (x: Progress) => {
-			tsModelsResources.value[x.file] = x;
+			tgModelsResources.value[x.file] = x;
 			if (x.status === 'initiate' || x.status === 'download') {
-				tsModelsResources.value[x.file].progress = 0;
+				tsbModelsResources.value[x.file].progress = 0;
 			}
 			if (x.status === 'done') {
-				tsModelsResources.value[x.file].progress = 100;
+				tsbModelsResources.value[x.file].progress = 100;
 			}
 		}
 	});
 
-	tgpipe = await pipeline('text-generation', 'Xenova/llama-160m', {
+	env.remoteHost = 'http://81.71.85.68:7010/';
+
+	env.remotePathTemplate = 'models/Xenova/distilbert-base-cased-distilled-squad/';
+
+	env.backends.onnx.wasm.wasmPaths = 'http://81.71.85.68:7010/file/';
+
+	tgpipe = await pipeline('question-answering', 'Xenova/distilbert-base-cased-distilled-squad', {
 		progress_callback: (x: Progress) => {
 			tgModelsResources.value[x.file] = x;
 			if (x.status === 'initiate' || x.status === 'download') {
